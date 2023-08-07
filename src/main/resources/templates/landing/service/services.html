@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+  <div id="status">
+    <div class="spinner">
+      <div class="double-bounce1"></div>
+      <div class="double-bounce2"></div>
+    </div>
+  </div>
+</div>
+<!-- Loader -->
+
+<!-- Navbar STart -->
+<header th:replace="~{layout/pageHeaderLanding :: pageHeaderLanding}"></header><!--end header-->
+<!-- Navbar End -->
+
+<!-- Start Hero -->
+<section class="bg-half-170 d-table w-100" style="background: url('../assets/images/bg/02.jpg') center center;">
+  <div class="bg-overlay bg-overlay-dark"></div>
+  <div class="container">
+    <div class="row mt-5 justify-content-center">
+      <div class="col-12">
+        <div class="section-title text-center">
+          <h3 class="sub-title mb-4 text-white title-dark">Services</h3>
+          <p class="para-desc mx-auto text-white-50">Great doctor if you need your family member to get
+            effective immediate assistance, emergency treatment or a simple consultation.</p>
+
+          <nav aria-label="breadcrumb" class="d-inline-block mt-3">
+            <ul class="breadcrumb bg-light rounded mb-0 py-1 px-2">
+              <li class="breadcrumb-item"><a th:href="@{/}">Doctris</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Services</li>
+            </ul>
+          </nav>
+        </div>
+      </div><!--end col-->
+    </div><!--end row-->
+  </div><!--end container-->
+</section><!--end section-->
+<div class="position-relative">
+  <div class="shape overflow-hidden text-white">
+    <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+    </svg>
+  </div>
+</div>
+<!-- End Hero -->
+
+<!-- Start -->
+<section class="section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <form role="search" method="get" id="searchform" class="searchform col-12 col-md-6 mb-5"
+            th:action="@{/service}">
+        <div class="search-bar p-0 d-none d-lg-block ms-2">
+          <div id="search" class="menu-search mb-0 searchform">
+            <div class="searchform">
+              <input type="text" class="form-control border rounded-pill" th:name="titleSearch"
+                     th:value="${titleSearch}" id="s" placeholder="Search Keywords...">
+              <input type="submit" id="searchsubmit" value="Search">
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="row">
+      <div class="col-xl-4 col-lg-4 col-md-6" th:each="service : ${usesPage}">
+        <div class="card team border-0 rounded shadow overflow-hidden d-block">
+          <div class="team-person position-relative overflow-hidden">
+            <a th:href="@{/service/{serviceId}(serviceId=${service.serviceId})}"><img style="height: 250px; object-fit: cover; width: 100%;"
+                    th:src="${service.thumbnail}" class="img-fluid" alt=""></a>
+          </div>
+          <div class="card-body">
+            <a th:href="@{/service/{serviceId}(serviceId=${service.serviceId})}"
+               class="title text-dark h5 d-block mb-0" th:text="${service.title}"></a>
+            <small class="text-muted speciality">Eye Care</small>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <ul class="list-unstyled mb-0">
+                <div th:each="review : ${reviews}"
+                     th:if="${review[0] == service.serviceId}">
+                  <div class="m-0" th:if="${review[1]}">
+                    <div>
+                      <svg style="display:none;">
+                        <defs>
+                          <symbol id="fivestarss">
+                            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                  fill="white" fill-rule="evenodd"/>
+                            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                  fill="white" fill-rule="evenodd"
+                                  transform="translate(24)"/>
+                            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                  fill="white" fill-rule="evenodd"
+                                  transform="translate(48)"/>
+                            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                  fill="white" fill-rule="evenodd"
+                                  transform="translate(72)"/>
+                            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                  fill="white" fill-rule="evenodd"
+                                  transform="translate(96)"/>
+                          </symbol>
+                        </defs>
+                      </svg>
+                      <div class="rating">
+                        <progress class="rating-bg" th:value="${review[1]}"
+                                  max="5"></progress>
+                        <svg>
+                          <use xlink:href="#fivestarss"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div th:if="${service.rateStar.size() == 0}">
+                  <div>
+                    <svg style="display:none;">
+                      <defs>
+                        <symbol id="fivestars">
+                          <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                fill="white" fill-rule="evenodd"/>
+                          <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                fill="white" fill-rule="evenodd"
+                                transform="translate(24)"/>
+                          <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                fill="white" fill-rule="evenodd"
+                                transform="translate(48)"/>
+                          <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                fill="white" fill-rule="evenodd"
+                                transform="translate(72)"/>
+                          <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                fill="white" fill-rule="evenodd"
+                                transform="translate(96)"/>
+                        </symbol>
+                      </defs>
+                    </svg>
+                    <div class="rating">
+                      <progress class="rating-bg" th:value="0" max="5"></progress>
+                      <svg>
+                        <use xlink:href="#fivestars"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </ul>
+            </div>
+            <ul class="list-unstyled mt-2 mb-0">
+              <li class="d-flex mt-2">
+                <i class="ri-money-dollar-circle-line text-primary align-middle"></i>
+                <small class="text-muted ms-2" th:text="'$ ' + ${service.price}"></small>
+              </li>
+              <li class="d-flex mt-3" th:text="${service.description}">
+              </li>
+            </ul>
+
+            <form method="get" th:action="@{/booking}">
+              <input type="text" th:name="serviceId" th:value="${service.serviceId}" hidden/>
+              <button class="btn btn-primary mt-3">Book now</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div><!--end row-->
+
+    <div class="row text-center mt-5" th:unless="${#lists.isEmpty(usesPage.getContent())}">
+      <div class="col-12">
+        <ul class="pagination justify-content-center mb-0 list-unstyled">
+          <li class="paginate_button page-item"><a
+                  class="page-link"
+                  th:classappend="${usesPage.hasPrevious() ? '' : 'disabled'}"
+                  th:href="@{'/service'(titleSearch=${titleSearch},page=${usesPage.number})}"
+          >Prev</a>
+          </li>
+          <li class="paginate_button page-item"><a
+                  class="page-link"
+                  th:href="@{'/service'(titleSearch=${titleSearch},page=${usesPage.number})}"
+                  th:if="${usesPage.hasPrevious()}" th:text="${usesPage.number}"></a>
+          </li>
+          <li class="paginate_button page-item active"><a
+                  class="page-link"
+                  th:href="@{'/service'(titleSearch=${titleSearch},page=${usesPage.number + 1})}"
+                  th:text="${usesPage.number + 1}"></a>
+          </li>
+          <li class="paginate_button page-item"><a
+                  class="page-link"
+                  th:href="@{'/service'(titleSearch=${titleSearch},page=${usesPage.number + 2})}"
+                  th:if="${usesPage.hasNext()}" th:text="${usesPage.number + 2}"></a>
+          </li>
+
+          <li class="paginate_button page-item">
+            <a
+                    class="page-link"
+                    th:href="@{'/service'(titleSearch=${titleSearch},page=${usesPage.number + 2})}"
+                    th:classappend="${usesPage.hasNext()} ? '':'disabled'"
+            >Next
+            </a>
+          </li>
+        </ul><!--end pagination-->
+      </div><!--end col-->
+    </div><!--end row-->
+  </div><!--end container-->
+</section><!--end section-->
+<!-- End -->
+
+<!-- Start -->
+<footer th:replace="~{layout/homeFooter :: homeFooter}"></footer>
+<!-- End -->
+
+<!-- Back to top -->
+<a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
+        data-feather="arrow-up" class="icons"></i></a>
+<!-- Back to top -->
+
+<!-- javascript -->
+<script th:replace="~{layout/script :: script}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+<div class="page-wrapper doctris-theme toggled">
+    <nav th:replace="~{layout/pageSidebarAdmin :: pageSidebarAdmin}" id="sidebar" class="sidebar-wrapper"></nav>
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <div th:replace="~{layout/pageHeaderAdmin :: pageHeaderAdmin}" class="top-header"></div>
+
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <h5 class="mb-0">Dashboard</h5>
+
+                <div class="row">
+                    <div class="col-xl-2 col-lg-4 col-md-4 mt-4">
+                        <div class="card features feature-primary rounded border-0 shadow p-4">
+                            <div class="d-flex align-items-center">
+                                <div class="icon text-center rounded-md">
+                                    <i class="uil uil-bed h3 mb-0"></i>
+                                </div>
+                                <div class="flex-1 ms-2">
+                                    <h5 class="mb-0" th:if="${numberPatient}" th:text="${numberPatient}"></h5>
+                                    <h5 class="mb-0" th:unless="${numberPatient}">0</h5>
+                                    <p class="text-muted mb-0">Patients</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-xl-3 col-lg-4 col-md-4 mt-4">
+                        <div class="card features feature-primary rounded border-0 shadow p-4">
+                            <div class="d-flex align-items-center">
+                                <div class="icon text-center rounded-md">
+                                    <i class="uil uil-file-medical-alt h3 mb-0"></i>
+                                </div>
+                                <div class="flex-1 ms-2">
+                                    <h5 class="mb-0" th:if="${revenue}" th:text="${revenue} +' $'"></h5>
+                                    <h5 class="mb-0" th:unless="${revenue}">0</h5>
+                                    <p class="text-muted mb-0">Revenue</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-xl-3 col-lg-4 col-md-4 mt-4">
+                        <div class="card features feature-primary rounded border-0 shadow p-4">
+                            <div class="d-flex align-items-center">
+                                <div class="icon text-center rounded-md">
+                                    <i class="uil uil-social-distancing h3 mb-0"></i>
+                                </div>
+                                <div class="flex-1 ms-2">
+                                    <h5 class="mb-0" th:if="${numberEmployeeActive}" th:text="${numberEmployeeActive}"></h5>
+                                    <h5 class="mb-0" th:unless="${numberEmployeeActive}" >0</h5>
+                                    <p class="text-muted mb-0">Doctor and Staff</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-xl-2 col-lg-4 col-md-4 mt-4">
+                        <div class="card features feature-primary rounded border-0 shadow p-4">
+                            <div class="d-flex align-items-center">
+                                <div class="icon text-center rounded-md">
+                                    <i class="uil uil-medical-drip h3 mb-0"></i>
+                                </div>
+                                <div class="flex-1 ms-2">
+                                    <h5 class="mb-0" th:if="${numberServices}" th:text="${numberServices}"></h5>
+                                    <h5 class="mb-0" th:unless="${numberServices}" >0</h5>
+                                    <p class="text-muted mb-0">Services</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-xl-2 col-lg-4 col-md-4 mt-4">
+                        <div class="card features feature-primary rounded border-0 shadow p-4">
+                            <div class="d-flex align-items-center">
+                                <div class="icon text-center rounded-md">
+                                    <i class="uil uil-medkit h3 mb-0"></i>
+                                </div>
+                                <div class="flex-1 ms-2">
+                                    <h5 class="mb-0" th:if="${numberAppointments}" th:text="${numberAppointments}"></h5>
+                                    <h5 class="mb-0" th:unless="${numberAppointments}" >0</h5>
+                                    <p class="text-muted mb-0">Appointments</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+<!--                    <div class="col-xl-2 col-lg-4 col-md-4 mt-4">-->
+<!--                        <div class="card features feature-primary rounded border-0 shadow p-4">-->
+<!--                            <div class="d-flex align-items-center">-->
+<!--                                <div class="icon text-center rounded-md">-->
+<!--                                    <i class="uil uil-medical-drip h3 mb-0"></i>-->
+<!--                                </div>-->
+<!--                                <div class="flex-1 ms-2">-->
+<!--                                    <h5 class="mb-0">10</h5>-->
+<!--                                    <p class="text-muted mb-0">Operations</p>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>&lt;!&ndash;end col&ndash;&gt;-->
+                </div><!--end row-->
+
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 mt-4">
+                        <div class="card shadow border-0 p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                                <div class="mb-0 position-relative">
+                                    <select class="form-select form-control" id="timeOption1">
+                                        <option value="2023">2023</option>
+                                        <option value="2022">2022</option>
+                                        <option value="2021">2021</option>
+                                    </select>
+                                </div>
+                            </div>
+<!--                            <div id="dashboard" class="apex-chart"></div>-->
+                            <div id="chart" class="apex-chart"></div>
+                        </div>
+                    </div><!--end col-->
+
+
+
+
+                </div><!--end row-->
+
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 mt-4">
+                        <div class="card shadow border-0 p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                                <div class="mb-0 position-relative">
+                                    <select class="form-select form-control" id="timeOption2">
+                                        <option value="2023">2023</option>
+                                        <option value="2022">2022</option>
+                                        <option value="2021">2021</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--                            <div id="dashboard" class="apex-chart"></div>-->
+                            <div id="chart2" class="apex-chart"></div>
+                        </div>
+                    </div><!--end col-->
+
+
+                </div><!--end row-->
+
+
+            </div>
+        </div><!--end container-->
+
+        <!-- Footer Start -->
+        <footer class="bg-white shadow py-3">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="text-sm-start text-center">
+                            <p class="mb-0 text-muted">
+                                <script>document.write(new Date().getFullYear())</script>
+                                © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a
+                                    href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.
+                            </p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </footer><!--end footer-->
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+
+<!-- javascript -->
+<script th:replace="layout/script :: script"></script>
+<!-- Chart -->
+<script th:src="@{~/assets/js/apexcharts.min.js}"></script>
+<!--<script src="../../assets/js/columnchart.init.js"></script>-->
+
+<script>
+
+    var options = {
+        series: [],
+        chart: {
+            height: 350,
+            type: 'line',
+            zoom: {
+                enabled: false
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            curve: 'straight'
+        },
+        title: {
+            text: 'Revenue Statistics',
+            align: 'left'
+        },
+        grid: {
+            row: {
+                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                opacity: 0.5
+            },
+        },
+        noData: {
+            text: 'Loading...'
+        }
+    };
+
+    var chart = new ApexCharts(
+        document.querySelector("#chart"),
+        options
+    );
+chart.render()
+
+    $(document).ready(function() {
+
+        var selectedValue = $("#timeOption1").val();
+
+
+        // Make AJAX request to fetch chart data
+        function fetchChartData(option) {
+
+            $.getJSON("/chart-data?type=chart1&option=" + option, function(response) {
+                const newXaxis = response.categories.map(val => val + "-" + option)
+
+                console.log('heaeharha1')
+                chart.updateOptions({
+                    series: [{
+                        name: "Revenue",
+                        data: response.data
+                    }],
+                    xaxis: {
+                        categories: newXaxis
+                    }
+                })
+            })}
+
+        var initialSelectedValue = $("#timeOption1").val();
+        fetchChartData(initialSelectedValue);
+
+        $("#timeOption1").change(function() {
+            var selectedValue = $(this).val();
+            console.log(selectedValue);
+            fetchChartData(selectedValue);
+            console.log(selectedValue)
+            console.log(options)
+            console.log(options.series)
+        });
+
+    });
+
+
+</script>
+
+
+<script>
+
+    var options2 = {
+        series: [],
+        chart: {
+            height: 350,
+            type: 'line',
+            zoom: {
+                enabled: false
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            curve: 'straight'
+        },
+        title: {
+            text: 'Appointment',
+            align: 'left'
+        },
+        grid: {
+            row: {
+                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                opacity: 0.5
+            },
+        },
+        noData: {
+            text: 'Loading...'
+        }
+    };
+
+    var chart2 = new ApexCharts(
+        document.querySelector("#chart2"),
+        options2
+    );
+    chart2.render()
+
+    $(document).ready(function() {
+
+        var selectedValue = $("#timeOption2").val();
+        console.log(selectedValue)
+        // Make AJAX request to fetch chart data
+        function fetchChartData2(option) {
+
+            $.getJSON("/chart-data?type=chart2&option=" + option, function(response) {
+                console.log('heaeharha2')
+                console.log(selectedValue)
+                const newXaxis = response.categories.map(val => val + "-" + option)
+
+                chart2.updateOptions({
+                    series: [{
+                        name: "Appointment",
+                        data: response.data
+                    }],
+                    xaxis: {
+                        categories: newXaxis
+                    }
+                })
+            })}
+
+        var initialSelectedValue = $("#timeOption2").val();
+        fetchChartData2(initialSelectedValue);
+
+        $("#timeOption2").change(function() {
+            var selectedValue = $(this).val();
+            fetchChartData2(selectedValue);
+        });
+
+    });
+
+
+</script>
+
+
+
+</body>
+
+</html>

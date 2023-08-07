@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<!--<div id="preloader">-->
+<!--    <div id="status">-->
+<!--        <div class="spinner">-->
+<!--            <div class="double-bounce1"></div>-->
+<!--            <div class="double-bounce2"></div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!-- Loader -->
+
+<!-- Navbar STart -->
+<header th:replace="~{layout/pageHeaderLanding :: pageHeaderLanding}"></header><!--end header-->
+<!-- Navbar End -->
+
+<!-- Start -->
+<section class="bg-dashboard">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-4 col-lg-4 col-md-5 col-12">
+                <div th:replace="~{layout/pageSidebarLanding :: sidebarLanding}"></div>
+            </div><!--end col-->
+
+            <div class="col-xl-8 col-lg-8 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
+                <h5 class="mb-0 pb-2">Profile Setting</h5>
+                <div class="rounded shadow mt-4">
+                    <div class="p-4 border-bottom">
+                        <h5 class="mb-0">Personal Information :</h5>
+                    </div>
+
+                    <div class="text-center" ><span aria-hidden="true" class="text-center text-success mb-3 h3" th:text="${passwordMessage}"></span></div>
+
+
+                    <div class="p-4 border-bottom">
+                        <form method="POST" th:action="@{/profile/update}" th:object="${user}"
+                              enctype="multipart/form-data">
+                            <div class="row align-items-center">
+                                <div class="col-lg-2 col-md-4">
+                                    <div class="preview-box avatar avatar-md-md rounded-pill shadow mx-auto d-block">
+                                        <img th:if="${user.avatar}" th:src="${user.avatar}"
+                                             style="border-radius: 50%; height: 100%;"
+                                             class="preview-content w-100" />
+                                    </div>
+                                </div><!--end col-->
+
+                                <div class="col-4">
+                                    <p id="avatar" class="d-none" th:name="avatar" th:text="${user.avatar}"></p>
+                                    <input type="file" id="image" name="image"
+                                           accept="image/*"
+                                           onchange={handleChange()} hidden/>
+                                    <label class="btn-upload btn btn-primary mt-4" for="image">Upload
+                                        Avatar</label>
+                                    <span class="mt-2 text-danger d-block" th:if="${image}"
+                                          th:text="${image}"></span>
+                                </div>
+                                <input th:name="userId" id="userId" th:field="*{userId}"
+                                       type="text"
+                                       class="form-control" hidden>
+                            </div><!--end row-->
+
+                            <div class="p-4">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Full Name</label>
+                                            <input th:name="fullName" th:field="*{fullName}" th:value="${fullName}"
+                                                   id="fullName" type="text" class="form-control"
+                                                   placeholder="Full Name :">
+                                            <span class="mt-2 text-danger" th:if="${#fields.hasErrors('fullName')}"
+                                                  th:errors="*{fullName}"></span>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Phone no.</label>
+                                            <input th:name="phoneNumber" th:field="*{phoneNumber}"
+                                                   th:value="${phoneNumber}"
+                                                   id="phoneNumber" type="text" class="form-control"
+                                                   placeholder="Phone no. :">
+                                            <span class="mt-2 text-danger" th:if="${#fields.hasErrors('phoneNumber')}"
+                                                  th:errors="*{phoneNumber}"></span>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Address</label>
+                                            <input th:name="address" th:field="*{address}" th:value="${address}"
+                                                   id="address" type="text" class="form-control"
+                                                   placeholder="Address. :">
+                                            <span class="mt-2 text-danger" th:if="${#fields.hasErrors('address')}"
+                                                  th:errors="*{address}"></span>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Date of birth</label>
+                                            <input th:name="dateOfBirth" th:field="*{dateOfBirth}"
+                                                   th:value="${dateOfBirth}"
+                                                   id="dateOfBirth" type="date" class="form-control">
+                                            <span class="mt-2 text-danger d-block" th:if="${dateOfBirth}"
+                                                  th:text="${dateOfBirth}"></span>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3" th:if="${user.gender == 'Male'}">
+                                            <label class="form-label d-block">Gender</label>
+                                            <input type="radio" th:name="gender" th:value="Male" checked/> Male
+                                            <input style="margin-left: 20px;" type="radio" th:name="gender"
+                                                   th:value="Female"/> Female
+                                            <span class="mt-2 text-danger" th:if="${gender}" th:text="${gender}"></span>
+                                        </div>
+                                        <div class="mb-3" th:if="${user.gender == 'Female'}">
+                                            <label class="form-label d-block">Gender</label>
+                                            <input type="radio" th:name="gender" th:value="Male"/> Male
+                                            <input style="margin-left: 20px;" type="radio" th:name="gender"
+                                                   th:value="Female" checked/> Female
+                                            <span class="mt-2 text-danger d-block" th:if="${gender}"
+                                                  th:text="${gender}"></span>
+                                        </div>
+                                        <div class="mb-3" th:if="${user.gender != 'Female' && user.gender != 'Male'}">
+                                            <label class="form-label d-block">Gender</label>
+                                            <input type="radio" th:name="gender" th:value="Male"/> Male
+                                            <input style="margin-left: 20px;" type="radio" th:name="gender"
+                                                   th:value="Female"/> Female
+                                            <span class="mt-2 text-danger d-block" th:if="${gender}"
+                                                  th:text="${gender}"></span>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-12" th:if="${user.role == 'Doctor'}">
+                                        <div class="mb-3" th:object="${doctor}">
+                                            <label class="form-label">Your Bio Here</label>
+                                            <textarea th:name="description" th:field="*{description}"
+                                                      th:value="${description}"
+                                                      id="description" rows="3" class="form-control"
+                                                      placeholder="Bio :"></textarea>
+                                            <span class="mt-2 text-danger" th:if="${#fields.hasErrors('description')}"
+                                                  th:errors="*{description}"></span>
+                                        </div>
+                                    </div>
+                                </div><!--end row-->
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <input type="submit" id="submit" name="send" class="btn btn-primary btn-update"
+                                               value="Save changes">
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="rounded shadow mt-4">
+                        <div class="p-4 border-bottom">
+                            <h5 class="mb-0">Change Password :</h5>
+                        </div>
+
+                        <div class="p-4">
+                            <form id="changepassword" th:action="@{/change-password}" class="mt-4"
+                                  method="post">
+                                <div class="text-center"><span th:if="${message}" th:text="${message}" class="text-danger "></span></div>
+
+
+                                <div class="row">
+
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Old password :</label>
+                                            <input id="currentPassword" type="password" class="form-control"
+                                                   placeholder="Old password" name="currentPassword" required="">
+
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">New password :</label>
+                                            <input id="newPassword" type="password" class="form-control"
+                                                   placeholder="New password" name="newPassword" required="">
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Re-type New password :</label>
+                                            <input id="confirmPassword" type="password" class="form-control"
+                                                   placeholder="Re-type New password" name="confirmPassword"
+                                                   required="">
+                                        </div>
+                                    </div><!--end col-->
+
+
+                                    <div class="col-lg-12 mt-2 mb-0">
+                                        <button type="submit" class="btn btn-primary">Save password</button>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </form>
+                        </div>
+                    </div>
+                </div><!--end col-->
+            </div><!--end row-->
+        </div><!--end container-->
+</section><!--end section-->
+<!-- End -->
+
+<!-- Footer Start -->
+<footer th:replace="~{layout/homeFooter :: homeFooter}"></footer>
+<!-- End -->
+
+<!-- Back to top -->
+<a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
+        data-feather="arrow-up" class="icons"></i></a>
+<!-- Back to top -->
+
+<!-- javascript -->
+<script th:replace="~{layout/script :: script}"></script>
+
+<!--Validate -->
+<script src="../assets/js/jquery-3.2.1.min.js"></script>
+<!--<script scr="../assets/js/jquery.validate.js"></script>-->
+<script src="../assets/js/additional-methods.js"></script>
+<script src="../assets/js/jquery.validate.js"></script>
+<script>
+    $('.btn-update').on('click', function (e) {
+        // e.preventDefault()
+        const avatar = $('#avatar');
+        const image = $('#image');
+
+        if (image.val() == "") {
+            image.prop('disabled', true);
+            const form = $('#form-submit');
+            const avatarValue = avatar.html();
+            const avatarField = $(`<input type=\"text\" name="avatar" value=\"${avatarValue}\" hidden />`);
+            form.append(avatarField)
+        }
+    });
+
+    const handleChange = () => {
+        const fileUploader = document.querySelector('#image');
+        const getFile = fileUploader.files
+        if (getFile.length !== 0) {
+            const uploadedFile = getFile[0];
+            readFile(uploadedFile);
+        }
+    }
+
+    const readFile = (uploadedFile) => {
+        if (uploadedFile) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const parent = document.querySelector('.preview-box');
+                parent.innerHTML = `<img class="preview-content w-100" style="border-radius: 50%; height: 100%;" src=${reader.result} />`;
+            };
+
+            reader.readAsDataURL(uploadedFile);
+        }
+    };
+</script>
+
+<script>
+
+    $.validator.addMethod("lettersOnly", function (value, element) {
+        return this.optional(element) || /^[a-zA-Z\s]+$/.test(value);
+    }, "This field must contain only letters and spaces");
+
+    $.validator.addMethod("noSpace", function (value, element) {
+        // return value.indexOf(" ") < 0;
+        return /^\S+$/.test(value);
+    }, "Password should not contain spaces.");
+
+    $.validator.addMethod("matchNewPassword", function (value, element) {
+        return value === $("#newPassword").val();
+    }, "Confirm password should match new password.");
+    $(document).ready(function () {
+        $('#changepassword').validate({
+            rules: {
+                currentPassword: {
+                    required: true,
+                    minlength: 6,
+                    // maxlength: 30,
+                    // password: true,
+                    noSpace: true
+                },
+                newPassword: {
+                    required: true,
+                    minlength: 6,
+                    // maxlength: 30,
+                    // password: true,
+                    noSpace: true
+                },
+                confirmPassword: {
+                    required: true,
+                    minlength: 6,
+                    // maxlength: 30,
+                    // password: true,
+                    noSpace: true,
+                    equalTo: "#newPassword"
+                }
+            },
+            messages: {
+                currentPassword: {
+                    required: "Please enter your full name",
+                    minlength: "Your full name must be at least 8 characters long",
+                    maxlength: "Your full name must be less than or equal to 30 characters long"
+                },
+                newPassword: {
+                    required: "Please enter your email address",
+                    email: "Please enter a valid email address"
+                },
+                confirmPassword: {
+                    required: "Please enter a password",
+                    minlength: "Your password must be at least 8 characters long",
+                    maxlength: "Your password must be less than or equal to 30 characters long"
+                }
+            },
+            errorElement: 'span',
+            errorClass: 'text-danger',
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+                $(element).addClass('is-valid');
+            }
+        });
+
+    });
+
+</script>
+</body>
+
+</html>

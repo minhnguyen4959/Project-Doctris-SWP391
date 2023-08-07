@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<!-- Navbar STart -->
+<header th:replace="~{layout/pageHeaderLanding :: pageHeaderLanding}"></header><!--end header-->
+<!-- Navbar End -->
+
+<!-- Start Hero -->
+<section class="bg-half-150 d-table w-100 bg-light">
+    <div class="container">
+        <div class="row mt-5 justify-content-center">
+            <div class="col-12">
+                <div class="section-title text-center">
+                    <h3 class="sub-title mb-4" th:text="${blog.title}"></h3>
+                    <p class="para-desc mx-auto text-muted" th:text="${blog.summary}"></p>
+
+                    <ul class="list-unstyled mt-4">
+                        <i class="mdi mdi-account"></i><li class="list-inline-item user text-muted me-2" th:text="${blog.user.fullName}"></li>
+                        <i class="mdi mdi-calendar-check"></i><li class="list-inline-item date text-muted" th:text="${blog.createdAt}"></li>
+                    </ul>
+                </div>
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+</section><!--end section-->
+<div class="position-relative">
+    <div class="shape overflow-hidden text-white">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+        </svg>
+    </div>
+</div>
+<!-- End Hero -->
+
+<!-- Start -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-7">
+                <img th:src="${blog.thumbnail}" style="display: block; margin: auto; height: 380px; object-fit: contain;" class="img-fluid rounded shadow" alt="">
+
+                <p class="text-muted mt-4" th:utext="${blog.content}"></p>
+
+                <h5 class="card-title mt-4 mb-0">Comments :</h5>
+
+                <ul class="media-list list-unstyled mb-0">
+                    <li class="mt-4" th:each="comment : ${comments}">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <a class="pe-3" href="#">
+                                    <img th:if="${comment.user.avatar}" th:src="${comment.user.avatar}" class="img-fluid avatar avatar-md-sm rounded-circle shadow" alt="img">
+                                    <img th:unless="${comment.user.avatar}" th:src="@{'~/assets/images/avatar.png'}" class="img-fluid avatar avatar-md-sm rounded-circle shadow" alt="img">
+                                </a>
+                                <div class="commentor-detail">
+                                    <h6 class="mb-0"><a href="javascript:void(0)" class="text-dark media-heading" th:text="${comment.user.fullName}"></a></h6>
+                                    <small class="text-muted" th:text="${comment.createdAt}"></small>
+                                    <small th:if="${comment.user.role == 'Admin' || comment.user.role == 'Staff' }" class="text-muted d-block" th:text="Moderator"></small>
+                                    <small th:if="${comment.user.role == 'Doctor' }" class="text-muted d-block" th:text="Doctor"></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <p class="text-muted font-italic p-3 bg-light rounded" th:text="${comment.description}"></p>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="row text-center" th:unless="${#lists.isEmpty(comments.getContent())}">
+                    <div class="col-12">
+                        <ul class="pagination justify-content-end mb-0 list-unstyled">
+                            <li class="paginate_button page-item"><a
+                                    class="page-link"
+                                    th:classappend="${comments.hasPrevious() ? '' : 'disabled'}"
+                                    th:href="@{/blog/{blogId}(blogId=${blog.blogId}, page=${comments.number})}"
+                            >Prev</a>
+                            </li>
+                            <li class="paginate_button page-item"><a
+                                    class="page-link"
+                                    th:href="@{/blog/{blogId}(blogId=${blog.blogId}, page=${comments.number})}"
+                                    th:if="${comments.hasPrevious()}" th:text="${comments.number}"></a>
+                            </li>
+                            <li class="paginate_button page-item active"><a
+                                    class="page-link"
+                                    th:href="@{/blog/{blogId}(blogId=${blog.blogId}, page=${comments.number + 1})}"
+                                    th:text="${comments.number + 1}"></a>
+                            </li>
+                            <li class="paginate_button page-item"><a
+                                    class="page-link"
+                                    th:href="@{/blog/{blogId}(blogId=${blog.blogId}, page=${comments.number + 2})}"
+                                    th:if="${comments.hasNext()}" th:text="${comments.number + 2}"></a>
+                            </li>
+
+                            <li class="paginate_button page-item">
+                                <a
+                                        class="page-link"
+                                        th:href="@{/blog/{blogId}(blogId=${blog.blogId}, page=${comments.number + 2})}"
+                                        th:classappend="${comments.hasNext()} ? '':'disabled'"
+                                >Next
+                                </a>
+                            </li>
+                        </ul><!--end pagination-->
+                    </div><!--end col-->
+                </div><!--end row-->
+
+                <h5 class="card-title mt-4 mb-0">Leave A Comment :</h5>
+
+                <div class="col-md-12 mt-3" th:unless="${user}">
+                    <div class="send d-grid">
+                        <a th:href="@{/login}" type="submit" class="btn btn-primary">Login to leave comment</a>
+                    </div>
+                </div><!--end col-->
+
+                <form class="mt-3" method="POST" th:action="@{/comment/save}" th:if="${user}" th:object="${comment}">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Your Comment</label>
+                                <textarea id="description" th:name="description" th:field="*{description}" placeholder="Your Comment" rows="5" name="message"
+                                          class="form-control"></textarea>
+<!--                                <span class="mt-2 text-danger" th:if="${#fields.hasErrors('description')}"-->
+<!--                                      th:errors="*{description}"></span>-->
+                                <span class="mt-2 text-danger" th:if="${description}" th:text="${description}"></span>
+                                <input th:name="blog" id="blog" th:value="${blog.blogId}" type="text" hidden
+                                       class="form-control">
+                            </div>
+                        </div><!--end col-->
+
+                        <div class="col-md-12">
+                            <div class="send d-grid">
+                                <button type="submit" class="btn btn-primary">Send Message</button>
+                            </div>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </form><!--end form-->
+            </div><!--end col-->
+
+            <div class="col-lg-4 col-md-5 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                <div class="card border-0 sidebar sticky-bar rounded shadow">
+                    <div class="card-body">
+                        <!-- SEARCH -->
+                        <div class="widget mb-4 pb-2">
+                            <h5 class="widget-title">Search</h5>
+                            <div id="search2" class="widget-search mt-4 mb-0">
+                                <form role="search" method="get" id="searchform" class="searchform" th:action="@{/blog}">
+                                    <div>
+                                        <input th:name="titleSearch" th:value="${titleSearch}" type="text"
+                                               class="border rounded" name="s" id="s" placeholder="Search Keywords...">
+                                        <input type="submit" id="searchsubmit" value="Search">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- SEARCH -->
+
+                        <!-- RECENT POST -->
+                        <div class="widget mb-4 pb-2">
+                            <h5 class="widget-title">Recent Post</h5>
+                            <div class="mt-4">
+                                <div class="clearfix post-recent d-flex align-items-center" th:each="blog, iter : ${blogs}" th:if="${iter.index} &lt; 5">
+                                    <div class="post-recent-thumb float-start">
+                                        <a th:href="@{/blog/{blogId}(blogId=${blog.blogId})}">
+                                            <img style="height: 66px; width: 100%; object-fit: cover;" alt="img" th:src="${blog.thumbnail}" class="img-fluid rounded"></a>
+                                    </div>
+                                    <div class="post-recent-content float-start">
+                                        <a th:href="@{/blog/{blogId}(blogId=${blog.blogId})}"
+                                           th:text="${blog.title}"></a>
+                                        <span class="text-muted mt-2" th:text="${blog.createdAt}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- RECENT POST -->
+                    </div>
+                </div>
+            </div>
+        </div><!--end row-->
+    </div><!--end container-->
+
+</section><!--end section-->
+<!-- End -->
+
+<!-- Start -->
+<footer th:replace="~{layout/homeFooter :: homeFooter}"></footer>
+<!-- End -->
+
+<!-- Back to top -->
+<a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
+        data-feather="arrow-up" class="icons"></i></a>
+<!-- Back to top -->
+
+<!-- javascript -->
+<script th:replace="~{layout/script :: script}"></script>
+<!-- SLIDER -->
+<script src="../assets/js/tiny-slider.js"></script>
+<script src="../assets/js/tiny-slider-init.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+<div class="page-wrapper doctris-theme toggled">
+    <nav th:replace="~{layout/pageSidebarAdmin :: pageSidebarAdmin}" id="sidebar" class="sidebar-wrapper"></nav>
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <div th:replace="~{layout/pageHeaderAdmin :: pageHeaderAdmin}" class="top-header"></div>
+
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5 class="mb-0">Appointment</h5>
+                        <nav aria-label="breadcrumb" class="d-inline-block mt-2">
+                            <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
+                                <li class="breadcrumb-item"><a th:href="@{/admin}">Doctris</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Appointment</li>
+                            </ul>
+                        </nav>
+                    </div><!--end col-->
+                    <div class="col-md-6"></div>
+
+
+                    <form role="search" th:action="@{/admin/appointments}" method="get" id="searchform" class="searchform">
+                        <div class="row mt-3">
+
+                            <div class="col-4 search-bar p-0 d-none d-lg-block ms-2">
+                                <div id="search" class="menu-search mb-0 searchform">
+                                    <div class="searchform">
+                                        <input type="text" class="form-control border rounded-pill" th:name="fullName" th:value="${fullName}" id="s" placeholder="Search Keywords...">
+                                        <input type="submit" id="searchsubmit" value="Search">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-2">
+                                <div class="mb-0 position-relative">
+                                    <input class="form-control" type="date" th:name="date" th:value="${date}"
+                                           onchange="this.form.submit()"/>
+                                </div>
+                            </div>
+
+                            <div class="col-2">
+                                <select class="col-3 form-select form-control" th:name="status"
+                                        onchange="this.form.submit()">
+                                    <option selected th:value>Choose status</option>
+                                    <option th:selected="${status == 'New'}" th:value="New">New</option>
+                                    <option th:selected="${status == 'Assigned'}" th:value="Assigned">Assigned</option>
+                                    <option th:selected="${status == 'Completed'}" th:value="Completed">Completed
+                                    </option>
+                                    <option th:selected="${status == 'Cancel'}" th:value="Cancel">Cancel</option>
+                                </select>
+                            </div>
+
+
+                        </div>
+                    </form>
+
+                    <div th:switch="${appointments}">
+                        <h2 th:case="null" class="text-center mt-3">No appointments</h2>
+                        <div class="row">
+                            <div class="col-12 mt-4">
+                                <div class="table-responsive bg-white shadow rounded">
+                                    <table class="table mb-0 table-center">
+                                        <thead>
+                                        <tr>
+                                            <th class="border-bottom p-3" style="min-width: 150px;">Id</th>
+                                            <th class="border-bottom p-3" style="min-width: 220px;">Patient</th>
+                                            <th class="border-bottom p-3" style="min-width: 220px;">Date</th>
+                                            <th class="border-bottom p-3" style="min-width: 220px;">Time</th>
+                                            <th class="border-bottom p-3" style="min-width: 220px;">Status</th>
+                                            <th class="border-bottom p-3"></th>
+                                            <th class="border-bottom p-3" style="min-width: 100px;"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="appointment : ${appointments}">
+                                            <th class="p-3" th:text="${appointment.appointmentId}"></th>
+                                            <td class="p-3">
+                                                <a href="#" class="text-dark">
+                                                    <div class="d-flex align-items-center">
+                                                        <img th:if="${appointment.patient.user.avatar != null}" th:src="${appointment.patient.user.avatar}"
+                                                             class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                        <img th:if="${appointment.patient.user.avatar == null}" th:src="@{'~/assets/images/avatar.png'}"
+                                                             class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                        <span class="ms-2"
+                                                              th:text="${appointment.patient.user.fullName}"></span>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td class="p-3" th:text="${appointment.getDate('')}"></td>
+                                            <td class="p-3" th:text="${appointment.time}"></td>
+                                            <td class="p-3" th:switch="${appointment.status}">
+                                                <span th:case="New" class="badge bg-soft-primary">New</span>
+                                                <span th:case="Assigned" class="badge bg-soft-warning">Assigned</span>
+                                                <span th:case="Completed" class="badge bg-soft-success">Completed</span>
+                                                <span th:case="Cancel" class="badge bg-soft-danger">Cancel</span>
+                                            </td>
+                                            <td class="text-end p-3">
+                                                <a th:href="@{/admin/appointment/{appointmentId}(appointmentId=${appointment.appointmentId})}" class="btn btn-icon btn-pills btn-soft-primary"
+                                                   ><i
+                                                        class="uil uil-eye"></i></a>
+<!--                                                <a href="#" class="btn btn-icon btn-pills btn-soft-success"-->
+<!--                                                   data-bs-toggle="modal" data-bs-target="#acceptappointment"><i-->
+<!--                                                        class="uil uil-check-circle"></i></a>-->
+<!--                                                <a href="#" class="btn btn-icon btn-pills btn-soft-danger"-->
+<!--                                                   data-bs-toggle="modal" data-bs-target="#cancelappointment"><i-->
+<!--                                                        class="uil uil-times-circle"></i></a>-->
+
+                                                <a th:if="${appointment.status != 'Cancel' && appointment.status != 'Completed'}" th:href="@{/admin/appointments/delete/{appointmentId}(appointmentId=${appointment.appointmentId})}" class="btn btn-icon btn-delete btn-pills btn-soft-danger"><i
+                                                        class="uil uil-times-circle"></i></a>
+                                            </td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div><!--end row-->
+                    </div><!--end row-->
+
+
+                    <div class="row" th:unless="${#lists.isEmpty(appointments.getContent())}">
+                        <div class="col-12 mt-4">
+                            <div class=" d-flex justify-content-end my-2">
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination">
+                                        <li class="paginate_button page-item"><a
+                                                class="page-link"
+                                                th:classappend="${appointments.number == 0 ? 'disabled' : ''}"
+                                                th:href="@{'/admin/appointments'(fullName=${fullName},status=${status},date=${date},page=${1})}">First</a>
+                                        </li>
+                                        <li class="paginate_button page-item"
+                                            th:classappend="${appointments.hasPrevious() ? '' : 'disabled'}"><a
+                                                class="page-link"
+                                                th:href="@{'/admin/appointments'(fullName=${fullName},status=${status},date=${date},page=${appointments.number})}"
+                                                th:if="${appointments.hasPrevious()}">Prev</a>
+                                        </li>
+                                        <li class="paginate_button page-item"><a
+                                                class="page-link"
+                                                th:href="@{'/admin/appointments'(fullName=${fullName},status=${status},date=${date},page=${appointments.number})}"
+                                                th:if="${appointments.hasPrevious()}" th:text="${appointments.number}"></a>
+                                        </li>
+                                        <li class="paginate_button page-item active"><a
+                                                class="page-link"
+                                                th:href="@{'/admin/appointments'(fullName=${fullName},status=${status},date=${date},page=${appointments.number + 1})}"
+                                                th:text="${appointments.number + 1}"></a>
+                                        </li>
+                                        <li class="paginate_button page-item"><a
+                                                class="page-link"
+                                                th:href="@{'/admin/appointments'(fullName=${fullName},status=${status},date=${date},page=${appointments.number + 2})}"
+                                                th:if="${appointments.hasNext()}" th:text="${appointments.number + 2}"></a>
+                                        </li>
+
+                                        <li class="paginate_button page-item"
+                                            th:classappend="${appointments.hasNext()} ? '':'disabled'"><a
+
+                                                class="page-link"
+                                                th:href="@{'/admin/appointments'(fullName=${fullName},status=${status},date=${date},page=${appointments.number + 2})}"
+                                                th:if="${appointments.hasNext()}">Next</a>
+                                        </li>
+                                        <li class="paginate_button page-item"><a
+                                                class="page-link"
+                                                th:classappend="${appointments.number + 1 == numberOfPage ? 'disabled' : ''}"
+                                                th:href="@{'/admin/appointments'(fullName=${fullName},status=${status},date=${date},page=${numberOfPage})}">Last</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div><!--end col-->
+                    </div><!--end row-->
+
+
+                </div>
+            </div><!--end container-->
+
+            <!-- Footer Start -->
+            <footer class="bg-white shadow py-3">
+                <div class="container-fluid">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <div class="text-sm-start text-center">
+                                <p class="mb-0 text-muted">
+                                    <script>document.write(new Date().getFullYear())</script>
+                                    © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a
+                                        href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.
+                                </p>
+                            </div>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div><!--end container-->
+            </footer><!--end footer-->
+            <!-- End -->
+        </div>
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+
+<!-- Offcanvas Start -->
+<div class="offcanvas offcanvas-end bg-white shadow" tabindex="-1" id="offcanvasRight"
+     aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header p-4 border-bottom">
+        <h5 id="offcanvasRightLabel" class="mb-0">
+            <img src="../../assets/images/logo-dark.png" height="24" class="light-version" alt="">
+            <img src="../../assets/images/logo-light.png" height="24" class="dark-version" alt="">
+        </h5>
+        <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas"
+                aria-label="Close"><i class="uil uil-times fs-4"></i></button>
+    </div>
+    <div class="offcanvas-body p-4 px-md-5">
+        <div class="row">
+            <div class="col-12">
+                <!-- Style switcher -->
+                <div id="style-switcher">
+                    <div>
+                        <ul class="text-center list-unstyled mb-0">
+                            <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light"
+                                                  onclick="setTheme('style-rtl')"><img
+                                    src="../../assets/images/layouts/light-dash-rtl.png"
+                                    class="img-fluid rounded-md shadow-md d-block" alt=""><span
+                                    class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                            <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light"
+                                                  onclick="setTheme('style')"><img
+                                    src="../../assets/images/layouts/light-dash.png"
+                                    class="img-fluid rounded-md shadow-md d-block" alt=""><span
+                                    class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                            <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark"
+                                                  onclick="setTheme('style-dark-rtl')"><img
+                                    src="../../assets/images/layouts/dark-dash-rtl.png"
+                                    class="img-fluid rounded-md shadow-md d-block" alt=""><span
+                                    class="text-muted mt-2 d-block">RTL Version</span></a></li>
+                            <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark"
+                                                  onclick="setTheme('style-dark')"><img
+                                    src="../../assets/images/layouts/dark-dash.png"
+                                    class="img-fluid rounded-md shadow-md d-block" alt=""><span
+                                    class="text-muted mt-2 d-block">LTR Version</span></a></li>
+                            <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4"
+                                                  onclick="setTheme('style-dark')"><img
+                                    src="../../assets/images/layouts/dark-dash.png"
+                                    class="img-fluid rounded-md shadow-md d-block" alt=""><span
+                                    class="text-muted mt-2 d-block">Dark Version</span></a></li>
+                            <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4"
+                                                  onclick="setTheme('style')"><img
+                                    src="../../assets/images/layouts/light-dash.png"
+                                    class="img-fluid rounded-md shadow-md d-block" alt=""><span
+                                    class="text-muted mt-2 d-block">Light Version</span></a></li>
+                            <li class="d-grid"><a href="../../landing/index.html" target="_blank" class="mt-4"><img
+                                    src="../../assets/images/layouts/landing-light.png"
+                                    class="img-fluid rounded-md shadow-md d-block" alt=""><span
+                                    class="text-muted mt-2 d-block">Landing Demos</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- end Style switcher -->
+            </div><!--end col-->
+        </div><!--end row-->
+    </div>
+
+    <div class="offcanvas-footer p-4 border-top text-center">
+        <ul class="list-unstyled social-icon mb-0">
+            <li class="list-inline-item mb-0"><a href="https://1.envato.market/doctris-template" target="_blank"
+                                                 class="rounded"><i class="uil uil-shopping-cart align-middle"
+                                                                    title="Buy Now"></i></a></li>
+            <li class="list-inline-item mb-0"><a href="https://dribbble.com/shreethemes" target="_blank"
+                                                 class="rounded"><i class="uil uil-dribbble align-middle"
+                                                                    title="dribbble"></i></a></li>
+            <li class="list-inline-item mb-0"><a href="https://www.facebook.com/shreethemes" target="_blank"
+                                                 class="rounded"><i class="uil uil-facebook-f align-middle"
+                                                                    title="facebook"></i></a></li>
+            <li class="list-inline-item mb-0"><a href="https://www.instagram.com/shreethemes/" target="_blank"
+                                                 class="rounded"><i class="uil uil-instagram align-middle"
+                                                                    title="instagram"></i></a></li>
+            <li class="list-inline-item mb-0"><a href="https://twitter.com/shreethemes" target="_blank" class="rounded"><i
+                    class="uil uil-twitter align-middle" title="twitter"></i></a></li>
+            <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i
+                    class="uil uil-envelope align-middle" title="email"></i></a></li>
+            <li class="list-inline-item mb-0"><a href="../../../index.html" target="_blank" class="rounded"><i
+                    class="uil uil-globe align-middle" title="website"></i></a></li>
+        </ul><!--end icon-->
+    </div>
+</div>
+<!-- Offcanvas End -->
+
+<!-- Modal start -->
+<!-- Add New Appointment Start -->
+<div class="modal fade" id="appointmentform" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom p-3">
+                <h5 class="modal-title" id="exampleModalLabel">Book an Appointment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-3 pt-4">
+                <form>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="mb-3">
+                                <label class="form-label">Patient Name <span class="text-danger">*</span></label>
+                                <input name="name" id="name" type="text" class="form-control"
+                                       placeholder="Patient Name :">
+                            </div>
+                        </div><!--end col-->
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Departments</label>
+                                <select class="form-control department-name select2input">
+                                    <option value="EY">Eye Care</option>
+                                    <option value="GY">Gynecologist</option>
+                                    <option value="PS">Psychotherapist</option>
+                                    <option value="OR">Orthopedic</option>
+                                    <option value="DE">Dentist</option>
+                                    <option value="GA">Gastrologist</option>
+                                    <option value="UR">Urologist</option>
+                                    <option value="NE">Neurologist</option>
+                                </select>
+                            </div>
+                        </div><!--end col-->
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Doctor</label>
+                                <select class="form-control doctor-name select2input">
+                                    <option value="CA">Dr. Calvin Carlo</option>
+                                    <option value="CR">Dr. Cristino Murphy</option>
+                                    <option value="AL">Dr. Alia Reddy</option>
+                                    <option value="TO">Dr. Toni Kovar</option>
+                                    <option value="JE">Dr. Jessica McFarlane</option>
+                                    <option value="EL">Dr. Elsie Sherman</option>
+                                    <option value="BE">Dr. Bertha Magers</option>
+                                    <option value="LO">Dr. Louis Batey</option>
+                                </select>
+                            </div>
+                        </div><!--end col-->
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Your Email <span class="text-danger">*</span></label>
+                                <input name="email" id="email" type="email" class="form-control"
+                                       placeholder="Your email :">
+                            </div>
+                        </div><!--end col-->
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Your Phone <span class="text-danger">*</span></label>
+                                <input name="phone" id="phone" type="tel" class="form-control"
+                                       placeholder="Your Phone :">
+                            </div>
+                        </div><!--end col-->
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label"> Date : </label>
+                                <input name="date" type="text" class="flatpickr flatpickr-input form-control"
+                                       id="checkin-date">
+                            </div>
+                        </div><!--end col-->
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label" for="input-time">Time : </label>
+                                <input name="time" type="text" class="form-control timepicker" id="input-time"
+                                       placeholder="03:30 PM">
+                            </div>
+                        </div><!--end col-->
+
+                        <div class="col-lg-12">
+                            <div class="mb-3">
+                                <label class="form-label">Comments <span class="text-danger">*</span></label>
+                                <textarea name="comments" id="comments" rows="4" class="form-control"
+                                          placeholder="Your Message :"></textarea>
+                            </div>
+                        </div><!--end col-->
+
+                        <div class="col-lg-12">
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Book An Appointment</button>
+                            </div>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add New Appointment End -->
+
+<!-- View Appintment Start -->
+<div class="modal fade" id="viewappointment" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom p-3">
+                <h5 class="modal-title" id="exampleModalLabel1">Appointment Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-3 pt-4">
+                <div class="d-flex align-items-center">
+                    <img src="../../assets/images/client/01.jpg" class="avatar avatar-small rounded-pill" alt="">
+                    <h5 class="mb-0 ms-3">Howard Tanner</h5>
+                </div>
+                <ul class="list-unstyled mb-0 d-md-flex justify-content-between mt-4">
+                    <li>
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex">
+                                <h6>Age:</h6>
+                                <p class="text-muted ms-2">25 year old</p>
+                            </li>
+
+                            <li class="d-flex">
+                                <h6>Gender:</h6>
+                                <p class="text-muted ms-2">Male</p>
+                            </li>
+
+                            <li class="d-flex">
+                                <h6 class="mb-0">Department:</h6>
+                                <p class="text-muted ms-2 mb-0">Cardiology</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex">
+                                <h6>Date:</h6>
+                                <p class="text-muted ms-2">20th Dec 2020</p>
+                            </li>
+
+                            <li class="d-flex">
+                                <h6>Time:</h6>
+                                <p class="text-muted ms-2">11:00 AM</p>
+                            </li>
+
+                            <li class="d-flex">
+                                <h6 class="mb-0">Doctor:</h6>
+                                <p class="text-muted ms-2 mb-0">Dr. Calvin Carlo</p>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- View Appintment End -->
+
+<!-- Accept Appointment Start -->
+<div class="modal fade" id="acceptappointment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body py-5">
+                <div class="text-center">
+                    <div class="icon d-flex align-items-center justify-content-center bg-soft-success rounded-circle mx-auto"
+                         style="height: 95px; width:95px;">
+                        <i class="uil uil-check-circle h1 mb-0"></i>
+                    </div>
+                    <div class="mt-4">
+                        <h4>Accept Appointment</h4>
+                        <p class="para-desc mx-auto text-muted mb-0">Great doctor if you need your family member to get
+                            immediate assistance, emergency treatment.</p>
+                        <div class="mt-4">
+                            <a href="#" class="btn btn-soft-success">Accept</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Accept Appointment End -->
+
+<!-- Cancel Appointment Start -->
+<div class="modal fade" id="cancelappointment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body py-5">
+                <div class="text-center">
+                    <div class="icon d-flex align-items-center justify-content-center bg-soft-danger rounded-circle mx-auto"
+                         style="height: 95px; width:95px;">
+                        <i class="uil uil-times-circle h1 mb-0"></i>
+                    </div>
+                    <div class="mt-4">
+                        <h4>Cancel Appointment</h4>
+                        <p class="para-desc mx-auto text-muted mb-0">Great doctor if you need your family member to get
+                            immediate assistance, emergency treatment.</p>
+                        <div class="mt-4">
+                            <a href="" class="btn btn-soft-danger">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cancel Appointment End -->
+<!-- Modal end -->
+
+<!-- javascript -->
+<script th:replace="~{layout/script :: script}"></script>
+<script>
+    $('.btn-delete').on('click', function (e) {
+        e.preventDefault();
+        const appointmentId = $(this).attr("data-id");
+        SwalStatus(this.href, {
+            appointmentId
+        }, "/admin/appointments", "Successfully cancel!");
+    });
+</script>
+<!-- Select2 -->
+<!--<script src="../../assets/js/select2.min.js"></script>-->
+<!--<script src="../../assets/js/select2.init.js"></script>-->
+<!--&lt;!&ndash; Datepicker &ndash;&gt;-->
+<!--<script src="../../assets/js/flatpickr.min.js"></script>-->
+<!--<script src="../../assets/js/flatpickr.init.js"></script>-->
+<!--&lt;!&ndash; Datepicker &ndash;&gt;-->
+<!--<script src="../../assets/js/jquery.timepicker.min.js"></script>-->
+<!--<script src="../../assets/js/timepicker.init.js"></script>-->
+
+</body>
+
+</html>

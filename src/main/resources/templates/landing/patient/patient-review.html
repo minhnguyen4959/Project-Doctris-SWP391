@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<!-- Navbar STart -->
+<header th:replace="~{layout/pageHeaderLanding :: pageHeaderLanding}"></header><!--end header-->
+<!-- Navbar End -->
+
+<!-- Start Hero -->
+<section class="bg-dashboard">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-lg-4 col-md-5 col-12 d-none d-lg-block">
+                <div class="rounded shadow overflow-hidden sticky-bar">
+                    <div class="card border-0">
+                        <img src="../assets/images/doctors/profile-bg.jpg" class="img-fluid" alt="">
+                    </div>
+
+                    <div class="text-center avatar-profile margin-nagative mt-n5 position-relative pb-4 border-bottom">
+                        <img src="../assets/images/doctors/01.jpg" class="rounded-circle shadow-md avatar avatar-md-md"
+                             alt="">
+                        <h5 class="mt-3 mb-1">Dr. Calvin Carlo</h5>
+                        <p class="text-muted mb-0">Orthopedic</p>
+                    </div>
+
+                    <ul class="list-unstyled sidebar-nav mb-0">
+                        <li class="navbar-item"><a href="../doctor/doctor-dashboard.html" class="navbar-link"><i
+                                class="ri-airplay-line align-middle navbar-icon"></i> Dashboard</a></li>
+                        <li class="navbar-item"><a href="../doctor/doctor-appointment.html" class="navbar-link"><i
+                                class="ri-calendar-check-line align-middle navbar-icon"></i> Appointment</a></li>
+                        <li class="navbar-item"><a href="../doctor/doctor-schedule.html" class="navbar-link"><i
+                                class="ri-timer-line align-middle navbar-icon"></i> Schedule Timing</a></li>
+                        <li class="navbar-item"><a href="../bill/invoices.html" class="navbar-link"><i
+                                class="ri-pages-line align-middle navbar-icon"></i> Invoices</a></li>
+                        <li class="navbar-item"><a href="../doctor/doctor-messages.html" class="navbar-link"><i
+                                class="ri-mail-unread-line align-middle navbar-icon"></i> Messages</a></li>
+                        <li class="navbar-item"><a href="../doctor/doctor-profile.html" class="navbar-link"><i
+                                class="ri-user-line align-middle navbar-icon"></i> Profile</a></li>
+                        <li class="navbar-item"><a href="../doctor/doctor-profile-setting.html" class="navbar-link"><i
+                                class="ri-user-settings-line align-middle navbar-icon"></i> Profile Settings</a></li>
+                        <li class="navbar-item"><a href="patient-list.html" class="navbar-link"><i
+                                class="ri-empathize-line align-middle navbar-icon"></i> Patients</a></li>
+                        <li class="navbar-item"><a href="patient-review.html" class="navbar-link"><i
+                                class="ri-chat-1-line align-middle navbar-icon"></i> Patients Review</a></li>
+                        <li class="navbar-item"><a href="doctor-chat.html" class="navbar-link"><i
+                                class="ri-chat-voice-line align-middle navbar-icon"></i> Chat</a></li>
+                        <li class="navbar-item"><a href="../auth/login.html" class="navbar-link"><i
+                                class="ri-login-circle-line align-middle navbar-icon"></i> Login</a></li>
+                        <li class="navbar-item"><a href="../auth/forgot-password-form.html" class="navbar-link"><i
+                                class="ri-device-recover-line align-middle navbar-icon"></i> Forgot Password</a></li>
+                    </ul>
+                </div>
+            </div><!--end col-->
+
+            <div class="col-xl-9 col-lg-8 col-md-12">
+                <h5 class="mb-0">Patients Review</h5>
+                <div class="row">
+                    <div class="col-xl-3 col-lg-5 col-md-5 col-12 mt-4 pt-2">
+                        <div class="card p-4 border-0 shadow rounded">
+                            <div>
+                                <span class="text-primary h1 mb-0"><span class="fw-bold">4.9</span></span>
+                                <span class="h6 align-self-end ms-2">Avg. Ratings..</span>
+                            </div>
+
+                            <div class="mt-4">
+                                <div class="progress-box">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="title text-muted">Very satisfied</h6>
+                                        <div class="progress-value d-block text-muted h6">5 Star</div>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar position-relative bg-primary" style="width:70%;">
+                                        </div>
+                                    </div>
+                                </div><!--end process box-->
+                                <div class="progress-box mt-4">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="title text-muted">Satisfied</h6>
+                                        <div class="progress-value d-block text-muted h6">4 Star</div>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar position-relative bg-primary" style="width:10%;">
+                                        </div>
+                                    </div>
+                                </div><!--end process box-->
+                                <div class="progress-box mt-4">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="title text-muted">Neutral</h6>
+                                        <div class="progress-value d-block text-muted h6">3 Star</div>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar position-relative bg-primary" style="width:10%;">
+                                        </div>
+                                    </div>
+                                </div><!--end process box-->
+                                <div class="progress-box mt-4">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="title text-muted">Dissatisfied</h6>
+                                        <div class="progress-value d-block text-muted h6">2 Star</div>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar position-relative bg-primary" style="width:5%;">
+                                        </div>
+                                    </div>
+                                </div><!--end process box-->
+                                <div class="progress-box mt-4">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="title text-muted">Very Dissatisfied</h6>
+                                        <div class="progress-value d-block text-muted h6">1 Star</div>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar position-relative bg-primary" style="width:5%;">
+                                        </div>
+                                    </div>
+                                </div><!--end process box-->
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-xl-9 col-lg-7 col-md-7 col-12 mt-4 pt-2">
+                        <div class="card p-4 rounded shadow border-0">
+                            <div class="row">
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="text-center">
+                                        <img src="../assets/images/client/01.jpg"
+                                             class="img-fluid avatar avatar-small rounded-circle mx-auto shadow" alt="">
+                                        <h6 class="text-primary mt-3">- Howard Tanner <small
+                                                class="text-muted">C.E.O</small></h6>
+                                        <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of
+                                            the original text remain in the Lorem Ipsum texts used today. "</p>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                        </ul>
+                                    </div><!--end customer testi-->
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 mt-4 mt-sm-0">
+                                    <div class="text-center">
+                                        <img src="../assets/images/client/02.jpg"
+                                             class="img-fluid avatar avatar-small rounded-circle mx-auto shadow" alt="">
+                                        <h6 class="text-primary mt-3">- Wendy Filson <small
+                                                class="text-muted">C.E.O</small></h6>
+                                        <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of
+                                            the original text remain in the Lorem Ipsum texts used today. "</p>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                        </ul>
+                                    </div><!--end customer testi-->
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 mt-4 mt-lg-0">
+                                    <div class="text-center">
+                                        <img src="../assets/images/client/03.jpg"
+                                             class="img-fluid avatar avatar-small rounded-circle mx-auto shadow" alt="">
+                                        <h6 class="text-primary mt-3">- Faye Bridger <small
+                                                class="text-muted">C.E.O</small></h6>
+                                        <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of
+                                            the original text remain in the Lorem Ipsum texts used today. "</p>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i
+                                                    class="mdi mdi-star-outline text-warning"></i></li>
+                                            <li class="list-inline-item"><i
+                                                    class="mdi mdi-star-outline text-warning"></i></li>
+                                            <li class="list-inline-item"><i
+                                                    class="mdi mdi-star-outline text-warning"></i></li>
+                                            <li class="list-inline-item"><i
+                                                    class="mdi mdi-star-outline text-warning"></i></li>
+                                        </ul>
+                                    </div><!--end customer testi-->
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 mt-4">
+                                    <div class="text-center">
+                                        <img src="../assets/images/client/04.jpg"
+                                             class="img-fluid avatar avatar-small rounded-circle mx-auto shadow" alt="">
+                                        <h6 class="text-primary mt-3">- Ronald Curtis <small
+                                                class="text-muted">C.E.O</small></h6>
+                                        <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of
+                                            the original text remain in the Lorem Ipsum texts used today. "</p>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                        </ul>
+                                    </div><!--end customer testi-->
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 mt-4">
+                                    <div class="text-center">
+                                        <img src="../assets/images/client/05.jpg"
+                                             class="img-fluid avatar avatar-small rounded-circle mx-auto shadow" alt="">
+                                        <h6 class="text-primary mt-3">- Melissa Hibner <small
+                                                class="text-muted">C.E.O</small></h6>
+                                        <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of
+                                            the original text remain in the Lorem Ipsum texts used today. "</p>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i
+                                                    class="mdi mdi-star-outline text-warning"></i></li>
+                                            <li class="list-inline-item"><i
+                                                    class="mdi mdi-star-outline text-warning"></i></li>
+                                            <li class="list-inline-item"><i
+                                                    class="mdi mdi-star-outline text-warning"></i></li>
+                                        </ul>
+                                    </div><!--end customer testi-->
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 mt-4">
+                                    <div class="text-center">
+                                        <img src="../assets/images/client/06.jpg"
+                                             class="img-fluid avatar avatar-small rounded-circle mx-auto shadow" alt="">
+                                        <h6 class="text-primary mt-3">- Randall Case <small
+                                                class="text-muted">C.E.O</small></h6>
+                                        <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of
+                                            the original text remain in the Lorem Ipsum texts used today. "</p>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i
+                                                    class="mdi mdi-star-outline text-warning"></i></li>
+                                        </ul>
+                                    </div><!--end customer testi-->
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 mt-4">
+                                    <div class="text-center">
+                                        <img src="../assets/images/client/07.jpg"
+                                             class="img-fluid avatar avatar-small rounded-circle mx-auto shadow" alt="">
+                                        <h6 class="text-primary mt-3">- Jerry Morena <small
+                                                class="text-muted">C.E.O</small></h6>
+                                        <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of
+                                            the original text remain in the Lorem Ipsum texts used today. "</p>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i
+                                                    class="mdi mdi-star-outline text-warning"></i></li>
+                                        </ul>
+                                    </div><!--end customer testi-->
+                                </div>
+
+                                <div class="col-xl-4 col-md-6 mt-4">
+                                    <div class="text-center">
+                                        <img src="../assets/images/client/08.jpg"
+                                             class="img-fluid avatar avatar-small rounded-circle mx-auto shadow" alt="">
+                                        <h6 class="text-primary mt-3">- Lester McNally <small
+                                                class="text-muted">C.E.O</small></h6>
+                                        <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of
+                                            the original text remain in the Lorem Ipsum texts used today. "</p>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                            <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                        </ul>
+                                    </div><!--end customer testi-->
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+</section><!--end section-->
+<!-- End Hero -->
+
+<!-- Footer Start -->
+<footer class="bg-footer py-4">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-sm-6">
+                <div class="text-sm-start text-center">
+                    <p class="mb-0">
+                        <script>document.write(new Date().getFullYear())</script>
+                        © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a
+                            href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.
+                    </p>
+                </div>
+            </div><!--end col-->
+
+            <div class="col-sm-6 mt-4 mt-sm-0">
+                <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
+                    <li class="list-inline-item"><a href="../terms.html" class="text-foot me-2">Terms</a></li>
+                    <li class="list-inline-item"><a href="../privacy.html" class="text-foot me-2">Privacy</a></li>
+                    <li class="list-inline-item"><a href="../aboutus.html" class="text-foot me-2">About</a></li>
+                    <li class="list-inline-item"><a href="../contact.html" class="text-foot me-2">Contact</a></li>
+                </ul>
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+</footer><!--end footer-->
+<!-- End -->
+
+<!-- Back to top -->
+<a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
+        data-feather="arrow-up" class="icons"></i></a>
+<!-- Back to top -->
+
+<!-- javascript -->
+<script th:replace="~{layout/script :: script}"></script>
+</body>
+
+</html>

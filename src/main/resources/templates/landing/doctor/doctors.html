@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<!-- Navbar STart -->
+<header th:replace="~{layout/pageHeaderLanding :: pageHeaderLanding}"></header><!--end header-->
+<!-- Navbar End -->
+
+<!-- Start Hero -->
+<section class="bg-half-150 bg-light d-table w-100">
+    <div class="container">
+        <div class="row mt-5 justify-content-center">
+            <div class="col-12">
+                <div class="section-title text-center">
+                    <h3 class="sub-title mb-4">Doctors team</h3>
+                    <p class="para-desc mx-auto text-muted">Great doctor if you need your family member to get effective
+                        immediate assistance, emergency treatment or a simple consultation.</p>
+
+                    <nav aria-label="breadcrumb" class="d-inline-block mt-3">
+                        <ul class="breadcrumb bg-transparent mb-0">
+                            <li class="breadcrumb-item"><a th:href="@{/}">Doctris</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Doctors</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+</section><!--end section-->
+<!-- End Hero -->
+
+<!-- Start -->
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <form role="search" method="get" id="searchform" class="searchform col-12 col-md-6 mb-5"
+                  th:action="@{/doctor}">
+                <div class="search-bar p-0 d-none d-lg-block ms-2">
+                    <div id="search" class="menu-search mb-0 searchform">
+                        <div class="searchform">
+                            <input type="text" class="form-control border rounded-pill" th:name="titleSearch"
+                                   th:value="${titleSearch}" id="s" placeholder="Search Keywords...">
+                            <input type="submit" id="searchsubmit" value="Search">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-12 mt-4" th:each="doctor : ${doctors}">
+                <div class="card team border-0 rounded shadow overflow-hidden">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="team-person position-relative overflow-hidden">
+                                <a th:href="@{/doctor/{doctorId}(doctorId=${doctor.doctorId})}" class="doctor-detail"
+                                   data-bs-toggle="modal" th:data-bs-target="'#viewprofile' + ${doctor.doctorId}" th:data-id="${doctor.doctorId}">
+                                    <!--                                <a th:href="@{/doctor/{doctorId}(doctorId=${doctor.doctorId})}" class="doctor-detail">-->
+                                    <img th:src="${doctor.user.avatar}" class="img-fluid" alt="">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <a th:href="@{/doctor/{doctorId}(doctorId=${doctor.doctorId})}" class="title text-dark h5 d-block mb-0 doctor-detail" th:text="${doctor.user.fullName}"
+                                   data-bs-toggle="modal" th:data-bs-target="'#viewprofile' + ${doctor.doctorId}" th:data-id="${doctor.doctorId}"></a>
+                                <!--                                <a th:href="@{/doctor/{doctorId}(doctorId=${doctor.doctorId})}" class="title text-dark h5 d-block mb-0 doctor-detail" th:text="${doctor.user.fullName}"></a>-->
+                                <small class="text-muted speciality">Dental Care</small>
+                                <ul class="list-unstyled mt-2 mb-0">
+                                    <li class="d-flex">
+                                        <i class="ri-map-pin-line text-primary align-middle"></i>
+                                        <small class="text-muted ms-2" th:text="${doctor.user.address}"></small>
+                                    </li>
+                                    <li class="d-flex mt-2">
+                                        <i class="ri-time-line text-primary align-middle"></i>
+                                        <small class="text-muted ms-2">Mon - Fri: 8:00AM - 5:00PM</small>
+                                    </li>
+                                    <li class="d-flex mt-2">
+                                        <i class="ri-money-dollar-circle-line text-primary align-middle"></i>
+                                        <small class="text-muted ms-2">Free</small>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" th:id="viewprofile+${doctor.doctorId}" tabindex="-1" aria-labelledby="exampleModalLabel1" style="display: none;" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header border-bottom p-3">
+                                <h5 class="modal-title" id="exampleModalLabel1">Profile</h5>
+                                <button type="button" class="btn btn-icon btn-close" data-bs-dismiss="modal" id="close-modal"><i class="uil uil-times fs-4 text-dark"></i></button>
+                            </div>
+                            <div class="modal-body p-3 pt-4">
+                                <div class="d-flex align-items-center">
+                                    <img th:src="${doctor.user.avatar}" class="avatar avatar-small rounded-pill" alt="">
+                                    <h5 class="mb-0 ms-3 doctor-name"></h5>
+                                </div>
+                                <ul class="list-unstyled mb-0 d-md-flex justify-content-between mt-4">
+                                    <li>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="d-flex">
+                                                <h6>Doctor:</h6>
+                                                <p class="text-muted ms-2" th:text="${doctor.user.fullName}"></p>
+                                            </li>
+
+                                            <li class="d-flex">
+                                                <h6>Date of birth:</h6>
+                                                <p class="text-muted ms-2" th:text="${doctor.user.dateOfBirth}"></p>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <ul class="list-unstyled mb-0">
+                                            <li class="d-flex">
+                                                <h6>Address:</h6>
+                                                <p class="text-muted ms-2" th:text="${doctor.user.address}"></p>
+                                            </li>
+
+                                            <li class="d-flex">
+                                                <h6>Gender:</h6>
+                                                <p class="text-muted ms-2" th:text="${doctor.user.gender}"></p>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                                <hr>
+
+                                <h6>Bio:</h6>
+                                <p class="text-muted mb-2" th:text="${doctor.description}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!--end col-->
+        </div><!--end row-->
+
+        <div class="row text-center mt-5" th:unless="${#lists.isEmpty(doctors.getContent())}">
+            <div class="col-12">
+                <ul class="pagination justify-content-center mb-0 list-unstyled">
+                    <li class="paginate_button page-item"><a
+                            class="page-link"
+                            th:classappend="${doctors.hasPrevious() ? '' : 'disabled'}"
+                            th:href="@{'/doctor'(titleSearch=${titleSearch},page=${doctors.number})}"
+                    >Prev</a>
+                    </li>
+                    <li class="paginate_button page-item"><a
+                            class="page-link"
+                            th:href="@{'/doctor'(titleSearch=${titleSearch},page=${doctors.number})}"
+                            th:if="${doctors.hasPrevious()}" th:text="${doctors.number}"></a>
+                    </li>
+                    <li class="paginate_button page-item active"><a
+                            class="page-link"
+                            th:href="@{'/doctor'(titleSearch=${titleSearch},page=${doctors.number + 1})}"
+                            th:text="${doctors.number + 1}"></a>
+                    </li>
+                    <li class="paginate_button page-item"><a
+                            class="page-link"
+                            th:href="@{'/doctor'(titleSearch=${titleSearch},page=${doctors.number + 2})}"
+                            th:if="${doctors.hasNext()}" th:text="${doctors.number + 2}"></a>
+                    </li>
+
+                    <li class="paginate_button page-item">
+                        <a
+                                class="page-link"
+                                th:href="@{'/doctor'(titleSearch=${titleSearch},page=${doctors.number + 2})}"
+                                th:classappend="${doctors.hasNext()} ? '':'disabled'"
+                        >Next
+                        </a>
+                    </li>
+                </ul><!--end pagination-->
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+</section><!--end section-->
+<!-- End -->
+
+<!-- Start -->
+<footer th:replace="~{layout/homeFooter :: homeFooter}"></footer>
+<!-- End -->
+
+<!-- Back to top -->
+<a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
+        data-feather="arrow-up" class="icons"></i></a>
+<!-- Back to top -->
+
+<!-- javascript -->
+<script th:replace="~{layout/script :: script}"></script>
+
+</body>
+
+</html>

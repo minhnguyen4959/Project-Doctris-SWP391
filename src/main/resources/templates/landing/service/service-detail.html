@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{layout/head :: head}"></head>
+<style>
+    .img-body img {
+        width: 100%;
+    }
+</style>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<!-- Navbar STart -->
+<header th:replace="~{layout/pageHeaderLanding :: pageHeaderLanding}"></header><!--end header-->
+<!-- Navbar End -->
+
+<!-- Start Hero -->
+<section class="bg-half-150 d-table w-100 bg-light">
+    <div class="container">
+        <div class="row mt-5 justify-content-center">
+            <div class="col-12">
+                <div class="section-title text-center">
+                    <h3 class="sub-title mb-4" th:text="${service.title}"></h3>
+                    <p class="para-desc mx-auto text-muted" th:text="${service.description}"></p>
+
+                    <ul class="list-unstyled mt-4">
+                        <i class="mdi mdi-cash" style="font-size: 16px;"></i><li class="list-inline-item user text-muted me-2 mx-2" th:text="${service.price} + ' $'"></li>
+                    </ul>
+
+                    <div class="stars d-flex align-items-center justify-content-center">
+                        <div>
+                            <svg style="display:none;">
+                                <defs>
+                                    <symbol id="fivestars">
+                                        <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                              fill="#f8f9fc" fill-rule="evenodd"/>
+                                        <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                              fill="#f8f9fc" fill-rule="evenodd" transform="translate(24)"/>
+                                        <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                              fill="#f8f9fc" fill-rule="evenodd" transform="translate(48)"/>
+                                        <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                              fill="#f8f9fc" fill-rule="evenodd" transform="translate(72)"/>
+                                        <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                              fill="#f8f9fc" fill-rule="evenodd" transform="translate(96)"/>
+                                    </symbol>
+                                </defs>
+                            </svg>
+                            <div class="rating">
+                                <progress class="rating-bg" th:value="${avg}" max="5"></progress>
+                                <svg>
+                                    <use xlink:href="#fivestars"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <span class="text-muted mx-2" th:text="${service.rateStar.size()} + ' ' + voted"></span>
+                    </div>
+                </div>
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+</section><!--end section-->
+<div class="position-relative">
+    <div class="shape overflow-hidden text-white">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+        </svg>
+    </div>
+</div>
+<!-- End Hero -->
+
+<!-- Start -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-7 img-body">
+                <img th:src="${service.thumbnail}" style="display: block; margin: auto; height: 380px; object-fit: contain;" class="img-fluid rounded shadow" alt="">
+
+                <p class="text-muted mt-4" th:utext="${service.content}"></p>
+
+                <form method="get" th:action="@{/booking}">
+                    <input type="text" th:name="serviceId" th:value="${service.serviceId}" hidden/>
+                    <button class="btn btn-primary d-block my-3 w-100">Make appointment</button>
+                </form>
+
+                <h5 class="card-title mt-4 mb-0">Feedbacks :</h5>
+
+                <ul class="media-list list-unstyled mb-0">
+                    <li class="mt-4" th:each="feedback : ${feedbacks}">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <a class="pe-3" href="#">
+                                    <img th:if="${feedback.user.avatar}" th:src="${feedback.user.avatar}" class="img-fluid avatar avatar-md-sm rounded-circle shadow" alt="img">
+                                    <img th:unless="${feedback.user.avatar}" th:src="@{'~/assets/images/avatar.png'}" class="img-fluid avatar avatar-md-sm rounded-circle shadow" alt="img">
+                                </a>
+                                <div class="feedbackor-detail">
+                                    <h6 class="mb-0"><a href="javascript:void(0)" class="text-dark media-heading" th:text="${feedback.user.fullName}"></a></h6>
+                                    <small class="text-muted" th:text="${feedback.createdAt}"></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stars mt-2">
+                            <div>
+                                <svg style="display:none;">
+                                    <defs>
+                                        <symbol id="fivestarss">
+                                            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                                  fill="white" fill-rule="evenodd"/>
+                                            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                                  fill="white" fill-rule="evenodd"
+                                                  transform="translate(24)"/>
+                                            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                                  fill="white" fill-rule="evenodd"
+                                                  transform="translate(48)"/>
+                                            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                                  fill="white" fill-rule="evenodd"
+                                                  transform="translate(72)"/>
+                                            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                                  fill="white" fill-rule="evenodd"
+                                                  transform="translate(96)"/>
+                                        </symbol>
+                                    </defs>
+                                </svg>
+                                <div class="rating">
+                                    <progress class="rating-bg" th:if="${feedback.star == 1}"
+                                              value="1" max="5"></progress>
+                                    <progress class="rating-bg" th:if="${feedback.star == 2}"
+                                              value="2" max="5"></progress>
+                                    <progress class="rating-bg" th:if="${feedback.star == 3}"
+                                              value="3" max="5"></progress>
+                                    <progress class="rating-bg" th:if="${feedback.star == 4}"
+                                              value="4" max="5"></progress>
+                                    <progress class="rating-bg" th:if="${feedback.star == 5}"
+                                              value="5" max="5"></progress>
+                                    <svg>
+                                        <use xlink:href="#fivestarss"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <p class="text-muted font-italic p-3 bg-light rounded" th:text="${feedback.feedback}"></p>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="row text-center" th:unless="${#lists.isEmpty(feedbacks.getContent())}">
+                    <div class="col-12">
+                        <ul class="pagination justify-content-end mb-0 list-unstyled">
+                            <li class="paginate_button page-item"><a
+                                    class="page-link"
+                                    th:classappend="${feedbacks.hasPrevious() ? '' : 'disabled'}"
+                                    th:href="@{/service/{serviceId}(serviceId=${service.serviceId}, page=${feedbacks.number})}"
+                            >Prev</a>
+                            </li>
+                            <li class="paginate_button page-item"><a
+                                    class="page-link"
+                                    th:href="@{/service/{serviceId}(serviceId=${service.serviceId}, page=${feedbacks.number})}"
+                                    th:if="${feedbacks.hasPrevious()}" th:text="${feedbacks.number}"></a>
+                            </li>
+                            <li class="paginate_button page-item active"><a
+                                    class="page-link"
+                                    th:href="@{/service/{serviceId}(serviceId=${service.serviceId}, page=${feedbacks.number + 1})}"
+                                    th:text="${feedbacks.number + 1}"></a>
+                            </li>
+                            <li class="paginate_button page-item"><a
+                                    class="page-link"
+                                    th:href="@{/service/{serviceId}(serviceId=${service.serviceId}, page=${feedbacks.number + 2})}"
+                                    th:if="${feedbacks.hasNext()}" th:text="${feedbacks.number + 2}"></a>
+                            </li>
+
+                            <li class="paginate_button page-item">
+                                <a
+                                        class="page-link"
+                                        th:href="@{/service/{serviceId}(serviceId=${service.serviceId}, page=${feedbacks.number + 2})}"
+                                        th:classappend="${feedbacks.hasNext()} ? '':'disabled'"
+                                >Next
+                                </a>
+                            </li>
+                        </ul><!--end pagination-->
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end col-->
+
+            <div class="col-lg-4 col-md-5 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                <div class="card border-0 sidebar sticky-bar rounded shadow">
+                    <div class="card-body">
+                        <!-- SEARCH -->
+                        <div class="widget mb-4 pb-2">
+                            <h5 class="widget-title">Search</h5>
+                            <div id="search2" class="widget-search mt-4 mb-0">
+                                <form role="search" method="get" id="searchform" class="searchform" th:action="@{/service}">
+                                    <div>
+                                        <input th:name="titleSearch" th:value="${titleSearch}" type="text"
+                                               class="border rounded" name="s" id="s" placeholder="Search Keywords...">
+                                        <input type="submit" id="searchsubmit" value="Search">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- SEARCH -->
+
+                        <!-- RECENT POST -->
+                        <div class="widget mb-4 pb-2">
+                            <h5 class="widget-title">Services</h5>
+                            <div class="mt-4">
+                                <div class="clearfix post-recent d-flex align-items-center" th:each="service, iter : ${services}" th:if="${iter.index} &lt; 5">
+                                    <div class="post-recent-thumb float-start">
+                                        <a th:href="@{/service/{serviceId}(serviceId=${service.serviceId})}">
+                                            <img style="height: 66px; width: 100%; object-fit: cover;" alt="img" th:src="${service.thumbnail}" class="img-fluid rounded"></a>
+                                    </div>
+                                    <div class="post-recent-content float-start">
+                                        <a th:href="@{/service/{serviceId}(serviceId=${service.serviceId})}"
+                                           th:text="${service.title}"></a>
+                                        <i class="mdi mdi-cash" style="margin-right: 5px"></i><span class="text-muted mt-2" th:text="${service.price} + ' $'"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- RECENT POST -->
+                    </div>
+                </div>
+            </div>
+        </div><!--end row-->
+    </div><!--end container-->
+
+</section><!--end section-->
+<!-- End -->
+
+<!-- Start -->
+<footer th:replace="~{layout/homeFooter :: homeFooter}"></footer>
+<!-- End -->
+
+<!-- Back to top -->
+<a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
+        data-feather="arrow-up" class="icons"></i></a>
+<!-- Back to top -->
+
+<!-- javascript -->
+<script th:replace="~{layout/script :: script}"></script>
+<!-- SLIDER -->
+<script src="../assets/js/tiny-slider.js"></script>
+<script src="../assets/js/tiny-slider-init.js"></script>
+
+</body>
+
+</html>

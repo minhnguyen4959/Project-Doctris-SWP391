@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<!-- Navbar STart -->
+<header th:replace="~{layout/pageHeaderLanding :: pageHeaderLanding}"></header><!--end header-->
+<!-- Navbar End -->
+
+<!-- Start Hero -->
+<section class="bg-dashboard">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-lg-4 col-md-5 col-12">
+                <div th:replace="~{layout/pageSidebarLanding :: sidebarLanding}"></div>
+            </div><!--end col-->
+
+            <div class="col-xl-9 col-lg-8 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 mb-3">
+                        <h4 class="mb-0">Add medical infomation</h4>
+                    </div><!--end col-->
+                    <hr>
+                </div><!--end row-->
+
+                <div class="row" th:unless="${appointment.patientHistory}">
+                    <div class="col-12 mt-4">
+                        <div class="row">
+                            <div class="form-group row d-inline"><label
+                                    class="form-control-label required d-inline">Patient:</label>
+                                <span class="text-muted" th:text="${appointment.patient.user.fullName}"></span>
+                            </div>
+                            <form method="POST" th:action="@{'/appointment/medical/' + ${appointment.appointmentId}}"
+                                  th:object="${patientHistory}">
+                                <div class="col-sm-12">
+                                    <div th:object="${appointment}">
+                                        <input
+                                                th:name="date" th:field="*{date}" th:value="${date}" hidden
+                                                class="form-control ng-untouched ng-pristine ng-valid"/>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-sm-12 mt-3">
+                                            <div class="form-group row">
+                                                <div class="col-6">
+                                                    <label>Nhiệt độ cơ thể</label>
+                                                    <input
+                                                            th:name="temperature" th:field="*{temperature}"
+                                                            th:value="${temperature}"
+                                                            class="form-control ng-untouched ng-pristine ng-valid"/>
+                                                    <span class="mt-2 text-danger"
+                                                          th:if="${#fields.hasErrors('temperature')}"
+                                                          th:errors="*{temperature}"></span>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label>Huyết áp</label>
+                                                    <input
+                                                            th:name="bloodPressure" th:field="*{bloodPressure}"
+                                                            th:value="${bloodPressure}"
+                                                            class="form-control ng-untouched ng-pristine ng-valid"/>
+                                                    <span class="mt-2 text-danger"
+                                                          th:if="${#fields.hasErrors('bloodPressure')}"
+                                                          th:errors="*{bloodPressure}"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <label
+                                                class="col-sm-12 col-md-12 col-form-label form-control-label">Tiền sử
+                                            bệnh toàn thân:
+                                        </label>
+                                    </div>
+                                    <div class="row form-group" style="padding-left: 20px;">
+                                        <div class="col-md-3 col-sm-12"><input
+                                                th:name="liver" th:field="*{liver}" th:value="${liver}"
+                                                type="checkbox" class="form-check-input"> Gan
+                                        </div>
+                                        <div class="col-md-3 col-sm-12"><input
+                                                th:name="diabetes" th:field="*{diabetes}" th:value="${diabetes}"
+                                                type="checkbox" class="form-check-input"> Tiểu đường
+                                        </div>
+                                        <div class="col-md-3 col-sm-12"><input
+                                                th:name="rheumatism" th:field="*{rheumatism}" th:value="${rheumatism}"
+                                                type="checkbox" class="form-check-input"> Thấp khớp
+                                        </div>
+                                        <div class="col-md-3 col-sm-12"><input
+                                                th:name="nerve" th:field="*{nerve}" th:value="${nerve}"
+                                                type="checkbox" class="form-check-input"> Thần kinh
+                                        </div>
+                                        <div class="col-md-3 col-sm-12"><input
+                                                th:name="allergy" th:field="*{allergy}" th:value="${allergy}"
+                                                type="checkbox" class="form-check-input"> Dị ứng
+                                        </div>
+                                        <div class="col-md-3 col-sm-12"><input
+                                                th:name="digest" th:field="*{digest}" th:value="${digest}"
+                                                type="checkbox" class="form-check-input"> Tiêu hóa
+                                        </div>
+                                        <div class="col-md-3 col-sm-12"><input
+                                                th:name="respiratory" th:field="*{respiratory}"
+                                                th:value="${respiratory}"
+                                                type="checkbox" class="form-check-input"> Hô hấp
+                                        </div>
+                                        <div class="col-md-3 col-sm-12"><input
+                                                th:name="cardiovascular" th:field="*{cardiovascular}"
+                                                th:value="${cardiovascular}"
+                                                type="checkbox" class="form-check-input"> Tim mạch
+                                        </div>
+                                        <div class="col-md-3 col-sm-12"><input
+                                                th:name="kidney" th:field="*{kidney}" th:value="${kidney}"
+                                                type="checkbox" class="form-check-input"> Thận
+                                        </div>
+                                        <div class="col-sm-12 mt-2">
+                                            <label for="other1">Khác</label>
+                                            <input type="text" id="other1" th:name="other1" th:field="*{other1}"
+                                                   th:value="${other1}" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row"><label
+                                            class="col-sm-12 col-md-12 col-form-label form-control-label">Tiền sử bệnh
+                                        răng miệng:</label></div>
+                                    <div class="row form-group" style="padding-left: 20px;">
+                                        <div class="col-md-3 col-sm-12"><input
+                                                th:name="temporomandibularJoint" th:field="*{temporomandibularJoint}"
+                                                th:value="${temporomandibularJoint}"
+                                                type="checkbox" class="form-check-input"> Khớp thái dương hàm
+                                        </div>
+                                        <div class="col-md-3 col-sm-12"><input
+                                                th:name="toothExtraction" th:field="*{toothExtraction}"
+                                                th:value="${toothExtraction}"
+                                                type="checkbox" class="form-check-input"> Đã từng nhổ răng
+                                        </div>
+                                        <div class="col-md-3 col-sm-12"><input
+                                                th:name="orthodonticTreatment" th:field="*{orthodonticTreatment}"
+                                                th:value="${orthodonticTreatment}"
+                                                type="checkbox" class="form-check-input"> Đã từng chỉnh nha
+                                        </div>
+                                        <div class="col-md-3 col-sm-12"><input
+                                                th:name="dentalBraces" th:field="*{dentalBraces}"
+                                                th:value="${dentalBraces}"
+                                                type="checkbox" class="form-check-input"> Đã
+                                            từng đeo hàm
+                                        </div>
+                                        <div class="col-sm-12 mt-2">
+                                            <label for="other2">Khác</label>
+                                            <input type="text" th:name="other2" th:field="*{other2}"
+                                                   th:value="${other2}" id="other2" class="form-control">
+                                            <span class="mt-2 text-danger" th:if="${#fields.hasErrors('other2')}"
+                                                  th:errors="*{other2}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 mt-3">
+                                    <div class="form-group row"><label
+                                            class="col-12 col-form-label form-control-label">Chuẩn đoán</label>
+                                        <div class="col-12">
+                                        <textarea
+                                                th:name="note" th:field="*{note}" th:value="${note}" rows="3"
+                                                class="form-control ng-untouched ng-pristine ng-valid">
+                                        </textarea>
+                                            <span class="mt-2 text-danger" th:if="${#fields.hasErrors('note')}"
+                                                  th:errors="*{note}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary mt-3">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div><!--end row-->
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+</section><!--end section-->
+<!-- End Hero -->
+
+<!-- Footer Start -->
+<footer th:replace="~{layout/homeFooter :: homeFooter}"></footer>
+<!-- End -->
+
+<!-- Back to top -->
+<a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
+        data-feather="arrow-up" class="icons"></i></a>
+<!-- Back to top -->
+
+<!-- javascript -->
+<script th:replace="~{layout/script :: script}"></script>
+</body>
+
+</html>

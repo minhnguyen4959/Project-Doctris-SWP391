@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+<div class="page-wrapper doctris-theme toggled">
+    <nav th:replace="~{layout/pageSidebarAdmin :: pageSidebarAdmin}" id="sidebar" class="sidebar-wrapper"></nav>
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <div th:replace="~{layout/pageHeaderAdmin :: pageHeaderAdmin}" class="top-header"></div>
+
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div class="d-md-flex justify-content-between">
+                    <div>
+                        <h5 class="mb-0">Services</h5>
+
+                        <nav aria-label="breadcrumb" class="d-inline-block mt-1">
+                            <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
+                                <li class="breadcrumb-item"><a th:href="@{/admin}">Doctris</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Services</li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <div class="mt-4 mt-sm-0">
+                        <a href="/admin/service/service-add" class="btn btn-primary">Add
+                            Service</a>
+                    </div>
+                </div>
+
+                <form role="search" method="get" id="searchform" class="searchform" th:action="@{/admin/service}">
+                    <div class="row mt-3">
+                        <div class="col-4 search-bar p-0 d-none d-lg-block ms-2">
+                            <div id="search" class="menu-search mb-0 searchform">
+                                <div class="searchform">
+                                    <input type="text" class="form-control border rounded-pill" th:name="titleSearch"
+                                           th:value="${titleSearch}" id="s" placeholder="Search Keywords...">
+                                    <input type="submit" id="searchsubmit" value="Search">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-2">
+                            <select class="col-3 form-select form-control" th:name="statusSearch"
+                                    onchange="this.form.submit()">
+                                <option selected th:value>Choose status</option>
+                                <option th:selected="${statusSearch == '1'}" th:value="1">Active</option>
+                                <option th:selected="${statusSearch == '0'}" th:value="0">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
+                <h2 th:if="${#lists.isEmpty(services)}" class="text-center mt-3">No services yet!</h2>
+                <div th:unless="${#lists.isEmpty(services)}">
+                    <div class="row">
+                        <div class="col-12 mt-4">
+                            <div class="table-responsive shadow rounded">
+                                <table class="table table-center bg-white mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th class="border-bottom p-3" style="min-width: 50px;">Id</th>
+                                        <th class="border-bottom p-3" style="min-width: 180px;">Name</th>
+                                        <th class="border-bottom p-3">Price</th>
+                                        <th class="border-bottom p-3">Rated star</th>
+                                        <th class="border-bottom p-3">Num of feedback</th>
+                                        <th class="border-bottom p-3">Description</th>
+                                        <th class="border-bottom p-3">Status</th>
+                                        <th class="border-bottom p-3" style="min-width: 100px;"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="service, iter : ${usesPage}">
+                                        <th class="p-3" th:text="${service.serviceId}"></th>
+                                        <td class="py-3">
+                                            <a th:href="@{/admin/service/{serviceId}(serviceId=${service.serviceId})}"
+                                               class="text-dark">
+                                                <div class="d-flex align-items-center">
+                                                    <img th:src="${service.thumbnail}"
+                                                         class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                    <span class="ms-2" th:text="${service.title}"></span>
+                                                </div>
+                                            </a>
+                                        </td>
+                                        <td class="p-3" th:text="'$ ' + ${service.price}"></td>
+                                        <td class="p-3" th:each="review : ${reviews}"
+                                            th:if="${review[0] == service.serviceId}">
+                                            <div class="m-0" th:if="${review[1]}">
+                                                <div>
+                                                    <svg style="display:none;">
+                                                        <defs>
+                                                            <symbol id="fivestarss">
+                                                                <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                                                      fill="white" fill-rule="evenodd"/>
+                                                                <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                                                      fill="white" fill-rule="evenodd"
+                                                                      transform="translate(24)"/>
+                                                                <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                                                      fill="white" fill-rule="evenodd"
+                                                                      transform="translate(48)"/>
+                                                                <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                                                      fill="white" fill-rule="evenodd"
+                                                                      transform="translate(72)"/>
+                                                                <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                                                      fill="white" fill-rule="evenodd"
+                                                                      transform="translate(96)"/>
+                                                            </symbol>
+                                                        </defs>
+                                                    </svg>
+                                                    <div class="rating">
+                                                        <progress class="rating-bg" th:value="${review[1]}"
+                                                                  max="5"></progress>
+                                                        <svg>
+                                                            <use xlink:href="#fivestarss"/>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-3" th:if="${service.rateStar.size() == 0}">
+                                            <div>
+                                                <svg style="display:none;">
+                                                    <defs>
+                                                        <symbol id="fivestars">
+                                                            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                                                  fill="white" fill-rule="evenodd"/>
+                                                            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                                                  fill="white" fill-rule="evenodd"
+                                                                  transform="translate(24)"/>
+                                                            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                                                  fill="white" fill-rule="evenodd"
+                                                                  transform="translate(48)"/>
+                                                            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                                                  fill="white" fill-rule="evenodd"
+                                                                  transform="translate(72)"/>
+                                                            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24"
+                                                                  fill="white" fill-rule="evenodd"
+                                                                  transform="translate(96)"/>
+                                                        </symbol>
+                                                    </defs>
+                                                </svg>
+                                                <div class="rating">
+                                                    <progress class="rating-bg" th:value="0" max="5"></progress>
+                                                    <svg>
+                                                        <use xlink:href="#fivestars"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-3" th:text="${service.rateStar.size()} + ' feedbacks'"></td>
+                                        <td class="p-3" th:text="${service.description}"></td>
+                                        <td class="p-3" th:switch=${service.status}>
+                                            <span th:case="${true}" class="badge bg-soft-success">Active</span>
+                                            <span th:case="${false}" class="badge bg-soft-warning">Inactive</span>
+                                        </td>
+                                        <td class="text-end p-3">
+                                            <a th:href="@{/admin/service/{serviceId}(serviceId=${service.serviceId})}"
+                                               class="btn btn-icon btn-pills btn-soft-primary"><i
+                                                    class="uil uil-eye"></i></a>
+                                            <a th:href="@{/admin/service/edit/{serviceId}(serviceId=${service.serviceId})}"
+                                               class="btn btn-icon btn-pills btn-soft-success"><i
+                                                    class="uil uil-pen"></i></a>
+                                            <a th:href="@{/admin/service/delete/{serviceId}(serviceId=${service.serviceId})}"
+                                               class="btn btn-icon btn-delete btn-pills btn-soft-danger"><i
+                                                    class="uil uil-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div><!--end row-->
+                </div>
+
+                <div class="row" th:unless="${#lists.isEmpty(usesPage.getContent())}">
+                    <div class="col-12 mt-4">
+                        <div class=" d-flex justify-content-end my-2">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="paginate_button page-item"><a
+                                            class="page-link"
+                                            th:classappend="${usesPage.number == 0 ? 'disabled' : ''}"
+                                            th:href="@{'/admin/service'(titleSearch=${titleSearch},statusSearch=${statusSearch},page=${1})}">First</a>
+                                    </li>
+                                    <li class="paginate_button page-item"
+                                        th:classappend="${usesPage.hasPrevious() ? '' : 'disabled'}"><a
+                                            class="page-link"
+                                            th:href="@{'/admin/service'(titleSearch=${titleSearch},statusSearch=${statusSearch},page=${usesPage.number})}"
+                                            th:if="${usesPage.hasPrevious()}">Prev</a>
+                                    </li>
+                                    <li class="paginate_button page-item"><a
+                                            class="page-link"
+                                            th:href="@{'/admin/service'(titleSearch=${titleSearch},statusSearch=${statusSearch},page=${usesPage.number})}"
+                                            th:if="${usesPage.hasPrevious()}" th:text="${usesPage.number}"></a>
+                                    </li>
+                                    <li class="paginate_button page-item active"><a
+                                            class="page-link"
+                                            th:href="@{'/admin/service'(titleSearch=${titleSearch},statusSearch=${statusSearch},page=${usesPage.number + 1})}"
+                                            th:text="${usesPage.number + 1}"></a>
+                                    </li>
+                                    <li class="paginate_button page-item"><a
+                                            class="page-link"
+                                            th:href="@{'/admin/service'(titleSearch=${titleSearch},statusSearch=${statusSearch},page=${usesPage.number + 2})}"
+                                            th:if="${usesPage.hasNext()}" th:text="${usesPage.number + 2}"></a>
+                                    </li>
+
+                                    <li class="paginate_button page-item"
+                                        th:classappend="${usesPage.hasNext()} ? '':'disabled'"><a
+
+                                            class="page-link"
+                                            th:href="@{'/admin/service'(titleSearch=${titleSearch},statusSearch=${statusSearch},page=${usesPage.number + 2})}"
+                                            th:if="${usesPage.hasNext()}">Next</a>
+                                    </li>
+                                    <li class="paginate_button page-item"><a
+                                            class="page-link"
+                                            th:classappend="${usesPage.number + 1 == numberOfPage ? 'disabled' : ''}"
+                                            th:href="@{'/admin/service'(titleSearch=${titleSearch},statusSearch=${statusSearch},page=${numberOfPage})}">Last</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+
+            </div>
+        </div><!--end container-->
+
+        <!-- Footer Start -->
+        <footer class="bg-white shadow py-3">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="text-sm-start text-center">
+                            <p class="mb-0 text-muted">
+                                <script>document.write(new Date().getFullYear())</script>
+                                © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a
+                                    href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.
+                            </p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </footer><!--end footer-->
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+
+<!-- Modal start -->
+<!-- Profile Settings Start -->
+<div class="modal fade" id="editprofile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom p-3">
+                <h5 class="modal-title" id="exampleModalLabel">Profile Settings</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-3 pt-4">
+                <div class="row align-items-center">
+                    <div class="col-lg-2 col-md-4">
+                        <img th:src="@{~/assets/images/services/01.jpg}"
+                             class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="">
+                    </div><!--end col-->
+
+                    <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
+                        <h6 class="">Upload your picture</h6>
+                        <p class="text-muted mb-0">For best results, use an image at least 256px by 256px in either .jpg
+                            or .png format</p>
+                    </div><!--end col-->
+
+                    <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
+                        <a href="#" class="btn btn-primary">Upload</a>
+                        <a href="#" class="btn btn-soft-primary ms-2">Remove</a>
+                    </div><!--end col-->
+                </div><!--end row-->
+
+                <form class="mt-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">First Name</label>
+                                <input name="name" id="name" type="text" class="form-control"
+                                       placeholder="First Name :">
+                            </div>
+                        </div><!--end col-->
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Last Name</label>
+                                <input name="name" id="name2" type="text" class="form-control"
+                                       placeholder="Last Name :">
+                            </div>
+                        </div><!--end col-->
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Your Email</label>
+                                <input name="email" id="email" type="email" class="form-control"
+                                       placeholder="Your email :">
+                            </div>
+                        </div><!--end col-->
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Phone no.</label>
+                                <input name="number" id="number" type="text" class="form-control"
+                                       placeholder="Phone no. :">
+                            </div>
+                        </div><!--end col-->
+
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Your Bio Here</label>
+                                <textarea name="comments" id="comments" rows="4" class="form-control"
+                                          placeholder="Bio :"></textarea>
+                            </div>
+                        </div>
+                    </div><!--end row-->
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <input type="submit" id="submit" name="send" class="btn btn-primary" value="Save changes">
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </form><!--end form-->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Profile Settings End -->
+
+<!-- Profile Start -->
+<div class="modal fade" id="viewprofile" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom p-3">
+                <h5 class="modal-title" id="exampleModalLabel1">Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-3 pt-4">
+                <div class="d-flex align-items-center">
+                    <img src="../../assets/images/client/01.jpg" class="avatar avatar-small rounded-pill" alt="">
+                    <h5 class="mb-0 ms-3">Howard Tanner</h5>
+                </div>
+                <ul class="list-unstyled mb-0 d-md-flex justify-content-between mt-4">
+                    <li>
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex">
+                                <h6>Age:</h6>
+                                <p class="text-muted ms-2">25 year old</p>
+                            </li>
+
+                            <li class="d-flex">
+                                <h6>Gender:</h6>
+                                <p class="text-muted ms-2">Male</p>
+                            </li>
+
+                            <li class="d-flex">
+                                <h6 class="mb-0">Department:</h6>
+                                <p class="text-muted ms-2 mb-0">Cardiology</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex">
+                                <h6>Date:</h6>
+                                <p class="text-muted ms-2">20th Dec 2020</p>
+                            </li>
+
+                            <li class="d-flex">
+                                <h6>Time:</h6>
+                                <p class="text-muted ms-2">11:00 AM</p>
+                            </li>
+
+                            <li class="d-flex">
+                                <h6 class="mb-0">Service:</h6>
+                                <p class="text-muted ms-2 mb-0">Dr. Calvin Carlo</p>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Profile End -->
+<!-- Modal end -->
+
+<script th:replace="~{layout/script :: script}"></script>
+
+<script>
+    $('.btn-delete').on('click', function (e) {
+        e.preventDefault();
+        const serviceId = $(this).attr("data-id");
+        SwalDelete(this.href, {
+            serviceId
+        }, "/admin/service");
+    });
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+<div class="page-wrapper doctris-theme toggled">
+    <nav th:replace="~{layout/pageSidebarAdmin :: pageSidebarAdmin}" id="sidebar" class="sidebar-wrapper"></nav>
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <div th:replace="~{layout/pageHeaderAdmin :: pageHeaderAdmin}" class="top-header"></div>
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div class="d-md-flex justify-content-between">
+                    <h5 class="mb-0">Add New Doctor</h5>
+
+                    <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
+                        <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                            <li class="breadcrumb-item"><a th:href="@{/admin}">Doctris</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/admin/doctor}">Doctors</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Add Doctor</li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-8 mt-4">
+                        <div class="card border-0 p-4 rounded shadow">
+                            <form method="POST" th:action="@{/admin/doctor/save}" th:object="${user}"
+                                  enctype="multipart/form-data">
+                                <div class="row align-items-center justify-content-between">
+                                    <div class="col-lg-2 col-md-4">
+                                        <div class="preview-box avatar avatar-md-md rounded-pill shadow mx-auto d-block"></div>
+                                    </div><!--end col-->
+
+                                    <div class="col-4">
+                                        <input type="file" id="image" name="image"
+                                               accept="image/*"
+                                               onchange={handleChange()} hidden/>
+                                        <label class="btn-upload btn btn-primary mt-4" for="image">Upload
+                                            Avatar</label>
+                                        <span class="mt-2 text-danger d-block" th:if="${image}"
+                                              th:text="${image}"></span>
+                                    </div>
+                                </div><!--end row-->
+
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Full Name</label>
+                                            <input th:name="fullName" th:field="*{fullName}" th:value="${fullName}"
+                                                   id="fullName" type="text" class="form-control"
+                                                   placeholder="Full Name :">
+                                            <span class="mt-2 text-danger" th:if="${#fields.hasErrors('fullName')}"
+                                                  th:errors="*{fullName}"></span>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Your Email</label>
+                                            <input name="email" th:field="*{email}" th:value="${email}"
+                                                   id="email" type="email" class="form-control"
+                                                   placeholder="Your email :">
+                                            <span class="mt-2 text-danger" th:if="${#fields.hasErrors('email')}"
+                                                  th:errors="*{email}"></span>
+                                            <span class="mt-2 text-danger" th:if="${email}" th:text="${email}"></span>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label d-block">Status</label>
+                                            <input type="radio" th:name="status" th:value="1" checked/> Active
+                                            <input style="margin-left: 20px;" type="radio" th:name="status"
+                                                   th:value="0"/> Inactive
+                                            <span class="mt-2 text-danger" th:if="${#fields.hasErrors('status')}"
+                                                  th:errors="*{status}"></span>
+                                        </div>
+                                    </div><!--end col-->
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Phone no.</label>
+                                            <input th:name="phoneNumber" th:field="*{phoneNumber}"
+                                                   th:value="${phoneNumber}"
+                                                   id="phoneNumber" type="text" class="form-control"
+                                                   placeholder="Phone no. :">
+                                            <span class="mt-2 text-danger" th:if="${#fields.hasErrors('phoneNumber')}"
+                                                  th:errors="*{phoneNumber}"></span>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Date of birth</label>
+                                            <input th:name="dateOfBirth" th:field="*{dateOfBirth}"
+                                                   th:value="${dateOfBirth}"
+                                                   id="dateOfBirth" type="date" class="form-control">
+                                            <span class="mt-2 text-danger" th:if="${dateOfBirth}"
+                                                  th:text="${dateOfBirth}"></span>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Address</label>
+                                            <input th:name="address" th:field="*{address}" th:value="${address}"
+                                                   id="address" type="text" class="form-control"
+                                                   placeholder="Address. :">
+                                            <span class="mt-2 text-danger" th:if="${#fields.hasErrors('address')}"
+                                                  th:errors="*{address}"></span>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label d-block">Gender</label>
+                                            <input type="radio" th:name="gender" th:value="Male" checked/> Male
+                                            <input style="margin-left: 20px;" type="radio" th:name="gender"
+                                                   th:value="Female"/> Female
+                                            <span class="mt-2 text-danger d-block" th:if="${gender}" th:text="${gender}"></span>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-12">
+                                        <div class="mb-3" th:object="${doctor}">
+                                            <label class="form-label">Your Bio Here</label>
+                                            <textarea th:name="description" th:field="*{description}"
+                                                      th:value="${description}"
+                                                      id="description" rows="3" class="form-control"
+                                                      placeholder="Bio :"></textarea>
+                                            <span class="mt-2 text-danger" th:if="${#fields.hasErrors('description')}"
+                                                  th:errors="*{description}"></span>
+                                        </div>
+                                    </div>
+                                </div><!--end row-->
+
+                                <button type="submit" class="btn btn-primary">Add Doctor</button>
+                            </form>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-lg-4 mt-4">
+                        <div class="card rounded border-0 shadow">
+                            <div class="p-4 border-bottom">
+                                <h5 class="mb-0">Doctors List</h5>
+                            </div>
+
+                            <ul class="list-unstyled mb-0 p-4" data-simplebar style="height: 664px;">
+                                <li class="d-md-flex align-items-center text-center text-md-start mt-4"
+                                    th:each="doctor, iterStat : ${doctors}" th:if="${iterStat.index} &lt; 5">
+                                    <a th:href="@{/admin/doctor/{doctorId}(doctorId=${doctor.doctorId})}"><img th:src="${doctor.user.avatar}"
+                                                                                                               class="avatar avatar-medium rounded-md shadow" alt=""></a>
+
+                                    <div class="ms-md-3 mt-4 mt-sm-0">
+                                        <a th:href="@{/admin/doctor/{doctorId}(doctorId=${doctor.doctorId})}" class="text-dark h6" th:text="${doctor.user.fullName}"></a>
+                                        <p class="text-muted my-1" th:text="${doctor.user.email}"></p>
+                                        <p class="text-muted mb-0" th:text="${doctor.user.phoneNumber}"></p>
+                                    </div>
+                                </li>
+
+                                <li class="mt-4">
+                                    <a th:href="@{/admin/doctor}" class="btn btn-primary">All Doctors</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div><!--end row-->
+            </div>
+        </div><!--end container-->
+
+        <!-- Footer Start -->
+        <footer class="bg-white shadow py-3">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="text-sm-start text-center">
+                            <p class="mb-0 text-muted">
+                                <script>document.write(new Date().getFullYear())</script>
+                                © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a
+                                    href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.
+                            </p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </footer><!--end footer-->
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+
+<!-- javascript -->
+<script th:replace="~{layout/script :: script}"></script>
+<!-- Select2 -->
+<script src="../../assets/js/select2.min.js"></script>
+<script src="../../assets/js/select2.init.js"></script>
+
+<script>
+    const handleChange = () => {
+        const fileUploader = document.querySelector('#image');
+        const getFile = fileUploader.files
+        if (getFile.length !== 0) {
+            const uploadedFile = getFile[0];
+            readFile(uploadedFile);
+        }
+    }
+
+    const readFile = (uploadedFile) => {
+        if (uploadedFile) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const parent = document.querySelector('.preview-box');
+                parent.innerHTML = `<img class="preview-content w-100" style="border-radius: 50%; height: 100%;" src=${reader.result} />`;
+            };
+
+            reader.readAsDataURL(uploadedFile);
+        }
+    };
+</script>
+</body>
+
+</html>

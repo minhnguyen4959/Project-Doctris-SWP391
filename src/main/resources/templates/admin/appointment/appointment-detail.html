@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head th:replace="~{layout/head :: head}"></head>
+<body>
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+
+<div class="page-wrapper doctris-theme toggled">
+    <nav th:replace="~{layout/pageSidebarAdmin :: pageSidebarAdmin}" id="sidebar" class="sidebar-wrapper"></nav>
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <div th:replace="~{layout/pageHeaderAdmin :: pageHeaderAdmin}" class="top-header"></div>
+
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5 class="mb-0">Appointment</h5>
+                        <h4 th:if="${errorMessage}" th:text="${errorMessage}" class="text-danger"></h4>
+                        <nav aria-label="breadcrumb" class="d-inline-block mt-2">
+                            <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
+<!--                                <li class="breadcrumb-item"><a href="../index.html">Doctris</a></li>-->
+<!--                                <li class="breadcrumb-item active" aria-current="page">Appointment</li>-->
+                            </ul>
+                        </nav>
+                    </div><!--end col-->
+                    <div class="col-md-6"></div>
+                    <div class="col-md-2">
+                        <div class="d-grid">
+                            <a
+                                    th:if="${appointment.status != 'Cancel' || appointment.status != 'Completed'}"
+                                    href="#" class="btn btn-primary" data-bs-toggle="modal"
+                               data-bs-target="#appointmentform">Assign Doctor</a>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+
+
+                    <div class=" col-md-4 mx-5" >
+                        <div class="rounded shadow mt-4" style="background: #c3c3c3">
+                            <div class="p-4 border-bottom">
+                                <h3 class="mb-0 text-lg-center">Patient</h3>
+                            </div>
+                            <div class="p-4 border-bottom">
+                                <form
+                                        enctype="multipart/form-data">
+                                    <div class="row align-items-center justify-content-center">
+                                        <div class="col-lg-2 col-md-4">
+                                            <div class="preview-box avatar avatar-md-md rounded-pill shadow mx-auto d-block">
+                                                <img th:if="${appointment.patient.user.avatar != null}"
+                                                     th:src="${appointment.patient.user.avatar}"
+                                                     style="border-radius: 50%; height: 100%;"
+                                                     class="preview-content w-100 text-lg-center"  />
+                                                <img th:if="${appointment.patient.user.avatar == null}"
+                                                     th:src="@{'~/assets/images/avatar.png'}"
+                                                     style="border-radius: 50%; height: 100%;"
+                                                     class="preview-content w-100 text-lg-center" />
+                                            </div>
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+
+                                    <div class="p-4">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Full Name</label>
+                                                    <input th:name="fullName"
+                                                           th:value="${appointment.patient.user.fullName}"
+                                                            type="text" class="form-control"
+                                                           readonly
+                                                    >
+
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Mobile</label>
+                                                    <input
+                                                            th:value="${appointment.patient.user.phoneNumber}"
+                                                            type="text" class="form-control"
+                                                            readonly
+                                                    >
+
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Address</label>
+                                                    <input th:value="${appointment.patient.user.address}"
+                                                           type="text" class="form-control"
+                                                           readonly>
+
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Date of birth</label>
+                                                    <input
+                                                             class="form-control"
+                                                            th:value="${appointment.patient.user.dateOfBirth}" readonly>
+                                                </div>
+                                            </div><!--end col-->
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Gender</label>
+                                                    <input
+                                                            class="form-control"
+                                                            th:value="${appointment.patient.user.gender}" readonly>
+                                                </div>
+                                            </div><!--end col-->
+                                        </div><!--end row-->
+                                    </div>
+                                </form>
+                            </div>
+
+
+                        </div><!--end col-->
+                    </div>
+                    <div class=" col-md-4 mx-5" th:if="${appointment.doctor != null}" >
+                        <div class="rounded shadow mt-4" style="background: #c3c3c3">
+                            <div class="p-4 border-bottom">
+                                <h3 class="mb-0 text-lg-center">Doctor</h3>
+                            </div>
+                            <div class="p-4 border-bottom">
+                                <form
+                                        enctype="multipart/form-data">
+                                    <div class="row align-items-center justify-content-center">
+                                        <div class="col-lg-2 col-md-4">
+                                            <div class="preview-box avatar avatar-md-md rounded-pill shadow mx-auto d-block">
+                                                <img th:if="${appointment.doctor.user.avatar != null}"
+                                                     th:src="${appointment.doctor.user.avatar}"
+                                                     style="border-radius: 50%; height: 100%;"
+                                                     class="preview-content w-100 text-lg-center" />
+                                                <img th:if="${appointment.doctor.user.avatar == null}"
+                                                     th:src="@{'~/assets/images/avatar.png'}"
+                                                     style="border-radius: 50%; height: 100%;"
+                                                     class="preview-content w-100 text-lg-center" />
+                                            </div>
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+
+                                    <div class="p-4">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Full Name</label>
+                                                    <input th:name="fullName"
+                                                           th:value="${appointment.doctor.user.fullName}"
+                                                          type="text" class="form-control"
+                                                           readonly
+                                                    >
+
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Mobile</label>
+                                                    <input
+                                                            th:value="${appointment.doctor.user.phoneNumber}"
+                                                            type="text" class="form-control"
+                                                            readonly
+                                                    >
+
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Address</label>
+                                                    <input th:value="${appointment.doctor.user.address}"
+                                                           type="text" class="form-control"
+                                                           readonly>
+
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Date of birth</label>
+                                                    <input
+                                                            class="form-control"
+                                                            th:value="${appointment.doctor.user.dateOfBirth}" readonly>
+                                                </div>
+                                            </div><!--end col-->
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Gender</label>
+                                                    <input
+                                                            class="form-control"
+                                                            th:value="${appointment.doctor.user.gender}" readonly>
+                                                </div>
+                                            </div><!--end col-->
+                                        </div><!--end row-->
+                                    </div>
+                                </form>
+                            </div>
+
+
+                        </div><!--end col-->
+                    </div>
+                        <div class=" col-md-4 mx-5" th:if="${appointment.doctor == null}" th:text="${appointment.doctor}">
+<!--                            <div class="rounded shadow mt-4" style="background: #c3c3c3; border: 1px solid red">-->
+<!--                                <div class="p-4 border-bottom">-->
+<!--                                    <h3 class="mb-0 text-lg-center">No Doctor</h3>-->
+<!--                                </div>-->
+<!--                            </div>&lt;!&ndash;end col&ndash;&gt;-->
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 mt-4">
+                            <div class="table-responsive bg-white shadow rounded">
+                                <table class="table mb-0 table-center">
+                                    <thead>
+                                    <tr class="" style="background: #396cf0">
+                                        <th colspan="7" class="text-center font-weight-bold text-white">Appointment
+                                            Information
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <!--                                        <th class="border-bottom p-3" style="min-width: 150px;">Id</th>-->
+                                        <th class="border-bottom p-3" style="min-width: 220px;">Date</th>
+                                        <th class="border-bottom p-3" style="min-width: 220px;">Time</th>
+                                        <th class="border-bottom p-3" style="min-width: 220px;">Status</th>
+                                        <th class="border-bottom p-3" style="min-width: 220px;">Note</th>
+                                        <th class="border-bottom p-3" style="min-width: 220px;">Doctor</th>
+                                        <th class="border-bottom p-3"></th>
+                                        <th class="border-bottom p-3" style="min-width: 100px;"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="p-3" th:text="${appointment.getDate('')}"></td>
+                                        <td class="p-3" th:text="${appointment.time}"></td>
+
+                                        <td class="p-3" th:switch="${appointment.status}">
+                                            <span th:case="New" class="badge bg-soft-primary">New</span>
+                                            <span th:case="Assigned" class="badge bg-soft-warning">Assigned</span>
+                                            <span th:case="Completed" class="badge bg-soft-success">Completed</span>
+                                            <span th:case="Cancel" class="badge bg-soft-danger">Cancel</span>
+                                        </td>
+                                        <td class="p-3" th:text="${appointment.note}"></td>
+
+                                        <td class="p-3 text-success" th:if="${appointment.doctor}"
+                                            th:text="${appointment.doctor.user.fullName}"></td>
+                                        <td class="p-3 text-danger" th:unless="${appointment.doctor}" th:text="No"></td>
+                                    </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div><!--end row-->
+                    <div class="row">
+                        <div class="col-6 mt-4">
+                            <div class="table-responsive bg-white shadow rounded">
+                                <table class="table mb-0 table-center">
+                                    <thead>
+                                    <tr class="bg-dark">
+                                        <th colspan="7" class="text-center font-weight-bold text-white">Service Booking
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <!--                                        <th class="border-bottom p-3" style="min-width: 150px;">Id</th>-->
+                                        <th class="border-bottom p-3" style="min-width: 100px;">Title</th>
+                                        <th class="border-bottom p-3" style="min-width: 100px;">Price</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="service: ${appointment.service}">
+                                        <td class="p-3" th:text="${service.title}">
+                                        </td>
+                                        <td class="p-3" th:text="'$ ' + ${service.price}"></td>
+
+                                    </tr>
+
+                                    <tr class="bg-dark">
+                                        <th colspan="7" class="text-center font-weight-bold text-white" th:text="'Toltal: '+${total} + ' $'">
+                                        </th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div><!--end row-->
+
+
+                </div>
+            </div><!--end container-->
+
+            <!-- Footer Start -->
+            <footer class="bg-white shadow py-3">
+                <div class="container-fluid">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <div class="text-sm-start text-center">
+                                <p class="mb-0 text-muted">
+                                    <script>document.write(new Date().getFullYear())</script>
+                                    © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a
+                                        href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.
+                                </p>
+                            </div>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div><!--end container-->
+            </footer><!--end footer-->
+            <!-- End -->
+        </div>
+    </main>
+    <!--End page-content" -->
+</div>
+
+<div class="modal fade" id="appointmentform" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom p-3">
+                <h5 class="modal-title" id="exampleModalLabel">Assign doctor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-3 pt-4">
+                <form th:action="@{/admin/assign-appointment}" method="post">
+                    <input type="hidden" name="appointmentId" th:value="${appointmentId}"></input>
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-lg-4 col-md-6 mb-50 d-flex justify-content-center">
+                            <div class="mb-3">
+                                <label class="form-label">Doctor</label>
+                                <select class="form-control doctor-name select2input text-lg-center" name="doctorId">
+                                    <option th:each="doctor : ${doctors}" th:value="${doctor.doctorId}"
+                                            th:text="${doctor.user.fullName}"></option>
+                                </select>
+                            </div>
+                        </div><!--end col-->
+                        <div class="col-lg-12" style="margin-top: 100px">
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script th:replace="~{layout/script :: script}"></script>
+
+</body>
+</html>

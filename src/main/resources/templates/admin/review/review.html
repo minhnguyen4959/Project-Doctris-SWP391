@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+<div class="page-wrapper doctris-theme toggled">
+    <nav th:replace="~{layout/pageSidebarAdmin :: pageSidebarAdmin}" id="sidebar" class="sidebar-wrapper"></nav>
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <div th:replace="~{layout/pageHeaderAdmin :: pageHeaderAdmin}" class="top-header"></div>
+
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div class="d-md-flex justify-content-between">
+                    <h5 class="mb-0">Reviews</h5>
+
+                    <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
+                        <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                            <li class="breadcrumb-item"><a href="../index.html">Doctris</a></li>
+                            <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Review</li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- Start Content -->
+                <div class="row">
+                    <div class="col-12 mt-4">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="table-responsive bg-white shadow rounded">
+                                    <table class="table mb-0 table-center">
+                                        <thead>
+                                        <tr>
+                                            <th class="border-bottom p-3" style="min-width: 50px;">#</th>
+                                            <th class="border-bottom p-3" style="min-width: 200px;">Name</th>
+                                            <th class="border-bottom p-3" style="min-width: 150px;">Email</th>
+                                            <th class="border-bottom p-3" style="min-width: 150px;">Stars</th>
+                                            <th class="border-bottom p-3" style="min-width: 350px;">Comments</th>
+                                            <th class="border-bottom p-3" style="min-width: 150px;">Date</th>
+                                            <th class="border-bottom p-3">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th class="p-3">1</th>
+                                            <td class="p-3">
+                                                <a href="#" class="text-dark">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="../../assets/images/client/01.jpg"
+                                                             class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                        <span class="ms-2">Howard Tanner</span>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td class="p-3">howard@contact.com</td>
+                                            <td class="p-3">
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                </ul>
+                                            </td>
+                                            <td class="p-3 text-muted">This is required when, for example, the final
+                                                text is not yet available..
+                                            </td>
+                                            <td class="p-3">20th Dec 2020</td>
+                                            <td class="p-3"><a href="javascript:void(0)"
+                                                               class="btn btn-sm btn-soft-danger">Delete</a></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="p-3">2</th>
+                                            <td class="p-3">
+                                                <a href="#" class="text-dark">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="../../assets/images/client/02.jpg"
+                                                             class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                        <span class="ms-2">Wendy Filson</span>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td class="p-3">wendy@contact.com</td>
+                                            <td class="p-3">
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                </ul>
+                                            </td>
+                                            <td class="p-3 text-muted">This is required when, for example, the final
+                                                text is not yet available..
+                                            </td>
+                                            <td class="p-3">20th Dec 2020</td>
+                                            <td class="p-3"><a href="javascript:void(0)"
+                                                               class="btn btn-sm btn-soft-danger">Delete</a></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="p-3">3</th>
+                                            <td class="p-3">
+                                                <a href="#" class="text-dark">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="../../assets/images/client/03.jpg"
+                                                             class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                        <span class="ms-2">Faye Bridger</span>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td class="p-3">faye@contact.com</td>
+                                            <td class="p-3">
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                </ul>
+                                            </td>
+                                            <td class="p-3 text-muted">This is required when, for example, the final
+                                                text is not yet available..
+                                            </td>
+                                            <td class="p-3">20th Dec 2020</td>
+                                            <td class="p-3"><a href="javascript:void(0)"
+                                                               class="btn btn-sm btn-soft-danger">Delete</a></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="p-3">4</th>
+                                            <td class="p-3">
+                                                <a href="#" class="text-dark">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="../../assets/images/client/04.jpg"
+                                                             class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                        <span class="ms-2">Ronald Curtis</span>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td class="p-3">ronald@contact.com</td>
+                                            <td class="p-3">
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                </ul>
+                                            </td>
+                                            <td class="p-3 text-muted">This is required when, for example, the final
+                                                text is not yet available..
+                                            </td>
+                                            <td class="p-3">20th Dec 2020</td>
+                                            <td class="p-3"><a href="javascript:void(0)"
+                                                               class="btn btn-sm btn-soft-danger">Delete</a></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="p-3">5</th>
+                                            <td class="p-3">
+                                                <a href="#" class="text-dark">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="../../assets/images/client/05.jpg"
+                                                             class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                        <span class="ms-2">Melissa Hibner</span>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td class="p-3">melissa@contact.com</td>
+                                            <td class="p-3">
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                </ul>
+                                            </td>
+                                            <td class="p-3 text-muted">This is required when, for example, the final
+                                                text is not yet available..
+                                            </td>
+                                            <td class="p-3">20th Dec 2020</td>
+                                            <td class="p-3"><a href="javascript:void(0)"
+                                                               class="btn btn-sm btn-soft-danger">Delete</a></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="p-3">6</th>
+                                            <td class="p-3">
+                                                <a href="#" class="text-dark">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="../../assets/images/client/06.jpg"
+                                                             class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                        <span class="ms-2">Randall Case</span>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td class="p-3">randall@contact.com</td>
+                                            <td class="p-3">
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                </ul>
+                                            </td>
+                                            <td class="p-3 text-muted">This is required when, for example, the final
+                                                text is not yet available..
+                                            </td>
+                                            <td class="p-3">20th Dec 2020</td>
+                                            <td class="p-3"><a href="javascript:void(0)"
+                                                               class="btn btn-sm btn-soft-danger">Delete</a></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="p-3">7</th>
+                                            <td class="p-3">
+                                                <a href="#" class="text-dark">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="../../assets/images/client/07.jpg"
+                                                             class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                        <span class="ms-2">Jerry Morena</span>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td class="p-3">jerry@contact.com</td>
+                                            <td class="p-3">
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                </ul>
+                                            </td>
+                                            <td class="p-3 text-muted">This is required when, for example, the final
+                                                text is not yet available..
+                                            </td>
+                                            <td class="p-3">20th Dec 2020</td>
+                                            <td class="p-3"><a href="javascript:void(0)"
+                                                               class="btn btn-sm btn-soft-danger">Delete</a></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="p-3">8</th>
+                                            <td class="p-3">
+                                                <a href="#" class="text-dark">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="../../assets/images/client/08.jpg"
+                                                             class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                        <span class="ms-2">Lester McNally</span>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td class="p-3">jessica@contact.com</td>
+                                            <td class="p-3">
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                </ul>
+                                            </td>
+                                            <td class="p-3 text-muted">This is required when, for example, the final
+                                                text is not yet available..
+                                            </td>
+                                            <td class="p-3">20th Dec 2020</td>
+                                            <td class="p-3"><a href="javascript:void(0)"
+                                                               class="btn btn-sm btn-soft-danger">Delete</a></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="p-3">9</th>
+                                            <td class="p-3">
+                                                <a href="#" class="text-dark">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="../../assets/images/client/09.jpg"
+                                                             class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                        <span class="ms-2">Christopher Burrell</span>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td class="p-3">christopher@contact.com</td>
+                                            <td class="p-3">
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                </ul>
+                                            </td>
+                                            <td class="p-3 text-muted">This is required when, for example, the final
+                                                text is not yet available..
+                                            </td>
+                                            <td class="p-3">20th Dec 2020</td>
+                                            <td class="p-3"><a href="javascript:void(0)"
+                                                               class="btn btn-sm btn-soft-danger">Delete</a></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="p-3">10</th>
+                                            <td class="p-3">
+                                                <a href="#" class="text-dark">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="../../assets/images/client/10.jpg"
+                                                             class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                        <span class="ms-2">Mary Skeens</span>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td class="p-3">mary@contact.com</td>
+                                            <td class="p-3">
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                    <li class="list-inline-item"><i
+                                                            class="mdi mdi-star text-warning"></i></li>
+                                                </ul>
+                                            </td>
+                                            <td class="p-3 text-muted">This is required when, for example, the final
+                                                text is not yet available..
+                                            </td>
+                                            <td class="p-3">20th Dec 2020</td>
+                                            <td class="p-3"><a href="javascript:void(0)"
+                                                               class="btn btn-sm btn-soft-danger">Delete</a></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div><!--end row-->
+
+                        <div class="row text-center">
+                            <!-- PAGINATION START -->
+                            <div class="col-12 mt-4">
+                                <div class="d-md-flex align-items-center text-center justify-content-between">
+                                    <span class="text-muted me-3">Showing 1 - 10 out of 50</span>
+                                    <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
+                                        <li class="page-item"><a class="page-link" href="javascript:void(0)"
+                                                                 aria-label="Previous">Prev</a></li>
+                                        <li class="page-item active"><a class="page-link"
+                                                                        href="javascript:void(0)">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+                                        <li class="page-item"><a class="page-link" href="javascript:void(0)"
+                                                                 aria-label="Next">Next</a></li>
+                                    </ul>
+                                </div>
+                            </div><!--end col-->
+                            <!-- PAGINATION END -->
+                        </div><!--end row-->
+                    </div><!--end col-->
+                </div><!--end row-->
+                <!-- End Content -->
+            </div>
+        </div><!--end container-->
+
+        <!-- Footer Start -->
+        <footer class="bg-white shadow py-3">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="text-sm-start text-center">
+                            <p class="mb-0 text-muted">
+                                <script>document.write(new Date().getFullYear())</script>
+                                © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a
+                                    href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.
+                            </p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </footer><!--end footer-->
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+
+<!-- javascript -->
+<script th:replace="~{layout/script :: script}"></script>
+
+</body>
+
+</html>

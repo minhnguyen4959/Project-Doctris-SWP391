@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+<div class="page-wrapper doctris-theme toggled">
+    <nav th:replace="~{layout/pageSidebarAdmin :: pageSidebarAdmin}" id="sidebar" class="sidebar-wrapper"></nav>
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <div th:replace="~{layout/pageHeaderAdmin :: pageHeaderAdmin}" class="top-header"></div>
+
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div class="d-md-flex justify-content-between">
+                    <div>
+                        <h5 class="mb-0" th:text="${blog.title}"></h5>
+
+                        <ul class="list-unstyled mt-2 mb-0">
+                            <i class="mdi mdi-account"></i>
+                            <li class="list-inline-item user text-muted me-2" th:text="${user.fullName}"></li>
+                            <i class="mdi mdi-calendar-check"></i>
+                            <li class="list-inline-item date text-muted" th:text="${blog.createdAt}"></li>
+                            <span class="text-muted">| Status:</span>
+                            <li class="list-inline-item date text-muted" th:switch=${blog.status}>
+                                <span th:case="${true}" class="badge bg-soft-success">Active</span>
+                                <span th:case="${false}" class="badge bg-soft-warning">Inactive</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
+                        <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                            <li class="breadcrumb-item"><a th:href="@{/admin}">Doctris</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/blog">Blogs</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Blog Detail</li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="col-lg-12 col-md-12 text-md-end text-center mt-4 mt-lg-0">
+                    <a th:href="@{/admin/blog/edit/{blogId}(blogId=${blog.blogId})}" class="btn btn-primary">Edit</a>
+                    <a th:href="@{/admin/blog/delete/{blogId}(blogId=${blog.blogId})}" th:data-id="${blog.blogId}"
+                       class="btn btn-soft-primary btn-delete ms-2">Remove</a>
+                </div><!--end col-->
+
+                <div class="row">
+                    <div class="col-lg-8 col-lg-7 mt-4">
+                        <div class="card rounded shadow border-0 overflow-hidden">
+                            <img style="height: 500px; object-fit: contain;"
+                                 th:src="${blog.thumbnail}" class="img-fluid" alt="">
+
+                            <div class="p-4">
+                                <p class="text-muted py-2" th:text="${blog.summary}"></p>
+
+                                <p class="text-muted mb-0" th:utext="${blog.content}"></p>
+
+                                <h4 class="card-title mt-4 mb-0">Comments :</h4>
+                                <div th:if="${#lists.isEmpty(comments)}">
+                                    <h5>No comment yet</h5>
+                                </div>
+
+                                <div th:unless="${#lists.isEmpty(comments.getContent())}">
+                                    <ul class="media-list list-unstyled mb-0">
+                                        <li class="mt-4" th:each="comment : ${comments}">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex align-items-center">
+                                                    <a class="pe-3" href="#">
+                                                        <img th:src="${comment.user.avatar}"
+                                                             class="img-fluid avatar avatar-md-sm rounded-circle shadow"
+                                                             alt="img">
+                                                    </a>
+                                                    <div class="commentor-detail">
+                                                        <h6 class="mb-0"><a href="javascript:void(0)" th:text="${comment.user.fullName}"
+                                                                            class="text-dark media-heading"></a></h6>
+                                                        <small class="text-muted" th:text="${comment.createdAt}"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-3">
+                                                <p class="text-muted font-italic p-3 bg-light rounded" th:text="${comment.description}"></p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="row" th:unless="${#lists.isEmpty(comments.getContent())}">
+                                    <div class="col-12 mt-4">
+                                        <div class=" d-flex justify-content-end my-2">
+                                            <nav aria-label="Page navigation example">
+                                                <ul class="pagination">
+                                                    <li class="paginate_button page-item"
+                                                    ><a
+                                                            class="page-link"
+                                                            th:classappend="${comments.hasPrevious() ? '' : 'disabled'}"
+                                                            th:href="@{'/admin/blog/' + ${blog.blogId} + '?page=' + ${comments.number}}"
+                                                    >Prev</a>
+                                                    </li>
+                                                    <li class="paginate_button page-item"><a
+                                                            class="page-link"
+                                                            th:href="@{'/admin/blog/' + ${blog.blogId} + '?page=' + ${comments.number}}"
+                                                            th:if="${comments.hasPrevious()}"
+                                                            th:text="${comments.number}"></a>
+                                                    </li>
+                                                    <li class="paginate_button page-item active"><a
+                                                            class="page-link"
+                                                            th:href="@{'/admin/blog/' + ${blog.blogId} + '?page=' + ${comments.number + 1}}"
+                                                            th:text="${comments.number + 1}"></a>
+                                                    </li>
+                                                    <li class="paginate_button page-item"><a
+                                                            class="page-link"
+                                                            th:href="@{'/admin/blog/' + ${blog.blogId} + '?page=' + ${comments.number + 2}}"
+                                                            th:if="${comments.hasNext()}"
+                                                            th:text="${comments.number + 2}"></a>
+                                                    </li>
+
+                                                    <li class="paginate_button page-item"
+                                                    ><a
+                                                            class="page-link"
+                                                            th:classappend="${comments.hasNext()} ? '':'disabled'"
+                                                            th:href="@{'/admin/blog/' + ${blog.blogId} + '?page=' + ${comments.number + 2}}"
+                                                    >Next</a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-lg-4 col-md-5 mt-4">
+                        <div class="card border-0 sidebar sticky-bar rounded shadow">
+                            <div class="card-body">
+                                <!-- RECENT POST -->
+                                <div class="widget mb-4 pb-2">
+                                    <h5 class="widget-title">Recent Post</h5>
+                                    <div class="mt-4">
+                                        <div class="clearfix post-recent d-flex align-items-center"
+                                             th:each="blog, iterStat : ${reverseBlogs}"
+                                             th:if="${iterStat.index} &lt; 3">
+                                            <div class="post-recent-thumb float-start"><a
+                                                    th:href="@{/admin/blog/{blogId}(blogId=${blog.blogId})}"> <img
+                                                    alt="img" th:src="${blog.thumbnail}"
+                                                    style="object-fit: cover;"
+                                                    class="img-fluid rounded"></a></div>
+                                            <div class="post-recent-content float-start">
+                                                <a th:href="@{/admin/blog/{blogId}(blogId=${blog.blogId})}"
+                                                   th:text="${blog.title}"></a>
+                                                <span class="text-muted mt-2" th:text="${blog.createdAt}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- RECENT POST -->
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div>
+        </div><!--end container-->
+
+        <!-- Footer Start -->
+        <footer class="bg-white shadow py-3">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="text-sm-start text-center">
+                            <p class="mb-0 text-muted">
+                                <script>document.write(new Date().getFullYear())</script>
+                                © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a
+                                    href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.
+                            </p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </footer><!--end footer-->
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+<script th:replace="~{layout/script :: script}"></script>
+
+<script>
+    $('.btn-delete').on('click', function (e) {
+        e.preventDefault();
+        const blogId = $(this).attr("data-id");
+        SwalDelete(this.href, {
+            blogId
+        }, "/admin/blog");
+    });
+</script>
+
+</body>
+
+</html>

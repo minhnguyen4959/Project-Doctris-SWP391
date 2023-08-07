@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<!-- Navbar STart -->
+<header th:replace="~{layout/pageHeaderLanding :: pageHeaderLanding}"></header><!--end header-->
+<!-- Navbar End -->
+
+<!-- Start Hero -->
+<section class="bg-dashboard">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-lg-4 col-md-5 col-12">
+                <div th:replace="~{layout/pageSidebarLanding :: sidebarLanding}"></div>
+            </div><!--end col-->
+
+            <div class="col-xl-9 col-lg-8 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
+                <h5 class="mb-0">Schedule Timing</h5>
+
+                <div class="row">
+                    <div class="col-xl-2 col-lg-4 col-12 mt-4">
+                        <div id="external-events">
+                            <div class="card border-0 p-4 shadow rounded">
+                                <span class="h6">All Events</span>
+
+                                <div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event">
+                                    <div class="fc-event-main">Metting</div>
+                                </div>
+                                <div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event">
+                                    <div class="fc-event-main">Operations</div>
+                                </div>
+                                <div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event">
+                                    <div class="fc-event-main">Lunch</div>
+                                </div>
+                                <div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event">
+                                    <div class="fc-event-main">Conference</div>
+                                </div>
+                                <div class="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event">
+                                    <div class="fc-event-main">Business Metting</div>
+                                </div>
+
+                                <div class="mt-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="drop-remove">
+                                        <label class="form-check-label" for="drop-remove">Remove after drop</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-xl-10 col-lg-8 col-12 mt-4">
+                        <div id="calendar-container" class="card rounded border-0 shadow p-4">
+                            <div id="calendar"></div>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+</section><!--end section-->
+<!-- End Hero -->
+
+<!-- Footer Start -->
+<footer th:replace="~{layout/homeFooter :: homeFooter}"></footer>
+<!-- End -->
+
+<!-- Back to top -->
+<a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
+        data-feather="arrow-up" class="icons"></i></a>
+<!-- Back to top -->
+
+<!-- javascript -->
+<script th:replace="~{layout/script :: script}"></script>
+<!-- Calendar -->
+<script src="../assets/js/fullcalendar.min.js"></script>
+<script src="../assets/js/fullcalendar.init.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{layout/head :: head}"></head>
+<link rel='stylesheet prefetch' href='https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css'>
+<link th:href="@{~/assets/css/toastr.min.css}" rel="stylesheet">
+
+<style>
+    .toast:not(.showing):not(.show) {
+        opacity: 1;
+    }
+    .table > tbody {
+        vertical-align: middle;
+    }
+
+    .submit-comment {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    div.stars {
+        display: inline-block;
+    }
+
+    input.star { display: none; }
+
+    label.star {
+        float: right;
+        padding: 10px;
+        font-size: 36px;
+        color: #444;
+        transition: all .2s;
+    }
+
+    input.star:checked ~ label.star:before {
+        content: '\f005';
+        color: #FD4;
+        transition: all .25s;
+    }
+
+    input.star-5:checked ~ label.star:before {
+        color: #FE7;
+        text-shadow: 0 0 20px #952;
+    }
+
+    input.star-1:checked ~ label.star:before { color: #F62; }
+
+    label.star:hover { transform: rotate(-15deg) scale(1.3); }
+
+    label.star:before {
+        content: '\f006';
+        font-family: FontAwesome;
+    }
+
+    textarea:required:invalid,
+    input[type="radio"]:required:invalid {
+        border: 1px solid red;
+    }
+
+    textarea:required:valid,
+    input[type="radio"]:required:valid {
+        border: 1px solid green;
+    }
+</style>
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<!-- Navbar STart -->
+<header th:replace="~{layout/pageHeaderLanding :: pageHeaderLanding}"></header><!--end header-->
+<!-- Navbar End -->
+
+<!-- Start Hero -->
+<section class="bg-dashboard">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-lg-4 col-md-5 col-12">
+                <div th:replace="~{layout/pageSidebarLanding :: sidebarLanding}"></div>
+            </div><!--end col-->
+
+            <div class="col-xl-9 col-lg-8 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="mb-0">Appointment Detail</h5>
+                    </div><!--end col-->
+                    <div th:if="${session.user.role == 'Doctor'}" class="col-md-6 text-end">
+                        <!--                        <a th:href="@{/appoinment/completed/{appointmentId}(appointmentId=${appointment.appointmentId})}"-->
+                        <!--                           th:data-id="${appointment.appointmentId}" class="btn btn-primary btn-complete"-->
+                        <!--                        >Confirm complete</a>-->
+                        <a th:unless="${appointment.patientHistory}" th:href="@{/appointment/medical/{appointmentId}(appointmentId=${appointment.appointmentId})}" class="btn btn-primary"
+                        >Add medical infomation</a>
+                        <a th:if="${appointment.patientHistory}" th:href="@{/appointment/medical/edit/{appointmentId}(appointmentId=${appointment.appointmentId})}" class="btn btn-primary"
+                        >Update medical infomation</a>
+                    </div><!--end col-->
+                </div><!--end row-->
+                <hr>
+                <div class="row">
+                    <div class="col-12 mt-4">
+                        <div class="row">
+                            <div class="col-4">
+                                <h6 class="d-inline-block">Date:</h6>
+                                <span class="text-muted" th:text="${appointment.getDate('')}"></span>
+                            </div>
+                            <div class="col-4">
+                                <h6 class="d-inline-block">Time:</h6>
+                                <span class="text-muted" th:text="${appointment.time}"></span>
+                            </div>
+                            <div class="col-4">
+                                <h6 class="d-inline-block">Status:</h6>
+                                <div class="d-inline" th:switch="${appointment.status}">
+                                    <span th:case="New" class="badge bg-soft-primary">New</span>
+                                    <span th:case="Assigned" class="badge bg-soft-warning">Assigned</span>
+                                    <span th:case="Completed" class="badge bg-soft-success">Completed</span>
+                                    <span th:case="Cancel" class="badge bg-soft-danger">Cancel</span>
+                                </div>
+                            </div>
+                            <div class="col-12" th:if="${appointment.note}">
+                                <h6 class="d-inline-block">Note:</h6>
+                                <span class="text-muted" th:text="${appointment.note}"></span>
+                            </div>
+                        </div>
+                        <hr>
+                        <div th:if="${session.user.role == 'Doctor'}">
+                            <h5 class="mb-3">Patient information</h5>
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <h6 class="d-inline-block">Full name:</h6>
+                                    <span class="text-muted" th:text="${appointment.patient.user.fullName}"></span>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <h6 class="d-inline-block">Date of birth:</h6>
+                                    <span class="text-muted" th:text="${appointment.patient.user.dateOfBirth}"></span>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <h6 class="d-inline">Gender:</h6>
+                                    <span class="text-muted" th:text="${appointment.patient.user.gender}"></span>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+
+                        <h5 class="mb-2">Services</h5>
+                        <div class="bg-white shadow rounded">
+                            <table class="table mb-0 table-center">
+                                <thead>
+                                <tr>
+                                    <th class="border-bottom p-3" style="min-width: 50px;">#</th>
+                                    <th class="border-bottom p-3" style="min-width: 150px;">Services</th>
+                                    <th class="border-bottom p-3" style="min-width: 150px;">Price</th>
+                                    <th th:if="${session.user.role == 'Patient' && appointment.status == 'Completed'}" class="border-bottom p-3" style="min-width: 150px;">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:if="${session.user.role == 'Patient'}" th:each="appointment : ${appointments}">
+                                    <th class="p-3" th:text="${appointment.appointmentId}"></th>
+                                    <td class="p-3">
+                                        <a href="#" class="text-dark " th:each="service : ${appointment.service}">
+                                            <div class="d-flex align-items-center mt-2">
+                                                <img th:src="${service.thumbnail}"
+                                                     class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                <span class="ms-2" th:text="${service.title}"></span>
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td class="p-3" th:text="${appointment.getDate('')}"></td>
+                                    <td class="p-3" th:text="${appointment.time}"></td>
+                                    <td class="p-3">
+                                        <a href="#" class="text-dark" th:if="${appointment.doctor}">
+                                            <div class="d-flex align-items-center">
+                                                <img th:if="${appointment.doctor?.user.avatar}"
+                                                     th:src="${appointment.doctor.user.avatar}"
+                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                <img th:unless="${appointment.doctor?.user.avatar}"
+                                                     th:src="@{'~/assets/images/avatar.png'}"
+                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                <span class="ms-2"
+                                                      th:text="${appointment.doctor?.user?.fullName}"></span>
+                                            </div>
+                                        </a>
+                                        <a href="#" class="text-dark" th:unless="${appointment.doctor}">
+                                            <div class="d-flex align-items-center">
+                                                <span class="ms-2">Not assign yet</span>
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td class="p-3" th:switch="${appointment.status}">
+                                        <span th:case="New" class="badge bg-soft-primary">New</span>
+                                        <span th:case="Assigned" class="badge bg-soft-warning">Assigned</span>
+                                        <span th:case="Completed" class="badge bg-soft-success">Completed</span>
+                                        <span th:case="Cancel" class="badge bg-soft-danger">Cancel</span>
+                                    </td>
+                                    <td class="text-end p-3">
+                                        <a th:href="@{/appointment/{appointmentId}(appointmentId=${appointment.appointmentId})}"
+                                           class="btn btn-icon btn-pills btn-soft-primary"><i
+                                                class="uil uil-eye"></i></a>
+                                        <a th:if="${appointment.status != 'Cancel' && appointment.status != 'Completed'}"
+                                           th:href="@{/appointments/delete/{appointmentId}(appointmentId=${appointment.appointmentId})}"
+                                           class="btn btn-icon btn-delete btn-pills btn-soft-danger"><i
+                                                class="uil uil-times-circle"></i></a>
+                                    </td>
+                                </tr>
+
+                                <tr th:each="service : ${appointment.service}">
+                                    <th class="p-3" th:text="${service.serviceId}"></th>
+                                    <td class="p-3">
+                                        <a href="#" class="text-dark ">
+                                            <div class="d-flex align-items-center mt-2">
+                                                <img th:src="${service.thumbnail}"
+                                                     class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                <span class="ms-2" th:text="${service.title}"></span>
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td class="p-3" th:text="'$ ' + ${service.price}"></td>
+                                    <td class="p-3" th:if="${session.user.role == 'Patient' && appointment.status == 'Completed'}">
+                                        <button class="btn btn-primary btn-feedback" th:data-id="${service.serviceId}" data-bs-target="#feedback" data-bs-toggle="modal">
+                                            Feedback</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <h5 class="mt-3" th:text="'Total: $' + ${totalPrice}"></h5>
+
+                        <hr>
+                        <h5 class="mb-2">Medical information</h5>
+                        <div class="row" th:if="${appointment.patientHistory}">
+                            <div class="row mt-3">
+                                <div class="col-sm-12 mt-3">
+                                    <div class="form-group row">
+                                        <div class="col-6">
+                                            <label>Nhiệt độ cơ thể: </label>
+                                            <span class="text-muted" th:text="${appointment.patientHistory.temperature + '℃'}"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <label>Huyết áp</label>
+                                            <span class="text-muted" th:text="${appointment.patientHistory.bloodPressure}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <label
+                                        class="col-sm-12 col-md-12 col-form-label form-control-label">Tiền sử
+                                    bệnh toàn thân:
+                                </label>
+                            </div>
+                            <div class="row form-group" style="padding-left: 20px;">
+                                <div class="col-md-3 col-sm-12"><input
+                                        th:checked="${appointment.patientHistory.liver}"
+                                        type="checkbox" class="form-check-input disabled disabled"> Gan
+                                </div>
+                                <div class="col-md-3 col-sm-12"><input
+                                        th:checked="${appointment.patientHistory.diabetes}"
+                                        type="checkbox" class="form-check-input disabled"> Tiểu đường
+                                </div>
+                                <div class="col-md-3 col-sm-12"><input
+                                        th:checked="${appointment.patientHistory.rheumatism}"
+                                        type="checkbox" class="form-check-input disabled"> Thấp khớp
+                                </div>
+                                <div class="col-md-3 col-sm-12"><input
+                                        th:checked="${appointment.patientHistory.nerve}"
+                                        type="checkbox" class="form-check-input disabled"> Thần kinh
+                                </div>
+                                <div class="col-md-3 col-sm-12"><input
+                                        th:checked="${appointment.patientHistory.allergy}"
+                                        type="checkbox" class="form-check-input disabled"> Dị ứng
+                                </div>
+                                <div class="col-md-3 col-sm-12"><input
+                                        th:checked="${appointment.patientHistory.digest}"
+                                        type="checkbox" class="form-check-input disabled"> Tiêu hóa
+                                </div>
+                                <div class="col-md-3 col-sm-12"><input
+                                        th:checked="${appointment.patientHistory.respiratory}"
+                                        type="checkbox" class="form-check-input disabled"> Hô hấp
+                                </div>
+                                <div class="col-md-3 col-sm-12"><input
+                                        th:checked="${appointment.patientHistory.cardiovascular}"
+                                        type="checkbox" class="form-check-input disabled"> Tim mạch
+                                </div>
+                                <div class="col-md-3 col-sm-12"><input
+                                        th:checked="${appointment.patientHistory.kidney}"
+                                        type="checkbox" class="form-check-input disabled"> Thận
+                                </div>
+                                <div class="col-sm-12 mt-2">
+                                    <label for="other1">Khác</label>
+                                    <input type="text" id="other1"
+                                           th:value="${appointment.patientHistory.other1}" class="form-control disabled">
+                                </div>
+                            </div>
+                            <div class="row"><label
+                                    class="col-sm-12 col-md-12 col-form-label form-control-label">Tiền sử bệnh
+                                răng miệng:</label></div>
+                            <div class="row form-group" style="padding-left: 20px;">
+                                <div class="col-md-3 col-sm-12"><input
+                                        th:checked="${appointment.patientHistory.temporomandibularJoint}"
+                                        type="checkbox" class="form-check-input disabled"> Khớp thái dương hàm
+                                </div>
+                                <div class="col-md-3 col-sm-12"><input
+                                        th:checked="${appointment.patientHistory.toothExtraction}"
+                                        type="checkbox" class="form-check-input disabled"> Đã từng nhổ răng
+                                </div>
+                                <div class="col-md-3 col-sm-12"><input
+                                        th:checked="${appointment.patientHistory.orthodonticTreatment}"
+                                        type="checkbox" class="form-check-input disabled"> Đã từng chỉnh nha
+                                </div>
+                                <div class="col-md-3 col-sm-12"><input
+                                        th:checked="${appointment.patientHistory.dentalBraces}"
+                                        type="checkbox" class="form-check-input disabled"> Đã
+                                    từng đeo hàm
+                                </div>
+                                <div class="col-sm-12 mt-2">
+                                    <label for="other2">Khác</label>
+                                    <input type="text"
+                                           th:value="${appointment.patientHistory.other2}" id="other2" class="form-control disabled">
+                                </div>
+
+                                <div class="col-sm-12 mt-3">
+                                    <div class="form-group row"><label
+                                            class="col-12 col-form-label form-control-label">Chuẩn đoán</label>
+                                        <div class="col-12">
+                                        <textarea
+                                                th:text="${appointment.patientHistory.note}" rows="8"
+                                                class="form-control ng-untouched ng-pristine ng-valid disabled">
+                                        </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--end row-->
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+</section><!--end section-->
+<!-- End Hero -->
+
+<!--Feedback-->
+<div class="modal fade" id="feedback" tabindex="-1" aria-labelledby="exampleModalLabel1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom p-3">
+                <h5 class="modal-title" id="exampleModalLabel1">Feedback</h5>
+                <button type="button" class="btn btn-icon btn-close" data-bs-dismiss="modal" id="close-modal"></button>
+            </div>
+            <div class="modal-body p-3 pt-4">
+                <form id="form-feedback" th:action="@{/feedback/save}" method="POST" th:object="${rateStar}">
+                    <div class="align-items-center">
+                        <textarea id="messenger" class="form-control form-control-lg" name="feedback" placeholder="Type anything" rows="5" spellcheck="false"></textarea>
+                        <div class="error-message text-danger my-2" id="messenger-error"></div>
+                    </div>
+                    <div class="submit-comment">
+                        <div class="stars">
+                            <input class="star star-5" id="star-5" type="radio" name="star" value="5"/>
+                            <label class="star star-5" for="star-5"></label>
+                            <input class="star star-4" id="star-4" type="radio" name="star" value="4"/>
+                            <label class="star star-4" for="star-4"></label>
+                            <input class="star star-3" id="star-3" type="radio" name="star" value="3"/>
+                            <label class="star star-3" for="star-3"></label>
+                            <input class="star star-2" id="star-2" type="radio" name="star" value="2"/>
+                            <label class="star star-2" for="star-2"></label>
+                            <input class="star star-1" id="star-1" type="radio" name="star" value="1"/>
+                            <label class="star star-1" for="star-1"></label>
+                        </div>
+                        <!--                    <a th:href="@{/feedback/save}" style="align-self: center;" id="btn-sub" class="btn btn-primary mt-3">Upload review</a>-->
+                        <button type="submit" style="align-self: center;" id="btn-sub" class="btn btn-primary mt-3">Upload review</button>
+                        <!--                <div class="my-2" style="text-align: right;">-->
+                        <!--                    <a th:href="@{/feedback/save}" class="btn btn-primary btn-feedback">Submit</a>-->
+                        <!--                </div>-->
+                    </div>
+                    <div class="error-message text-danger" id="stars-error"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Feedback-->
+
+<!-- Footer Start -->
+<footer th:replace="~{layout/homeFooter :: homeFooter}"></footer>
+<!-- End -->
+
+<!-- Back to top -->
+<a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
+        data-feather="arrow-up" class="icons"></i></a>
+<!-- Back to top -->
+
+<!-- javascript -->
+<script th:replace="~{layout/script :: script}"></script>
+<script th:src="@{~/assets/js/toastr-init.js}"></script>
+<script th:src="@{~/assets/js/toastr.min.js}"></script>
+<script>
+    $('.btn-complete').on('click', function (e) {
+        e.preventDefault();
+        const appointmentId = $(this).attr("data-id");
+        SwalComplete(this.href, {
+            appointmentId
+        }, `/appointment/${appointmentId}`, "Successfully updated!");
+    });
+
+    // $('.btn-feedback').on('click', function (e) {
+    //     e.preventDefault();
+    //     const appointmentId = $(this).attr("data-id");
+    //     console.log('ahah')
+    //     // SwalComplete(this.href, {
+    //     //     appointmentId
+    //     // }, `/appointment/${appointmentId}`, "Successfully updated!");
+    // });
+    let serviceId = null;
+    $('.btn-feedback').on('click', function (e) {
+        e.preventDefault();
+        serviceId = $(this).attr("data-id");
+    });
+
+    document.getElementById('form-feedback').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Validate text box
+        var messenger = document.getElementById('messenger');
+        var messengerError = document.getElementById('messenger-error');
+        if (messenger.value.trim() === '') {
+            messenger.classList.add('error-input');
+            messengerError.textContent = 'Please enter a message';
+        } else {
+            messenger.classList.remove('error-input');
+            messengerError.textContent = '';
+        }
+
+        // Validate rate star
+        var stars = document.querySelectorAll('.stars input[name="star"]');
+        var starsError = document.getElementById('stars-error');
+        var isChecked = false;
+        let star = null;
+        for (var i = 0; i < stars.length; i++) {
+            if (stars[i].checked) {
+                star = stars[i].value;
+                isChecked = true;
+                break;
+            }
+        }
+        if (!isChecked) {
+            document.querySelector('.stars').classList.add('error-input');
+            starsError.textContent = 'Please rating';
+        } else {
+            document.querySelector('.stars').classList.remove('error-input');
+            starsError.textContent = '';
+        }
+
+        // Check if there are any errors
+        var hasError = messengerError.textContent || starsError.textContent;
+        if (hasError) {
+            return;
+        }
+
+        // Form is valid, proceed with submission
+        $.ajax({
+            type: 'POST',
+            url: '/feedback/save',
+            data: {
+                feedback: messenger.value,
+                star,
+                serviceId,
+            },
+            success: function (data) {
+                console.log(data);
+                toastr.options.positionClass = 'toast-top-right';
+                toastr.options.timeOut = 3000;
+                toastr.success("Send feedback successfully", "", {
+                    onHidden: function() {
+                        window.location.href = '/service/' + serviceId;
+                    }
+                });
+            },
+            error: function (error) {
+                console.log(error);
+                toastr.options.positionClass = 'toast-top-right';
+                toastr.options.timeOut = 4000;
+                toastr.error("Failed to send feedback");
+            }
+        });
+    });
+
+
+    function toastSuccessful(mes) {
+        toastr.options.positionClass = 'toast-top-right';
+        toastr.options.timeOut = 4000;
+        toastr.success(mes);
+    }
+</script>
+</body>
+
+</html>

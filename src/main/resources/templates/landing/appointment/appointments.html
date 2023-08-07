@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<!-- Navbar STart -->
+<header th:replace="~{layout/pageHeaderLanding :: pageHeaderLanding}"></header><!--end header-->
+<!-- Navbar End -->
+
+<!-- Start Hero -->
+<section class="bg-dashboard">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-lg-4 col-md-5 col-12">
+                <div th:replace="~{layout/pageSidebarLanding :: sidebarLanding}"></div>
+            </div><!--end col-->
+
+            <div class="col-xl-9 col-lg-8 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-5 col-md-4">
+                        <h5 class="mb-0">Appointment</h5>
+                    </div><!--end col-->
+
+                    <div class="col-xl-7 col-lg-7 col-md-8 mt-4 mt-md-0">
+                        <div class="justify-content-md-end">
+                            <form role="search" method="get" id="searchform" class="searchform" th:action="@{/appointments}">
+                                <div class="row justify-content-end align-items-center">
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="mb-0 position-relative">
+                                            <input class="form-control" type="date" th:name="date" th:value="${date}" onchange="this.form.submit()"/>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="searchform col-sm-12 col-md-3">
+                                        <select class="col-3 form-select form-control" th:name="status"
+                                                onchange="this.form.submit()">
+                                            <option selected th:value>Choose status</option>
+                                            <option th:selected="${status == 'New'}" th:value="New">New</option>
+                                            <option th:selected="${status == 'Assigned'}" th:value="Assigned">Assigned</option>
+                                            <option th:selected="${status == 'Completed'}" th:value="Completed">Completed</option>
+                                            <option th:selected="${status == 'Cancel'}" th:value="Cancel">Cancel</option>
+                                        </select>
+                                    </div>
+
+                                    <div th:if="${session.user.role == 'Patient'}" class="col-sm-12 col-md-5 mt-4 mt-sm-0">
+                                        <div class="d-grid">
+                                            <a th:href="@{/booking}" class="btn btn-primary"
+                                               data-bs-target="#appointmentform">Make appointment</a>
+                                        </div>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </form><!--end form-->
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+
+                <div class="row">
+                    <div class="col-12 mt-4">
+                        <div class="table-responsive bg-white shadow rounded">
+                            <table class="table mb-0 table-center">
+                                <thead>
+                                <tr>
+                                    <th class="border-bottom p-3" style="min-width: 50px;">#</th>
+                                    <th th:if="${session.user.role == 'Doctor'}" class="border-bottom p-3" style="min-width: 150px;">Patient name</th>
+                                    <th th:if="${session.user.role == 'Patient'}" class="border-bottom p-3" style="min-width: 150px;">Services</th>
+                                    <th class="border-bottom p-3" style="min-width: 150px;">Date</th>
+                                    <th class="border-bottom p-3">Time</th>
+                                    <th th:if="${session.user.role == 'Patient'}" class="border-bottom p-3" style="min-width: 220px;">Doctor</th>
+                                    <th class="border-bottom p-3">Status</th>
+                                    <th class="border-bottom p-3" style="min-width: 150px;"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:if="${session.user.role == 'Patient'}" th:each="appointment : ${appointments}">
+                                    <th class="p-3" th:text="${appointment.appointmentId}"></th>
+                                    <td class="p-3">
+                                        <a href="#" class="text-dark " th:each="service : ${appointment.service}">
+                                            <div class="d-flex align-items-center mt-2">
+                                                <img th:src="${service.thumbnail}" class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                <span class="ms-2" th:text="${service.title}"></span>
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td class="p-3" th:text="${appointment.getDate('')}"></td>
+                                    <td class="p-3" th:text="${appointment.time}"></td>
+                                    <td class="p-3">
+                                        <a href="#" class="text-dark" th:if="${appointment.doctor}">
+                                            <div class="d-flex align-items-center">
+                                                <img th:if="${appointment.doctor?.user.avatar}" th:src="${appointment.doctor.user.avatar}"
+                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                <img th:unless="${appointment.doctor?.user.avatar}" th:src="@{'~/assets/images/avatar.png'}"
+                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                <span class="ms-2" th:text="${appointment.doctor?.user?.fullName}"></span>
+                                            </div>
+                                        </a>
+                                        <a href="#" class="text-dark" th:unless="${appointment.doctor}">
+                                            <div class="d-flex align-items-center">
+                                                <span class="ms-2">Not assign yet</span>
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td class="p-3" th:switch="${appointment.status}">
+                                        <span th:case="New" class="badge bg-soft-primary">New</span>
+                                        <span th:case="Assigned" class="badge bg-soft-warning">Assigned</span>
+                                        <span th:case="Completed" class="badge bg-soft-success">Completed</span>
+                                        <span th:case="Cancel" class="badge bg-soft-danger">Cancel</span>
+                                    </td>
+                                    <td class="text-end p-3">
+                                        <a th:href="@{/appointment/{appointmentId}(appointmentId=${appointment.appointmentId})}" class="btn btn-icon btn-pills btn-soft-primary"><i
+                                                class="uil uil-eye"></i></a>
+                                        <a th:if="${appointment.status != 'Cancel' && appointment.status != 'Completed'}" th:href="@{/appointments/delete/{appointmentId}(appointmentId=${appointment.appointmentId})}" class="btn btn-icon btn-delete btn-pills btn-soft-danger"><i
+                                                class="uil uil-times-circle"></i></a>
+                                    </td>
+                                </tr>
+
+                                <!--                                Doctor-->
+                                <tr th:if="${session.user.role == 'Doctor'}" th:each="appointment : ${appointments}">
+                                    <th class="p-3" th:text="${appointment.appointmentId}"></th>
+                                    <td class="p-3" th:text="${appointment.patient.user.fullName}"></td>
+                                    <td class="p-3" th:text="${appointment.getDate('')}"></td>
+                                    <td class="p-3" th:text="${appointment.time}"></td>
+                                    <td class="p-3" th:switch="${appointment.status}">
+                                        <span th:case="New" class="badge bg-soft-primary">New</span>
+                                        <span th:case="Assigned" class="badge bg-soft-warning">Assigned</span>
+                                        <span th:case="Completed" class="badge bg-soft-success">Completed</span>
+                                        <span th:case="Cancel" class="badge bg-soft-danger">Cancel</span>
+                                    </td>
+                                    <td class="text-end p-3">
+                                        <a th:href="@{/appointment/{appointmentId}(appointmentId=${appointment.appointmentId})}" class="btn btn-icon btn-pills btn-soft-primary"><i
+                                                class="uil uil-eye"></i></a>
+                                        <a th:if="${appointment.status != 'Cancel' && appointment.status != 'Completed' && session.user.role == 'Patient'}" th:href="@{/appointments/delete/{appointmentId}(appointmentId=${appointment.appointmentId})}" class="btn btn-icon btn-delete btn-pills btn-soft-danger"><i
+                                                class="uil uil-times-circle"></i></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div><!--end row-->
+
+                <div class="row text-right mt-5" th:unless="${#lists.isEmpty(appointments.getContent())}">
+                    <div class="col-12">
+                        <ul class="pagination justify-content-end mb-0 list-unstyled">
+                            <li class="paginate_button page-item"><a
+                                    class="page-link"
+                                    th:classappend="${appointments.hasPrevious() ? '' : 'disabled'}"
+                                    th:href="@{'/appointments'(titleSearch=${titleSearch},page=${appointments.number})}"
+                            >Prev</a>
+                            </li>
+                            <li class="paginate_button page-item"><a
+                                    class="page-link"
+                                    th:href="@{'/appointments'(titleSearch=${titleSearch},page=${appointments.number})}"
+                                    th:if="${appointments.hasPrevious()}" th:text="${appointments.number}"></a>
+                            </li>
+                            <li class="paginate_button page-item active"><a
+                                    class="page-link"
+                                    th:href="@{'/appointments'(titleSearch=${titleSearch},page=${appointments.number + 1})}"
+                                    th:text="${appointments.number + 1}"></a>
+                            </li>
+                            <li class="paginate_button page-item"><a
+                                    class="page-link"
+                                    th:href="@{'/appointments'(titleSearch=${titleSearch},page=${appointments.number + 2})}"
+                                    th:if="${appointments.hasNext()}" th:text="${appointments.number + 2}"></a>
+                            </li>
+
+                            <li class="paginate_button page-item">
+                                <a
+                                        class="page-link"
+                                        th:href="@{'/appointments'(titleSearch=${titleSearch},page=${appointments.number + 2})}"
+                                        th:classappend="${appointments.hasNext()} ? '':'disabled'"
+                                >Next
+                                </a>
+                            </li>
+                        </ul><!--end pagination-->
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+</section><!--end section-->
+<!-- End Hero -->
+
+<!-- View Appointment Start -->
+<div class="modal fade" id="viewappointment" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom p-3">
+                <h5 class="modal-title" id="exampleModalLabel1">Appointment Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-3 pt-4">
+                <div class="d-flex align-items-center">
+                    <img src="../assets/images/client/01.jpg" class="avatar avatar-small rounded-pill" alt="">
+                    <h5 class="mb-0 ms-3">Howard Tanner</h5>
+                </div>
+                <ul class="list-unstyled mb-0 d-md-flex justify-content-between mt-4">
+                    <li>
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex">
+                                <h6>Age:</h6>
+                                <p class="text-muted ms-2">25 year old</p>
+                            </li>
+
+                            <li class="d-flex">
+                                <h6>Gender:</h6>
+                                <p class="text-muted ms-2">Male</p>
+                            </li>
+
+                            <li class="d-flex">
+                                <h6 class="mb-0">Department:</h6>
+                                <p class="text-muted ms-2 mb-0">Cardiology</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex">
+                                <h6>Date:</h6>
+                                <p class="text-muted ms-2">20th Dec 2020</p>
+                            </li>
+
+                            <li class="d-flex">
+                                <h6>Time:</h6>
+                                <p class="text-muted ms-2">11:00 AM</p>
+                            </li>
+
+                            <li class="d-flex">
+                                <h6 class="mb-0">Doctor:</h6>
+                                <p class="text-muted ms-2 mb-0">Dr. Calvin Carlo</p>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- View Appintment End -->
+
+<!-- Accept Appointment Start -->
+<div class="modal fade" id="acceptappointment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body py-5">
+                <div class="text-center">
+                    <div class="icon d-flex align-items-center justify-content-center bg-soft-success rounded-circle mx-auto"
+                         style="height: 95px; width:95px;">
+                        <span class="mb-0"><i class="uil uil-check-circle h1"></i></span>
+                    </div>
+                    <div class="mt-4">
+                        <h4>Accept Appointment</h4>
+                        <p class="para-desc mx-auto text-muted mb-0">Great doctor if you need your family member to get
+                            immediate assistance, emergency treatment.</p>
+                        <div class="mt-4">
+                            <a href="#" class="btn btn-soft-success">Accept</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Accept Appointment End -->
+
+<!-- Cancel Appointment Start -->
+<div class="modal fade" id="cancelappointment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body py-5">
+                <div class="text-center">
+                    <div class="icon d-flex align-items-center justify-content-center bg-soft-danger rounded-circle mx-auto"
+                         style="height: 95px; width:95px;">
+                        <span class="mb-0"><i class="uil uil-times-circle h1"></i></span>
+                    </div>
+                    <div class="mt-4">
+                        <h4>Cancel Appointment</h4>
+                        <p class="para-desc mx-auto text-muted mb-0">Great doctor if you need your family member to get
+                            immediate assistance, emergency treatment.</p>
+                        <div class="mt-4">
+                            <a href="#" class="btn btn-soft-danger">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cancel Appointment End -->
+<!-- Modal end -->
+
+<!-- Footer Start -->
+<footer th:replace="~{layout/homeFooter :: homeFooter}"></footer>
+<!-- End -->
+
+<!-- Back to top -->
+<a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
+        data-feather="arrow-up" class="icons"></i></a>
+<!-- Back to top -->
+
+<!-- javascript -->
+<script th:replace="~{layout/script :: script}"></script>
+<script>
+    $('.btn-delete').on('click', function (e) {
+        e.preventDefault();
+        const appointmentId = $(this).attr("data-id");
+        SwalStatus(this.href, {
+            appointmentId
+        }, "/appointments", "Successfully cancel!");
+    });
+</script>
+</body>
+
+</html>

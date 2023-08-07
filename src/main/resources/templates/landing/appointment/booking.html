@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{layout/head :: head}"></head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
+<style>
+    .choices__inner, .choices__input {
+        background: #fff;
+    }
+</style>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<!-- Navbar STart -->
+<header th:replace="~{layout/pageHeaderLanding :: pageHeaderLanding}"></header><!--end header-->
+<!-- Navbar End -->
+
+<!-- Start Hero -->
+<section class="bg-half-170 d-table w-100 bg-light">
+    <div class="container">
+        <div class="row mt-5 justify-content-center">
+            <div class="col-12">
+                <div class="section-title text-center">
+                    <h3 class="sub-title mb-4">Book an appointment</h3>
+                    <p class="para-desc mx-auto text-muted">Great doctor if you need your family member to get effective
+                        immediate assistance, emergency treatment or a simple consultation.</p>
+
+                    <nav aria-label="breadcrumb" class="d-inline-block mt-3">
+                        <ul class="breadcrumb bg-transparent mb-0 py-1">
+                            <li class="breadcrumb-item"><a th:href="@{/}">Doctris</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Make appointment</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+</section><!--end section-->
+<div class="position-relative">
+    <div class="shape overflow-hidden text-white">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+        </svg>
+    </div>
+</div>
+<!-- End Hero -->
+
+<!-- Start -->
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow rounded overflow-hidden">
+                    <ul class="nav nav-pills nav-justified flex-column flex-sm-row rounded-0 shadow overflow-hidden bg-light mb-0"
+                        id="pills-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link rounded-0 active" id="online-booking" data-bs-toggle="pill" href="#pills-online"
+                               role="tab" aria-controls="pills-online" aria-selected="false">
+                                <div class="text-center pt-1 pb-1">
+                                    <h4 class="title fw-normal mb-0">Online Appointment</h4>
+                                </div>
+                            </a><!--end nav link-->
+                        </li><!--end nav item-->
+                    </ul>
+
+                    <div class="tab-content p-4" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-online" role="tabpanel" aria-labelledby="online-booking">
+                            <form method="post" th:action="@{/booking/save}" th:object="${appointment}">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Services <span
+                                                    class="text-danger">*</span></label>
+                                            <select id="choices-multiple-remove-button" th:name="services" placeholder="Select upto 3 services" multiple>
+<!--                                                    <option  th:value="${service.serviceId}" th:text="${service.title} + ' - $' + ${service.price}" th:selected="${selectedService == service.serviceId}"></option>-->
+                                                    <option th:each="service : ${services}"
+                                                            th:value="${service.serviceId}"
+                                                            th:text="${service.title + ' - $' + service.price}"
+                                                            th:selected="${selectedServices != null and selectedServices.contains(service.serviceId)} ? 'selected' : 'false'">
+                                                    ></option>
+                                            </select>
+                                            <span class="mt-0 text-danger d-block" th:if="${service}" th:text="${service}"></span>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-12">
+                                        <div class="mb-3" th:object="${user}">
+                                            <label class="form-label">Your Phone <span
+                                                    class="text-danger">*</span></label>
+                                            <input th:name="phoneNumber" id="phoneNumber" type="tel" class="form-control"
+                                                   placeholder="Your Phone :" th:value="${session.user.phoneNumber}">
+                                            <span class="mt-2 text-danger" th:if="${#fields.hasErrors('phoneNumber')}"
+                                                  th:errors="*{phoneNumber}"></span>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label"> Date : <span
+                                                    class="text-danger">*</span></label>
+                                            <input th:name="date" th:field="*{date}" type="date"
+                                                   class="form-control" id="date">
+                                            <span class="mt-2 text-danger" th:if="${#fields.hasErrors('date')}"
+                                                  th:errors="*{date}"></span>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="input-time">Time : <span
+                                                    class="text-danger">*</span> </label>
+<!--                                            <input th:name="time" th:field="*{time}" type="text" class="form-control timepicker"-->
+<!--                                                   id="input-time" placeholder="03:30 PM">-->
+                                                <select th:name="*{time}" th:field="*{time}" class="form-select form-control" id="input-time" aria-label="Default select example">
+                                                    <option value="" selected>Select time</option>
+                                                    <option value="Morning" th:selected="${time == 'Morning'}">Morning (8AM - 12PM)</option>
+                                                    <option value="Afternoon" th:selected="${time == 'Afternoon'}">Afternoon (1PM - 5PM)</option>
+                                                </select>
+                                            <span class="mt-0 text-danger d-block" th:if="${time}" th:text="${time}"></span>
+                                            <span class="mt-2 text-danger" th:if="${#fields.hasErrors('time')}"
+                                                  th:errors="*{time}"></span>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Comments </label>
+                                            <textarea th:name="note" th:field="*{note}" id="comments2" rows="4" class="form-control"
+                                                      placeholder="Your Message :"></textarea>
+                                            <span class="mt-2 text-danger" th:if="${#fields.hasErrors('note')}"
+                                                  th:errors="*{note}"></span>
+                                        </div>
+                                    </div><!--end col-->
+                                    <span class="mb-2 text-danger d-block" th:if="${errMes}" th:text="${errMes}"></span>
+                                    <div class="col-lg-12">
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-primary">Book An Appointment</button>
+                                        </div>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+</section><!--end section-->
+<!-- End -->
+
+<!-- Start -->
+<footer th:replace="~{layout/homeFooter :: homeFooter}"></footer>
+<!-- End -->
+
+<!-- Back to top -->
+<a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
+        data-feather="arrow-up" class="icons"></i></a>
+<!-- Back to top -->
+
+<!-- javascript -->
+<script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
+<script th:replace="~{layout/script :: script}"></script>
+<script>
+    $(document).ready(function () {
+        var multipleCancelButton = new Choices('#choices-multiple-remove-button', {
+            removeItemButton: true,
+            maxItemCount: 3,
+            searchResultLimit: 10,
+            renderChoiceLimit: 10
+        });
+    });
+</script>
+
+</body>
+
+</html>

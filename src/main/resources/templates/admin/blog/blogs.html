@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+<div class="page-wrapper doctris-theme toggled">
+    <nav th:replace="~{layout/pageSidebarAdmin :: pageSidebarAdmin}" id="sidebar" class="sidebar-wrapper"></nav>
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <div th:replace="~{layout/pageHeaderAdmin :: pageHeaderAdmin}" class="top-header"></div>
+
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div class="d-md-flex justify-content-between">
+                    <div>
+                        <h5 class="mb-0">Blogs</h5>
+
+                        <nav aria-label="breadcrumb" class="d-inline-block mt-1">
+                            <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
+                                <li class="breadcrumb-item"><a th:href="@{/admin}">Doctris</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Blogs</li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <div class="mt-4 mt-sm-0">
+                        <a href="/admin/blog/add" class="btn btn-primary">Add
+                            Blog</a>
+                    </div>
+                </div>
+
+                <form role="search" method="get" id="searchform" class="searchform" th:action="@{/admin/blog}">
+                    <div class="row mt-3">
+                        <div class="col-4 search-bar p-0 d-none d-lg-block ms-2">
+                            <div id="search" class="menu-search mb-0 searchform">
+                                <div class="searchform">
+                                    <input type="text" class="form-control border rounded-pill" th:name="titleSearch"
+                                           th:value="${titleSearch}" id="s" placeholder="Search Keywords...">
+                                    <input type="submit" id="searchsubmit" value="Search">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <select class="col-3 form-select form-control" th:name="statusSearch"
+                                    onchange="this.form.submit()">
+                                <option selected th:value>Choose status</option>
+                                <option th:selected="${statusSearch == '1'}" th:value="1">Active</option>
+                                <option th:selected="${statusSearch == '0'}" th:value="0">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
+                <div th:switch="${blogs}">
+                    <h2 th:case="null" class="text-center mt-3">No blogs yet!</h2>
+                    <div th:case="*">
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-12 mt-4" th:each="blog : ${usesPage}">
+                                <div class="card blog blog-primary border-0 shadow overflow-hidden">
+                                    <div class="dropdown dropdown-primary" style="position: absolute; right: 5px; top: 5px;">
+                                        <button type="button" class="btn dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="mdi mdi-dots-vertical" style="font-size: 24px;"></i>
+                                        </button>
+                                        <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-0 py-3" style="min-width: 200px;">
+                                            <a class="dropdown-item text-dark" th:href="@{/admin/blog/edit/{blogId}(blogId=${blog.blogId})}"><span class="mb-0 d-inline-block me-1"><i class="mdi mdi-notebook-edit-outline align-middle h6"></i></span> Edit</a>
+                                            <a class="dropdown-item text-dark btn-delete" th:href="@{/admin/blog/delete/{blogId}(blogId=${blog.blogId})}"><span class="mb-0 d-inline-block me-1"><i class="mdi mdi-trash-can-outline align-middle h6"></i></span> Delete</a>
+                                        </div>
+                                    </div>
+
+                                    <a th:href="@{/admin/blog/{blogId}(blogId=${blog.blogId})}"><img th:src="${blog.thumbnail}" class="img-fluid" alt=""></a>
+                                    <div class="card-body p-4">
+                                        <ul class="list-unstyled mb-2">
+                                            <i class="mdi mdi-account"></i>
+                                            <li class="list-inline-item user text-muted me-2"
+                                                th:text="${blog.user.fullName}"></li>
+                                            <br>
+                                            <i class="uil uil-calendar-alt text-dark h6 me-1"></i>
+                                            <li class="list-inline-item text-muted small me-3"
+                                                th:text="${blog.createdAt}">
+                                            </li>
+                                        </ul>
+                                        <a th:href="@{/admin/blog/{blogId}(blogId=${blog.blogId})}"
+                                           class="text-dark title h5"
+                                           th:text="${blog.title}"></a>
+                                        <p class="py-2 text-muted" th:text="${blog.summary}"></p>
+                                        <div class="post-meta d-flex justify-content-between mt-3">
+                                            <ul class="list-unstyled mb-0">
+                                                <li class="list-inline-item">
+                                                    <span class="text-muted" style="margin-right: 5px;">Status: </span>
+                                                <li class="list-inline-item date text-muted" th:switch=${blog.status}>
+                                                    <span th:case="${true}" class="badge bg-soft-success">Active</span>
+                                                    <span th:case="${false}"
+                                                          class="badge bg-soft-warning">Inactive</span>
+                                                </li>
+                                                |
+                                                <i class="mdi mdi-comment-outline me-1"></i>
+                                                <a href="#" class="text-muted comments"
+                                                   th:text="${blog.commentBlog.size()}"></a>
+                                                </li>
+                                            </ul>
+                                            <a th:href="@{/admin/blog/{blogId}(blogId=${blog.blogId})}" class="link">Read
+                                                More<i class="mdi mdi-chevron-right align-middle"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--end col-->
+                        </div> <!--end row-->
+                    </div>
+                </div>
+
+                <div class="row" th:unless="${#lists.isEmpty(usesPage.getContent())}">
+                    <div class="col-12 mt-4">
+                        <div class=" d-flex justify-content-end my-2">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="paginate_button page-item"><a
+                                            class="page-link"
+                                            th:classappend="${usesPage.number == 0 ? 'disabled' : ''}"
+                                            th:href="@{'/admin/blog'(titleSearch=${titleSearch},statusSearch=${statusSearch},page=${1})}">First</a>
+                                    </li>
+                                    <li class="paginate_button page-item"
+                                        th:classappend="${usesPage.hasPrevious() ? '' : 'disabled'}"><a
+                                            class="page-link"
+                                            th:href="@{'/admin/blog'(titleSearch=${titleSearch},statusSearch=${statusSearch},page=${usesPage.number})}"
+                                            th:if="${usesPage.hasPrevious()}">Prev</a>
+                                    </li>
+                                    <li class="paginate_button page-item"><a
+                                            class="page-link"
+                                            th:href="@{'/admin/blog'(titleSearch=${titleSearch},statusSearch=${statusSearch},page=${usesPage.number})}"
+                                            th:if="${usesPage.hasPrevious()}" th:text="${usesPage.number}"></a>
+                                    </li>
+                                    <li class="paginate_button page-item active"><a
+                                            class="page-link"
+                                            th:href="@{'/admin/blog'(titleSearch=${titleSearch},statusSearch=${statusSearch},page=${usesPage.number + 1})}"
+                                            th:text="${usesPage.number + 1}"></a>
+                                    </li>
+                                    <li class="paginate_button page-item"><a
+                                            class="page-link"
+                                            th:href="@{'/admin/blog'(titleSearch=${titleSearch},statusSearch=${statusSearch},page=${usesPage.number + 2})}"
+                                            th:if="${usesPage.hasNext()}" th:text="${usesPage.number + 2}"></a>
+                                    </li>
+
+                                    <li class="paginate_button page-item"
+                                        th:classappend="${usesPage.hasNext()} ? '':'disabled'"><a
+
+                                            class="page-link"
+                                            th:href="@{'/admin/blog'(titleSearch=${titleSearch},statusSearch=${statusSearch},page=${usesPage.number + 2})}"
+                                            th:if="${usesPage.hasNext()}">Next</a>
+                                    </li>
+                                    <li class="paginate_button page-item"><a
+                                            class="page-link"
+                                            th:classappend="${usesPage.number + 1 == numberOfPage ? 'disabled' : ''}"
+                                            th:href="@{'/admin/blog'(titleSearch=${titleSearch},statusSearch=${statusSearch},page=${numberOfPage})}">Last</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div>
+        </div><!--end container-->
+
+        <!-- Footer Start -->
+        <footer class="bg-white shadow py-3">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="text-sm-start text-center">
+                            <p class="mb-0 text-muted">
+                                <script>document.write(new Date().getFullYear())</script>
+                                © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a
+                                    href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.
+                            </p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </footer><!--end footer-->
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+
+<script th:replace="~{layout/script :: script}"></script>
+
+<script>
+    $('.btn-delete').on('click', function (e) {
+        e.preventDefault();
+        const blogId = $(this).attr("data-id");
+        SwalDelete(this.href, {
+            blogId
+        }, "/admin/blog");
+    });
+</script>
+</body>
+
+</html>

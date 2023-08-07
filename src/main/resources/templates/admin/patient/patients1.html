@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+<div class="page-wrapper doctris-theme toggled">
+    <nav th:replace="~{layout/pageSidebarAdmin :: pageSidebarAdmin}" id="sidebar" class="sidebar-wrapper"></nav>
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <div th:replace="~{layout/pageHeaderAdmin :: pageHeaderAdmin}" class="top-header"></div>
+
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div class="d-md-flex justify-content-between">
+                    <div>
+                        <h5 class="mb-0">Patients</h5>
+
+                        <nav aria-label="breadcrumb" class="d-inline-block mt-1">
+                            <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
+                                <li class="breadcrumb-item"><a th:href="@{/admin}">Doctris</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Patients</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <form role="search" method="get" id="searchform" class="searchform" th:action="@{/admin/patient}">
+                    <div class="row mt-3">
+                        <div class="col-4 search-bar p-0 d-none d-lg-block ms-2">
+                            <div id="search" class="menu-search mb-0 searchform">
+                                <div class="searchform">
+                                    <input type="text" class="form-control border rounded-pill" th:name="fullName" th:value="${fullName}" id="s" placeholder="Search Keywords...">
+                                    <input type="submit" id="searchsubmit" value="Search">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-2">
+                            <select class="col-3 form-select form-control" th:name="statusSearch" onchange="this.form.submit()">
+                                <option selected th:value>Choose status</option>
+                                <option th:selected="${statusSearch == '1'}" th:value="1" >Active</option>
+                                <option th:selected="${statusSearch == '0'}" th:value="0">Inactive</option>
+                            </select>
+                        </div>
+
+                        <div class="col-2">
+                            <select class="col-3 form-select form-control" th:name="gender" onchange="this.form.submit()">
+                                <option selected th:value>Choose Gender</option>
+                                <option th:selected="${gender == 'Male'}" th:value="Male" >Male</option>
+                                <option th:selected="${gender == 'Female'}" th:value="Female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
+                <div th:switch="${patients}">
+                    <h2 th:case="null" class="text-center mt-3">No patient yet!</h2>
+                    <div th:case="*">
+                        <div class="row">
+                            <div class="col-12 mt-4">
+                                <div class="table-responsive shadow rounded">
+                                    <table class="table table-center bg-white mb-0">
+                                        <thead>
+                                        <tr>
+                                            <th class="border-bottom p-3" style="min-width: 50px;">Id</th>
+                                            <th class="border-bottom p-3" style="min-width: 180px;">Name</th>
+                                            <th class="border-bottom p-3">Date of birth</th>
+                                            <th class="border-bottom p-3">Gender</th>
+                                            <th class="border-bottom p-3">Mobile No.</th>
+                                            <th class="border-bottom p-3">Status</th>
+                                            <th class="border-bottom p-3" style="min-width: 100px;"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="patient : ${usesPage}">
+                                            <th class="p-3" th:text="${patient.patientId}"></th>
+                                            <td class="py-3">
+                                                <a href="#" class="text-dark">
+                                                    <div class="d-flex align-items-center">
+                                                        <img th:if="${patient.user.avatar}" th:src="${patient.user.avatar}"
+                                                             class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                        <img th:unless="${patient.user.avatar}" th:src="@{'~/assets/images/avatar.png'}"
+                                                             class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                                        <span class="ms-2" th:text="${patient.user.fullName}"></span>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td class="p-3" th:text="${patient.user.dateOfBirth}"></td>
+                                            <td class="p-3" th:text="${patient.user.gender}"></td>
+                                            <td class="p-3" th:text="${patient.user.phoneNumber}"></td>
+                                            <td class="p-3" th:switch="${patient.user.status}">
+                                                <span th:case="${true}" class="badge bg-soft-success">Active</span>
+                                                <span th:case="${false}" class="badge bg-soft-warning">Inactive</span>
+                                            </td>
+                                            <td class="text-end p-3">
+                                                <a th:href="@{/admin/patient/edit/{patientId}(patientId=${patient.patientId})}" class="btn btn-icon btn-pills btn-soft-success"><i
+                                                        class="uil uil-pen"></i></a>
+                                                <!--                                                <a th:href="@{/admin/doctor/delete/{doctorId}(doctorId=${doctor.doctorId})}" class="btn btn-icon btn-delete btn-pills btn-soft-danger"><i-->
+                                                <!--                                                        class="uil uil-trash"></i></a>-->
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div><!--end row-->
+                    </div>
+                </div>
+
+
+                <div class="row" th:unless="${#lists.isEmpty(usesPage.getContent())}">
+                    <div class="col-12 mt-4">
+                        <div class=" d-flex justify-content-end my-2">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="paginate_button page-item"><a
+                                            class="page-link"
+                                            th:classappend="${usesPage.number == 0 ? 'disabled' : ''}"
+                                            th:href="@{'/admin/patient'(fullName=${fullName},statusSearch=${statusSearch},gender=${gender},page=${1})}">First</a>
+                                    </li>
+                                    <li class="paginate_button page-item"
+                                        th:classappend="${usesPage.hasPrevious() ? '' : 'disabled'}"><a
+                                            class="page-link"
+                                            th:href="@{'/admin/patient'(fullName=${fullName},statusSearch=${statusSearch},gender=${gender},page=${usesPage.number})}"
+                                            th:if="${usesPage.hasPrevious()}">Prev</a>
+                                    </li>
+                                    <li class="paginate_button page-item"><a
+                                            class="page-link"
+                                            th:href="@{'/admin/patient'(fullName=${fullName},statusSearch=${statusSearch},gender=${gender},page=${usesPage.number})}"
+                                            th:if="${usesPage.hasPrevious()}" th:text="${usesPage.number}"></a>
+                                    </li>
+                                    <li class="paginate_button page-item active"><a
+                                            class="page-link"
+                                            th:href="@{'/admin/patient'(fullName=${fullName},statusSearch=${statusSearch},gender=${gender},page=${usesPage.number + 1})}"
+                                            th:text="${usesPage.number + 1}"></a>
+                                    </li>
+                                    <li class="paginate_button page-item"><a
+                                            class="page-link"
+                                            th:href="@{'/admin/patient'(fullName=${fullName},statusSearch=${statusSearch},gender=${gender},page=${usesPage.number + 2})}"
+                                            th:if="${usesPage.hasNext()}" th:text="${usesPage.number + 2}"></a>
+                                    </li>
+
+                                    <li class="paginate_button page-item"
+                                        th:classappend="${usesPage.hasNext()} ? '':'disabled'"><a
+
+                                            class="page-link"
+                                            th:href="@{'/admin/patient'(fullName=${fullName},statusSearch=${statusSearch},gender=${gender},page=${usesPage.number + 2})}"
+                                            th:if="${usesPage.hasNext()}">Next</a>
+                                    </li>
+                                    <li class="paginate_button page-item"><a
+                                            class="page-link"
+                                            th:classappend="${usesPage.number + 1 == numberOfPage ? 'disabled' : ''}"
+                                            th:href="@{'/admin/patient'(fullName=${fullName},statusSearch=${statusSearch},gender=${gender},page=${numberOfPage})}">Last</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+
+            </div>
+        </div><!--end container-->
+
+        <!-- Footer Start -->
+        <footer class="bg-white shadow py-3">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="text-sm-start text-center">
+                            <p class="mb-0 text-muted">
+                                <script>document.write(new Date().getFullYear())</script>
+                                © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a
+                                    href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.
+                            </p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </footer><!--end footer-->
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+
+<script th:replace="~{layout/script :: script}"></script>
+
+<script>
+    $('.btn-delete').on('click', function (e) {
+        e.preventDefault();
+        const doctorId = $(this).attr("data-id");
+        SwalDelete(this.href, {
+            doctorId
+        }, "/admin/doctor");
+    });
+</script>
+
+</body>
+
+</html>

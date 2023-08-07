@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/head :: head">
+
+</head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<div class="back-to-home rounded d-none d-sm-block">
+    <a href="../index.html" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
+</div>
+
+<!-- Hero Start -->
+<section class="bg-half-150 d-table w-100 bg-light"
+         style="background: url('/assets/images/bg/bg-lines-one.png') center;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-8">
+                <img src="../assets/images/logo-dark.png" height="24" class="mx-auto d-block" alt="">
+                <div class="card login-page bg-white shadow mt-4 rounded border-0">
+                    <div class="card-body">
+                        <h4 class="text-center">Sign Up</h4>
+                        <span class="text-danger" th:if="${message}" th:text="${message}"></span>
+
+                        <form id="signupForm" th:action="@{/register/save}"  method="post" th:object="${user}" class="login-form mt-4">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Full name <span class="text-danger">*</span></label>
+                                        <input id="fullName" th:field="*{fullName}" type="text" class="form-control" placeholder="First Name" name="fullName"
+                                               >
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Your Email <span class="text-danger">*</span></label>
+                                        <input id="email" th:field="*{email}" type="email" class="form-control" placeholder="Email" name="email"
+                                               >
+                                        <span id="emailMessage"></span>
+                                        <span class="mt-2 text-danger" th:if="${#fields.hasErrors('email')}"
+                                              th:errors="*{email}"></span>
+                                        <span class="mt-2 text-danger" th:if="${emailError}" th:text="${emailError}">
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Password <span class="text-danger">*</span></label>
+                                        <input id="password" th:field="*{password}" type="password" class="form-control" placeholder="Password" >
+                                    </div>
+                                </div>
+<!--                                <span th:if="${message}" th:text="${message}" class="text-danger"></span>-->
+<!--                                <div class="col-md-12">-->
+<!--                                    <div class="mb-3">-->
+<!--                                        <div class="form-check">-->
+<!--                                            <input class="form-check-input align-middle" type="checkbox" value=""-->
+<!--                                                   id="accept-tnc-check">-->
+<!--                                            <label class="form-check-label" for="accept-tnc-check">I Accept <a href="#" class="text-primary">Terms-->
+<!--                                                And Condition</a></label>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                                <div class="col-md-12">
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary">Register</button>
+                                    </div>
+                                </div>
+
+<!--                                <div class="col-lg-12 mt-3 text-center">-->
+<!--                                    <h6 class="text-muted">Or</h6>-->
+<!--                                </div>&lt;!&ndash;end col&ndash;&gt;-->
+
+<!--                                <div class="col-6 mt-3">-->
+<!--                                    <div class="d-grid">-->
+<!--                                        <a href="javascript:void(0)" class="btn btn-soft-primary"><i-->
+<!--                                                class="uil uil-facebook"></i> Facebook</a>-->
+<!--                                    </div>-->
+<!--                                </div>&lt;!&ndash;end col&ndash;&gt;-->
+
+<!--                                <div class="col-6 mt-3">-->
+<!--                                    <div class="d-grid">-->
+<!--                                        <a href="javascript:void(0)" class="btn btn-soft-primary"><i-->
+<!--                                                class="uil uil-google"></i> Google</a>-->
+<!--                                    </div>-->
+<!--                                </div>&lt;!&ndash;end col&ndash;&gt;-->
+
+                                <div class="mx-auto">
+                                    <p class="mb-0 mt-3"><small class="text-dark me-2">Already have an account ?</small>
+                                        <a th:href="@{/login}" class="text-dark fw-bold">Sign in</a></p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><!---->
+            </div> <!--end col-->
+        </div><!--end row-->
+    </div> <!--end container-->
+</section><!--end section-->
+<!-- Hero End -->
+
+<!-- javascript -->
+<script th:src="@{~/assets/js/bootstrap.bundle.min.js}"></script>
+<!-- Icons -->
+<script th:src="@{~/assets/js/feather.min.js}"></script>
+<!-- Main Js -->
+<script th:src="@{~/assets/js/app.js}"></script>
+
+<!--   validate     -->
+
+<!--<script th:src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>-->
+<script th:src="@{~/assets/js/jquery-3.2.1.min.js}"></script>
+<!--<script scr="@{~/assets/js/jquery.validate.js"></script>-->
+<script th:src="@{~/assets/js/additional-methods.js}"></script>
+<script th:src="@{~/assets/js/jquery.validate.js}"></script>
+<!-- View Invoice End -->
+
+<!--only validate full name-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<script th:src="@{~/assets/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{~/assets/js/additional-methods.js}"></script>
+<script th:src="@{~/assets/js/jquery.validate.js}"></script>
+<script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
+
+<script>
+    //full name
+    $.validator.addMethod("lettersAndVietnameseOnly", function(value, element) {
+        return this.optional(element) || /^[a-zA-Z\sàáạãảăắằẵặẳâấầẫậẩđèéẹẽẻêếềễệểìíịĩỉòóọõỏôốồỗộổơớờỡợởùúụũủưứừữựửỳýỵỹỷÈÉẸẼẺÊẾỀỄỆỂÌÍỊĨỈÒÓỌÕỎÔỐỒỖỘỔƠỚỜỠỢỞÙÚỤŨỦƯỨỪỮỰỬỲÝỴỸỶ]+$/i.test(value);
+    }, "Full name must contain only letters, spaces");
+    //bo
+    $.validator.addMethod("lettersOnly", function (value, element) {
+        return this.optional(element) || /^[a-zA-Z\s]+$/.test(value);
+    }, "This field must contain only letters and spaces");
+    //password no space
+    $.validator.addMethod("noSpace", function (value, element) {
+        // return value.indexOf(" ") < 0;
+        return /^\S+$/.test(value);
+    }, "Password should not contain spaces.");
+    //bo sung
+    $.validator.addMethod("oneLessCharacter", function (value, element) {
+        // return value.indexOf(" ") < 0;
+        return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z!@#$%^&*~\d]{8,}$/.test(value);
+    }, "Password must has at least one character and one number.");
+    $(document).ready(function () {
+        $('#signupForm').validate({
+            rules: {
+                fullName: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 30,
+                    // lettersOnly: true
+                    lettersAndVietnameseOnly: true
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                password: {
+                    required: true,
+                    minlength: 8,
+                    maxlength: 30,
+                    noSpace: true,
+                    oneLessCharacter: true
+                }
+            },
+            messages: {
+                fullName: {
+                    required: "Please enter your full name",
+                    minlength: "Your full name must be at least 3 characters long",
+                    maxlength: "Your full name must be less than or equal to 30 characters long"
+                },
+                email: {
+                    required: "Please enter your email address",
+                    email: "Please enter a valid email address"
+                },
+                password: {
+                    required: "Please enter a password",
+                    minlength: "Your password must be at least 8 characters long",
+                    maxlength: "Your password must be less than or equal to 30 characters long"
+                }
+            },
+            errorElement: 'span',
+            errorClass: 'text-danger',
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+                $(element).addClass('is-valid');
+            }
+        });
+
+        $(document).ready(function () {
+            var fileNameExists = false;
+            $('#email').blur(function () {
+                var email = $(this).val();
+                $.ajax({
+                    url: '/checkEmailExists',
+                    type: 'GET',
+                    data: {email: email.toLowerCase()},
+                    success: function (response) {
+                        if (response.exists) {
+                            $('#emailMessage').html('<span style="color:red;">Email already exists!</span>');
+                            fileNameExists = true;
+                        } else {
+                            $('#emailMessage').empty();
+                            fileNameExists = false;
+                        }
+                    }
+                    // ,
+                    // error: function() {
+                    //     alert('Error checking term name!');
+                    // }
+                });
+            });
+            $('form').submit(function (event) {
+                if (fileNameExists) {
+                    event.preventDefault();
+                    $('#emailMessage').html('<span style="color:red;">Email already exists!</span>');
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+
+</html>

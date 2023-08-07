@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org">
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+<div class="page-wrapper doctris-theme toggled">
+    <nav th:replace="~{layout/pageSidebarAdmin :: pageSidebarAdmin}" id="sidebar" class="sidebar-wrapper"></nav>
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <div th:replace="~{layout/pageHeaderAdmin :: pageHeaderAdmin}" class="top-header"></div>
+
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div class="d-md-flex justify-content-between">
+                    <h5 class="mb-0">Update Blog</h5>
+
+                    <nav aria-label="breadcrumb" class="d-inline-block mt-4 mt-sm-0">
+                        <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                            <li class="breadcrumb-item"><a th:href="@{/admin}">Doctris</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/blog">Blogs</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/admin/blog/{blogId}(blogId=${blog.blogId})}">Blog Detail</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Update Blog</li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 mt-4">
+                        <div class="card border-0 p-4 rounded shadow">
+                            <form method="POST" id="form-submit" th:action="@{/admin/blog/update}" th:object="${blog}" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="d-grid">
+                                            <p class="text-muted">Upload your blog image here, Please click "Upload
+                                                Image"
+                                                Button.</p>
+                                            <div class="preview-box d-block justify-content-center rounded shadow overflow-hidden bg-light p-1">
+                                                <img th:if="${blog.thumbnail}" th:src="${blog.thumbnail}" class="preview-content w-100" src=${reader.result} />
+                                            </div>
+
+                                            <p id="thumbnail" class="d-none" th:name="thumbnail" th:text="${blog.thumbnail}"></p>
+                                            <input type="file" id="image" name="image" accept="image/*"
+                                                   onchange={handleChange()} hidden/>
+                                            <label class="btn-upload btn btn-primary mt-4" for="image">Upload
+                                                Image</label>
+                                            <span class="mt-2 text-danger" th:if="${image}" th:text="${image}"></span>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-8 mt-4 mt-sm-0">
+                                        <div class="ms-md-4">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Blog Title <span
+                                                                class="text-danger">*</span></label>
+                                                        <input th:name="title" th:field="*{title}" th:value="${blog.title}"
+                                                               id="title" type="text" class="form-control"
+                                                               placeholder="Title :">
+                                                        <span class="mt-2 text-danger" th:if="${#fields.hasErrors('title')}"
+                                                              th:errors="*{title}"></span>
+                                                        <input th:name="blodId" id="blodId" th:field="*{blogId}"
+                                                               type="text"
+                                                               class="form-control" hidden>
+                                                    </div>
+                                                </div><!--end col-->
+
+                                                <div class="col-lg-12">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Description <span
+                                                                class="text-danger">*</span></label>
+                                                        <textarea th:name="summary" th:field="*{summary}" id="summary"
+                                                                  rows="4" class="form-control"
+                                                                  placeholder="Blog description :"></textarea>
+                                                        <span class="mt-2 text-danger" th:if="${#fields.hasErrors('summary')}"
+                                                              th:errors="*{summary}"></span>
+                                                    </div>
+                                                </div><!--end col-->
+
+                                                <div class="col-lg-12">
+                                                    <div class="mb-3" th:if="${blog.status}">
+                                                        <label class="form-label d-block">Status</label>
+                                                        <input type="radio" th:name="status" th:value="1" checked/> Active
+                                                        <input style="margin-left: 20px;" type="radio" th:name="status"
+                                                               th:value="0"/> Inactive
+                                                        <span class="mt-2 text-danger" th:if="${#fields.hasErrors('status')}"
+                                                              th:errors="*{status}"></span>
+                                                    </div>
+                                                    <div class="mb-3" th:unless="${blog.status}">
+                                                        <label class="form-label d-block">Status</label>
+                                                        <input type="radio" th:name="status" th:value="1"/> Active
+                                                        <input style="margin-left: 20px;" type="radio" th:name="status"
+                                                               th:value="0" checked/> Inactive
+                                                        <span class="mt-2 text-danger" th:if="${#fields.hasErrors('status')}"
+                                                              th:errors="*{status}"></span>
+                                                    </div>
+                                                </div><!--end col-->
+
+                                                <div class="col-lg-12">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Content</label>
+                                                        <textarea id="editor" th:name="content" th:field="*{content}"></textarea>
+                                                        <span class="mt-2 text-danger" th:if="${#fields.hasErrors('content')}"
+                                                              th:errors="*{content}"></span>
+                                                    </div>
+                                                </div><!--end col-->
+
+                                                <div class="col-lg-12 text-end">
+                                                    <button type="submit" class="btn btn-primary btn-update">Update</button>
+                                                </div><!--end col-->
+                                            </div>
+                                        </div>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </form>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div>
+        </div><!--end container-->
+
+        <!-- Footer Start -->
+        <footer class="bg-white shadow py-3">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="text-sm-start text-center">
+                            <p class="mb-0 text-muted">
+                                <script>document.write(new Date().getFullYear())</script>
+                                © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a
+                                    href="../../../index.html" target="_blank" class="text-reset">Shreethemes</a>.
+                            </p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </footer><!--end footer-->
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+<script th:replace="~{layout/script :: script}"></script>
+
+<script>
+    $('.btn-update').on('click', function (e) {
+        // e.preventDefault()
+        const thumbnail = $('#thumbnail');
+        const image = $('#image');
+
+        if (image.val() == "") {
+            image.prop('disabled', true);
+            const form = $('#form-submit');
+            const thumbnailValue = thumbnail.html();
+            const thumbnailField = $(`<input type=\"text\" name="thumbnail" value=\"${thumbnailValue}\" hidden />`);
+            form.append(thumbnailField)
+        }
+    });
+
+    const handleChange = () => {
+        const fileUploader = document.querySelector('#image');
+        const getFile = fileUploader.files
+        if (getFile.length !== 0) {
+            const uploadedFile = getFile[0];
+            readFile(uploadedFile);
+        }
+    }
+
+    const readFile = (uploadedFile) => {
+        if (uploadedFile) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const parent = document.querySelector('.preview-box');
+                parent.innerHTML = `<img class="preview-content w-100" src=${reader.result} />`;
+            };
+
+            reader.readAsDataURL(uploadedFile);
+        }
+    };
+
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+</body>
+
+</html>

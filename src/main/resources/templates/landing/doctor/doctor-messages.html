@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{layout/head :: head}"></head>
+
+<body>
+<!-- Loader -->
+<div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<!-- Loader -->
+
+<!-- Navbar STart -->
+<header th:replace="~{layout/pageHeaderLanding :: pageHeaderLanding}"></header><!--end header-->
+<!-- Navbar End -->
+
+<!-- Start Hero -->
+<section class="bg-dashboard">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-lg-4 col-md-5 col-12">
+                <div th:replace="~{layout/pageSidebarLanding :: sidebarLanding}"></div>
+            </div><!--end col-->
+
+            <div class="col-xl-9 col-lg-8 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
+                <h5 class="mb-0">Messages</h5>
+                <div class="row">
+                    <div class="col-xl-3 col-lg-3 col-md-4 col-12 mt-4 pt-2">
+                        <div class="card rounded-0 border-0 shadow p-4">
+                            <a href="javascript:void(0)" class="btn btn-primary" data-bs-toggle="modal"
+                               data-bs-target="#compose-mail"><i class="uil uil-plus me-1"></i> Compose</a>
+
+                            <ul class="nav nav-pills nav-link-soft nav-justified flex-column mt-4 bg-white mb-0"
+                                id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link rounded active" id="inbox-tab" data-bs-toggle="pill"
+                                       href="#inbox" role="tab" aria-controls="inbox" aria-selected="false">
+                                        <div class="text-start px-3">
+                                            <span class="mb-0"><i class="uil uil-inbox h5 align-middle me-2 mb-0"></i> Inbox</span>
+                                        </div>
+                                    </a><!--end nav link-->
+                                </li><!--end nav item-->
+
+                                <li class="nav-item mt-2">
+                                    <a class="nav-link rounded" id="starred-tab" data-bs-toggle="pill" href="#starred"
+                                       role="tab" aria-controls="starred" aria-selected="false">
+                                        <div class="text-start px-3">
+                                            <span class="mb-0"><i
+                                                    class="uil uil-envelope-star h5 align-middle me-2 mb-0"></i> Starred</span>
+                                        </div>
+                                    </a><!--end nav link-->
+                                </li><!--end nav item-->
+
+                                <li class="nav-item mt-2">
+                                    <a class="nav-link rounded" id="spam-tab" data-bs-toggle="pill" href="#spam"
+                                       role="tab" aria-controls="spam" aria-selected="false">
+                                        <div class="text-start px-3">
+                                            <span class="mb-0"><i
+                                                    class="uil uil-envelope-times h5 align-middle me-2 mb-0"></i> Spam</span>
+                                        </div>
+                                    </a><!--end nav link-->
+                                </li><!--end nav item-->
+
+                                <li class="nav-item mt-2">
+                                    <a class="nav-link rounded" id="send-tab" data-bs-toggle="pill" href="#sent"
+                                       role="tab" aria-controls="sent" aria-selected="false">
+                                        <div class="text-start px-3">
+                                            <span class="mb-0"><i
+                                                    class="uil uil-envelope-upload h5 align-middle me-2 mb-0"></i> Sent</span>
+                                        </div>
+                                    </a><!--end nav link-->
+                                </li><!--end nav item-->
+
+                                <li class="nav-item mt-2">
+                                    <a class="nav-link rounded" id="drafts-tab" data-bs-toggle="pill" href="#drafts"
+                                       role="tab" aria-controls="drafts" aria-selected="false">
+                                        <div class="text-start px-3">
+                                            <span class="mb-0"><i
+                                                    class="uil uil-envelope-edit h5 align-middle me-2 mb-0"></i> Drafts</span>
+                                        </div>
+                                    </a><!--end nav link-->
+                                </li><!--end nav item-->
+
+                                <li class="nav-item mt-2">
+                                    <a class="nav-link rounded" id="delete-tab" data-bs-toggle="pill" href="#delete"
+                                       role="tab" aria-controls="delete" aria-selected="false">
+                                        <div class="text-start px-3">
+                                            <span class="mb-0"><i class="uil uil-trash h5 align-middle me-2 mb-0"></i> Delete</span>
+                                        </div>
+                                    </a><!--end nav link-->
+                                </li><!--end nav item-->
+
+                                <li class="nav-item mt-2">
+                                    <a class="nav-link rounded" id="notes-tab" data-bs-toggle="pill" href="#notes"
+                                       role="tab" aria-controls="notes" aria-selected="false">
+                                        <div class="text-start px-3">
+                                            <span class="mb-0"><i class="uil uil-notes h5 align-middle me-2 mb-0"></i> Notes</span>
+                                        </div>
+                                    </a><!--end nav link-->
+                                </li><!--end nav item-->
+                            </ul><!--end nav pills-->
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-xl-9 col-lg-9 col-md-8 col-12 mt-4 pt-2">
+                        <div class="tab-content rounded-0 shadow" id="pills-tabContent">
+                            <div class="tab-pane fade bg-white show active" id="inbox" role="tabpanel"
+                                 aria-labelledby="inbox-tab">
+                                <div class="table-responsive bg-white shadow rounded">
+                                    <table class="table mb-0 table-center">
+                                        <thead>
+                                        <tr>
+                                            <th class="border-bottom p-3" style="min-width: 15px;" scope="col">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkAll">
+                                                    <label class="form-check-label fw-normal" for="checkAll"></label>
+                                                </div>
+                                            </th>
+                                            <th class="border-bottom p-3" style="min-width: 15px;" scope="col">
+                                                <a href="#" class="text-muted"><i class="uil uil-redo"></i></a>
+                                            </th>
+                                            <th class="border-bottom p-3" style="min-width: 150px;" scope="col"></th>
+                                            <th class="border-bottom p-3" style="min-width: 600px;" scope="col"></th>
+                                            <th class="border-bottom p-3 text-end" style="min-width: 150px;"
+                                                scope="col">
+                                                <a href="#" class="btn btn-icon btn-sm btn-pills btn-soft-light"><i
+                                                        class="uil uil-angle-left icons"></i></a>
+                                                <a href="#" class="btn btn-icon btn-sm btn-pills btn-soft-light"><i
+                                                        class="uil uil-angle-right icons"></i></a>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox1">
+                                                    <label class="form-check-label" for="checkbox1"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Amy Lucier</td>
+                                            <td class="p-3"><p class="text-muted mb-0">In a free hour, when our power of
+                                                choice is untrammelled and when nothing prevents our being able to
+                                                do.</p></td>
+                                            <td class="text-end class p-3"><small>17 Jan 2021</small></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox2">
+                                                    <label class="form-check-label" for="checkbox2"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Tameika Whittle</td>
+                                            <td class="p-3"><p class="text-muted mb-0">The wise man therefore always
+                                                holds in these matters to this principle of selection.</p></td>
+                                            <td class="text-end class p-3"><small>27 Jan 2021</small></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox3">
+                                                    <label class="form-check-label" for="checkbox3"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Barbara Bayne</td>
+                                            <td class="p-3"><p class="text-muted mb-0">We denounce with righteous</p>
+                                            </td>
+                                            <td class="text-end class p-3"><small>21 Feb 2021</small></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox4">
+                                                    <label class="form-check-label" for="checkbox4"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Nita Griffin</td>
+                                            <td class="p-3"><p class="text-muted mb-0">In a free hour, when our power of
+                                                choice is untrammelled and when nothing prevents our being able to
+                                                do.</p></td>
+                                            <td class="text-end class p-3"><small>17 Jan 2021</small></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox5">
+                                                    <label class="form-check-label" for="checkbox5"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Marc Flythe</td>
+                                            <td class="p-3"><p class="text-muted mb-0">The wise man therefore always
+                                                holds in these matters to this principle of selection.</p></td>
+                                            <td class="text-end class p-3"><small>27 Jan 2021</small></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox6">
+                                                    <label class="form-check-label" for="checkbox6"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Elaine Hannah</td>
+                                            <td class="p-3"><p class="text-muted mb-0">pain avoided.</p></td>
+                                            <td class="text-end class p-3"><small>21 Feb 2021</small></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox7">
+                                                    <label class="form-check-label" for="checkbox7"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Abraham Edwards</td>
+                                            <td class="p-3"><p class="text-muted mb-0">We denounce with righteous</p>
+                                            </td>
+                                            <td class="text-end class p-3"><small>21 Feb 2021</small></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox8">
+                                                    <label class="form-check-label" for="checkbox8"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Allie Smith</td>
+                                            <td class="p-3"><p class="text-muted mb-0">In a free hour, when our power of
+                                                choice is untrammelled and when nothing prevents our being able to
+                                                do.</p></td>
+                                            <td class="text-end class p-3"><small>17 Jan 2021</small></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox9">
+                                                    <label class="form-check-label" for="checkbox9"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Eleanor Cisco</td>
+                                            <td class="p-3"><p class="text-muted mb-0">The wise man therefore always
+                                                holds in these matters to this principle of selection.</p></td>
+                                            <td class="text-end class p-3"><small>27 Jan 2021</small></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox10">
+                                                    <label class="form-check-label" for="checkbox10"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Troy Turk</td>
+                                            <td class="p-3"><p class="text-muted mb-0">pain avoided.</p></td>
+                                            <td class="text-end class p-3"><small>21 Feb 2021</small></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox11">
+                                                    <label class="form-check-label" for="checkbox11"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Tyron Elliott</td>
+                                            <td class="p-3"><p class="text-muted mb-0">We denounce with righteous</p>
+                                            </td>
+                                            <td class="text-end class p-3"><small>21 Feb 2021</small></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox12">
+                                                    <label class="form-check-label" for="checkbox12"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Betty Cook</td>
+                                            <td class="p-3"><p class="text-muted mb-0">We denounce with righteous</p>
+                                            </td>
+                                            <td class="text-end class p-3"><small>21 Feb 2021</small></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox13">
+                                                    <label class="form-check-label" for="checkbox13"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Doris Morrison</td>
+                                            <td class="p-3"><p class="text-muted mb-0">In a free hour, when our power of
+                                                choice is untrammelled and when nothing prevents our being able to
+                                                do.</p></td>
+                                            <td class="text-end class p-3"><small>17 Jan 2021</small></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox14">
+                                                    <label class="form-check-label" for="checkbox14"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Chad Potter</td>
+                                            <td class="p-3"><p class="text-muted mb-0">The wise man therefore always
+                                                holds in these matters to this principle of selection.</p></td>
+                                            <td class="text-end class p-3"><small>27 Jan 2021</small></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <p class="text-end text-muted mb-0 py-2 mx-2">See more 14 of 35</p>
+                            </div><!--end teb pane-->
+
+                            <div class="tab-pane fade bg-white rounded" id="starred" role="tabpanel"
+                                 aria-labelledby="starred-tab">
+                                <div class="table-responsive bg-white shadow rounded">
+                                    <table class="table mb-0 table-center">
+                                        <thead>
+                                        <tr>
+                                            <th class="border-bottom p-3" style="min-width: 15px;" scope="col">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkAll1">
+                                                    <label class="form-check-label fw-normal" for="checkAll1"></label>
+                                                </div>
+                                            </th>
+                                            <th class="border-bottom p-3" style="min-width: 15px;" scope="col">
+                                                <a href="#" class="text-muted"><i class="uil uil-redo"></i></a>
+                                            </th>
+                                            <th class="border-bottom p-3" style="min-width: 150px;" scope="col"></th>
+                                            <th class="border-bottom p-3" style="min-width: 600px;" scope="col"></th>
+                                            <th class="border-bottom p-3 text-end" style="min-width: 150px;"
+                                                scope="col">
+                                                <a href="#" class="btn btn-icon btn-sm btn-pills btn-soft-light"><i
+                                                        class="uil uil-angle-left icons"></i></a>
+                                                <a href="#" class="btn btn-icon btn-sm btn-pills btn-soft-light"><i
+                                                        class="uil uil-angle-right icons"></i></a>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox16">
+                                                    <label class="form-check-label" for="checkbox16"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Amy Lucier</td>
+                                            <td class="p-3"><p class="text-muted mb-0">In a free hour, when our power of
+                                                choice is untrammelled and when nothing prevents our being able to
+                                                do.</p></td>
+                                            <td class="text-end p-3"><small>17 Jan 2021</small></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox17">
+                                                    <label class="form-check-label" for="checkbox17"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Tameika Whittle</td>
+                                            <td class="p-3"><p class="text-muted mb-0">The wise man therefore always
+                                                holds in these matters to this principle of selection.</p></td>
+                                            <td class="text-end p-3"><small>27 Jan 2021</small></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox18">
+                                                    <label class="form-check-label" for="checkbox18"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Barbara Bayne</td>
+                                            <td class="p-3"><p class="text-muted mb-0">We denounce with righteous</p>
+                                            </td>
+                                            <td class="text-end p-3"><small>21 Feb 2021</small></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div><!--end teb pane-->
+
+                            <div class="tab-pane fade bg-white rounded p-4" id="spam" role="tabpanel"
+                                 aria-labelledby="spam-tab">
+                                <span class="text-muted">Hooray, no spam here!</span>
+                            </div><!--end teb pane-->
+
+                            <div class="tab-pane fade bg-white rounded" id="sent" role="tabpanel"
+                                 aria-labelledby="send-tab">
+                                <div class="table-responsive bg-white shadow rounded">
+                                    <table class="table mb-0 table-center">
+                                        <thead>
+                                        <tr>
+                                            <th class="border-bottom p-3" style="min-width: 15px;" scope="col">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkAll2">
+                                                    <label class="form-check-label fw-normal" for="checkAll2"></label>
+                                                </div>
+                                            </th>
+                                            <th class="border-bottom p-3" style="min-width: 15px;" scope="col">
+                                                <a href="#" class="text-muted"><i class="uil uil-redo"></i></a>
+                                            </th>
+                                            <th class="border-bottom p-3" style="min-width: 150px;" scope="col"></th>
+                                            <th class="border-bottom p-3" style="min-width: 600px;" scope="col"></th>
+                                            <th class="border-bottom p-3 text-end" style="min-width: 150px;"
+                                                scope="col">
+                                                <a href="#" class="btn btn-icon btn-sm btn-pills btn-soft-light"><i
+                                                        class="uil uil-angle-left icons"></i></a>
+                                                <a href="#" class="btn btn-icon btn-sm btn-pills btn-soft-light"><i
+                                                        class="uil uil-angle-right icons"></i></a>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox19">
+                                                    <label class="form-check-label" for="checkbox19"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Amy Lucier</td>
+                                            <td class="p-3"><p class="text-muted mb-0">In a free hour, when our power of
+                                                choice is untrammelled and when nothing prevents our being able to
+                                                do.</p></td>
+                                            <td class="text-end p-3"><small>17 Jan 2021</small></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox20">
+                                                    <label class="form-check-label" for="checkbox20"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Tameika Whittle</td>
+                                            <td class="p-3"><p class="text-muted mb-0">The wise man therefore always
+                                                holds in these matters to this principle of selection.</p></td>
+                                            <td class="text-end p-3"><small>27 Jan 2021</small></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input check" type="checkbox" value=""
+                                                           id="checkbox21">
+                                                    <label class="form-check-label" for="checkbox21"></label>
+                                                </div>
+                                            </th>
+                                            <th class="p-3"><i class="uil uil-star text-muted"></i></th>
+                                            <td class="p-3">Barbara Bayne</td>
+                                            <td class="p-3"><p class="text-muted mb-0">We denounce with righteous</p>
+                                            </td>
+                                            <td class="text-end p-3"><small>21 Feb 2021</small></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div><!--end teb pane-->
+
+                            <div class="tab-pane fade bg-white rounded p-4" id="drafts" role="tabpanel"
+                                 aria-labelledby="drafts-tab">
+                                <span class="text-muted">You don't have any saved drafts. Saving a draft allows you to keep a message you aren't ready to send yet.</span>
+                            </div><!--end teb pane-->
+
+                            <div class="tab-pane fade bg-white rounded p-4" id="delete" role="tabpanel"
+                                 aria-labelledby="delete-tab">
+                                <span class="text-muted">No conversations in Trash.</span>
+                            </div><!--end teb pane-->
+
+                            <div class="tab-pane fade bg-white rounded p-4" id="notes" role="tabpanel"
+                                 aria-labelledby="notes-tab">
+                                <span class="text-muted">No notes in Notes</span>
+                            </div><!--end teb pane-->
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end col-->
+        </div><!--end row-->
+    </div><!--end container-->
+</section><!--end section-->
+<!-- End Hero -->
+
+<!-- Footer Start -->
+<footer th:replace="~{layout/homeFooter :: homeFooter}"></footer>
+<!-- End -->
+
+<!-- Back to top -->
+<a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
+        data-feather="arrow-up" class="icons"></i></a>
+<!-- Back to top -->
+
+<!-- Compose Mail Start -->
+<div class="modal fade" id="compose-mail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom p-3">
+                <h5 class="modal-title" id="exampleModalLabel">Compose</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-3 pt-4">
+                <form>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <input type="email" class="form-control" placeholder="To">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <input type="email" class="form-control" placeholder="Cc">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <input type="email" class="form-control" placeholder="Bcc">
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div id="editor"><p>Hello,<br><br> Great doctor if you need your family member to get
+                                effective immediate assistance, emergency treatment or a simple consultation. <br><br>Thank
+                                you</p></div>
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-primary">Send Now</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Compose Mail End -->
+
+<!-- javascript -->
+<script th:replace="~{layout/script :: script}"></script>
+
+<script>
+    $("#checkAll").click(function () {
+        $(".check").prop('checked', $(this).prop('checked'));
+    });
+
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+</body>
+
+</html>
