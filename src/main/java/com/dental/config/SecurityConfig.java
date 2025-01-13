@@ -33,7 +33,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(); //mã hóa mật khẩu
     }
 
     @Bean
@@ -66,26 +66,26 @@ public class SecurityConfig {
 
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                    .requestMatchers("/", "blog/**", "service/**", "doctor/**", "/register/**", "assets/**", "/forgot_password/**", "/reset_password/**", "/check_token/**", "/check_email/**").permitAll() // Allowing access to home page and static assets without authentication
+                    .requestMatchers("/", "blog/**", "service/**", "doctor/**", "/register/**", "assets/**", "/forgot_password/**", "/reset_password/**", "/check_token/**", "/check_email/**").permitAll() // Cho phép truy cập mà không cần đăng nhập
                     .requestMatchers("/checkEmailExists").permitAll() // Allowing access to home page and static assets without authentication
                     .requestMatchers("/appointment/medical/**").hasAuthority("Doctor")
                     .requestMatchers("/admin/**").hasAnyAuthority("Admin", "Staff") // Require Staff authority for admin pages
-                    .requestMatchers("/admin/user/**").hasAuthority("Admin") // Require ADMIN authority for admin pages
+                    .requestMatchers("/admin/user/**").hasAuthority("Admin") // Chỉ role Admin được truy cập
                 .requestMatchers("/*").authenticated()
-                .anyRequest().authenticated() // Require authentication for other URLs
+                .anyRequest().authenticated() // Yêu cầu đăng nhập khi truy cập các URL khác
                 .and()
                     .formLogin()
-                    .loginPage("/login")
+                    .loginPage("/login") //chuyển về trang login
                     .usernameParameter("email")
                     .passwordParameter("password")
                     .loginProcessingUrl("/login")
                     .defaultSuccessUrl("/redirect", true)
-                    .failureUrl("/login?success=fail")
+                    .failureUrl("/login?success=fail") //chuyển về trang login kèm thông báo lỗi
                     .permitAll()
                 .and()
                     .logout()
-                    .logoutUrl("/doLogout")
-                    .logoutSuccessUrl("/logout-success")
+                    .logoutUrl("/doLogout") //xử lý đăng xuất
+                    .logoutSuccessUrl("/logout-success") //đăng xuất thành công
                     .permitAll()
                 .and()
                     .exceptionHandling()
